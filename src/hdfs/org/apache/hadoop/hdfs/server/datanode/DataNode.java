@@ -165,7 +165,10 @@ public class DataNode extends Configured
     implements InterDatanodeProtocol, ClientDatanodeProtocol, FSConstants, 
     Runnable, DataNodeMXBean {
   public static final Log LOG = LogFactory.getLog(DataNode.class);
-  
+
+  /**
+   * 添加默认资源，详见方法 {@link Configuration#addDefaultResource} 方法
+   */
   static{
     Configuration.addDefaultResource("hdfs-default.xml");
     Configuration.addDefaultResource("hdfs-site.xml");
