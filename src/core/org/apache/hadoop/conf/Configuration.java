@@ -395,9 +395,16 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     reloadConfiguration();
   }
 
+  // 这个正则是用于匹配${...}
   private static Pattern varPat = Pattern.compile("\\$\\{[^\\}\\$\u0020]+\\}");
+  // 最多做20次属性扩展
   private static int MAX_SUBST = 20;
-
+  
+  /**
+   * 用于完成属性扩展，解析出${...}包裹的属性
+   * @param expr
+   * @return
+   */
   private String substituteVars(String expr) {
     if (expr == null) {
       return null;
@@ -426,6 +433,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       // substitute
       eval = eval.substring(0, match.start())+val+eval.substring(match.end());
     }
+    // 如果属性扩展层次太深，超过20层，会报这个错
     throw new IllegalStateException("Variable substitution depth too large: "
                                     + MAX_SUBST + " " + expr);
   }
@@ -464,6 +472,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    * @param value property value.
    */
   public void set(String name, String value) {
+    // 同时更新overlay和props两个属性，overlay中装载的是被覆盖的配置项
     getOverlay().setProperty(name, value);
     getProps().setProperty(name, value);
   }
@@ -1060,7 +1069,11 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       return null;
     }
   }
-
+  
+  /**
+   * 使用懒加载的方式加载资源
+   * @return
+   */
   private synchronized Properties getProps() {
     if (properties == null) {
       // 这里会重新加载资源
@@ -1116,10 +1129,17 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     }
     return result.entrySet().iterator();
   }
-
+  
+  /**
+   * 加载资源
+   * @param properties
+   * @param resources
+   * @param quiet 这个选项表示是否禁止日志输出
+   */
   private void loadResources(Properties properties,
                              ArrayList resources,
                              boolean quiet) {
+    // 加载默认资源
     if(loadDefaults) {
       for (String resource : defaultResources) {
         loadResource(properties, resource, quiet);
@@ -1135,7 +1155,13 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       loadResource(properties, resource, quiet);
     }
   }
-
+  
+  /**
+   * 使用SAX的方式解析XML文件，读取配置信息
+   * @param properties
+   * @param name
+   * @param quiet
+   */
   private void loadResource(Properties properties, Object name, boolean quiet) {
     try {
       DocumentBuilderFactory docBuilderFactory
@@ -1176,6 +1202,8 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       } else if (name instanceof Path) {          // a file resource
         // Can't use FileSystem API or we get an infinite loop
         // since FileSystem uses Configuration API.  Use java.io.File instead.
+        // 不能使用FileSystem的API，因为这会得到一个死循环
+        // 由于FileSystem使用了Configuration的API，所以使用java.io.File来代替
         File file = new File(((Path)name).toUri().getPath())
           .getAbsoluteFile();
         if (file.exists()) {
@@ -1208,20 +1236,25 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       if (root == null) {
         root = doc.getDocumentElement();
       }
+      // 判断根是否是<configuration>，不是的话直接报错
       if (!"configuration".equals(root.getTagName()))
         LOG.fatal("bad conf file: top-level element not <configuration>");
+      // 得到<configuration>的子节点
       NodeList props = root.getChildNodes();
+      // 循环访问<configuration>的子节点
       for (int i = 0; i < props.getLength(); i++) {
         Node propNode = props.item(i);
         if (!(propNode instanceof Element))
           continue;
         Element prop = (Element)propNode;
+        // 这里表明其实<configuration>是可以嵌套的
         if ("configuration".equals(prop.getTagName())) {
           loadResource(properties, prop, quiet);
           continue;
         }
         if (!"property".equals(prop.getTagName()))
           LOG.warn("bad conf file: element not <property>");
+        // 这里开始访问每一个<property>
         NodeList fields = prop.getChildNodes();
         String attr = null;
         String value = null;
@@ -1242,6 +1275,9 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
         // Ignore this parameter if it has already been marked as 'final'
         if (attr != null) {
           if (value != null) {
+            /**
+             * 判断 {@link #finalParameters} 是否包含该配置项，如果包含就忽略
+             */
             if (!finalParameters.contains(attr)) {
               properties.setProperty(attr, value);
               if (storeResource) {
