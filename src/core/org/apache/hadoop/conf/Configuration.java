@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -137,10 +137,10 @@ import org.xml.sax.SAXException;
  * <tt>${<i>user.name</i>}</tt> would then ordinarily be resolved to the value
  * of the System property with that name.
  */
-public class Configuration implements Iterable<Map.Entry<String,String>>,
-                                      Writable {
+public class Configuration implements Iterable<Map.Entry<String, String>>,
+    Writable {
   private static final Log LOG =
-    LogFactory.getLog(Configuration.class);
+      LogFactory.getLog(Configuration.class);
 
   private boolean quietmode = true;
 
@@ -155,16 +155,16 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    */
   private Set<String> finalParameters = new HashSet<String>();
 
-	/**
-	 * 用于确定是否加载默认资源，默认资源将会被保存在 {@link #defaultResources} 静态成员变量中
-	 */
-	private boolean loadDefaults = true;
+  /**
+   * 用于确定是否加载默认资源，默认资源将会被保存在 {@link #defaultResources} 静态成员变量中
+   */
+  private boolean loadDefaults = true;
 
   /**
    * Configuration objects
    */
-  private static final WeakHashMap<Configuration,Object> REGISTRY =
-    new WeakHashMap<Configuration,Object>();
+  private static final WeakHashMap<Configuration, Object> REGISTRY =
+      new WeakHashMap<Configuration, Object>();
 
   /**
    * List of default Resources. Resources are loaded in the order of the list
@@ -175,7 +175,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    * 由 {@link #addDefaultResource }方法来添加。
    */
   private static final CopyOnWriteArrayList<String> defaultResources =
-    new CopyOnWriteArrayList<String>();
+      new CopyOnWriteArrayList<String>();
 
   /**
    * Flag to indicate if the storage of resource which updates a key needs
@@ -189,13 +189,13 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    */
   private HashMap<String, String> updatingResource;
 
-  static{
+  static {
     //print deprecation warning if hadoop-site.xml is found in classpath
     ClassLoader cL = Thread.currentThread().getContextClassLoader();
     if (cL == null) {
       cL = Configuration.class.getClassLoader();
     }
-    if(cL.getResource("hadoop-site.xml")!=null) {
+    if (cL.getResource("hadoop-site.xml") != null) {
       LOG.warn("DEPRECATED: hadoop-site.xml found in the classpath. " +
           "Usage of hadoop-site.xml is deprecated. Instead use core-site.xml, "
           + "mapred-site.xml and hdfs-site.xml to override properties of " +
@@ -213,6 +213,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
 
   // 类加载器，通过它来加载指定类和相关的资源，默认是线程上下文类加载器
   private ClassLoader classLoader;
+
   {
     classLoader = Thread.currentThread().getContextClassLoader();
     if (classLoader == null) {
@@ -237,7 +238,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     if (LOG.isDebugEnabled()) {
       LOG.debug(StringUtils.stringifyException(new IOException("config()")));
     }
-    synchronized(Configuration.class) {
+    synchronized (Configuration.class) {
       REGISTRY.put(this, null);
     }
     this.storeResource = false;
@@ -269,22 +270,22 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
   public Configuration(Configuration other) {
     if (LOG.isDebugEnabled()) {
       LOG.debug(StringUtils.stringifyException
-                (new IOException("config(config)")));
+          (new IOException("config(config)")));
     }
 
-   this.resources = (ArrayList)other.resources.clone();
-   synchronized(other) {
-     if (other.properties != null) {
-       this.properties = (Properties)other.properties.clone();
-     }
+    this.resources = (ArrayList) other.resources.clone();
+    synchronized (other) {
+      if (other.properties != null) {
+        this.properties = (Properties) other.properties.clone();
+      }
 
-     if (other.overlay!=null) {
-       this.overlay = (Properties)other.overlay.clone();
-     }
-   }
+      if (other.overlay != null) {
+        this.overlay = (Properties) other.overlay.clone();
+      }
+    }
 
     this.finalParameters = new HashSet<String>(other.finalParameters);
-    synchronized(Configuration.class) {
+    synchronized (Configuration.class) {
       REGISTRY.put(this, null);
     }
   }
@@ -298,10 +299,10 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    * @param name file name. File should be present in the classpath.
    */
   public static synchronized void addDefaultResource(String name) {
-    if(!defaultResources.contains(name)) {
+    if (!defaultResources.contains(name)) {
       defaultResources.add(name);
-      for(Configuration conf : REGISTRY.keySet()) {
-        if(conf.loadDefaults) {
+      for (Configuration conf : REGISTRY.keySet()) {
+        if (conf.loadDefaults) {
           conf.reloadConfiguration();
         }
       }
@@ -384,13 +385,13 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    * 用于清空 properties 和 finalParameters
    */
   public synchronized void reloadConfiguration() {
-  	// 触发资源重新加载
+    // 触发资源重新加载
     properties = null; // trigger reload
     finalParameters.clear(); // clear site-limits
   }
 
   private synchronized void addResourceObject(Object resource) {
-  	// 放入到一个ArrayList
+    // 放入到一个ArrayList
     resources.add(resource); // add to resources
     reloadConfiguration();
   }
@@ -399,7 +400,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
   private static Pattern varPat = Pattern.compile("\\$\\{[^\\}\\$\u0020]+\\}");
   // 最多做20次属性扩展
   private static int MAX_SUBST = 20;
-  
+
   /**
    * 用于完成属性扩展，解析出${...}包裹的属性
    * @param expr
@@ -411,17 +412,17 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     }
     Matcher match = varPat.matcher("");
     String eval = expr;
-    for(int s=0; s<MAX_SUBST; s++) {
+    for (int s = 0; s < MAX_SUBST; s++) {
       match.reset(eval);
       if (!match.find()) {
         return eval;
       }
       String var = match.group();
-      var = var.substring(2, var.length()-1); // remove ${ .. }
+      var = var.substring(2, var.length() - 1); // remove ${ .. }
       String val = null;
       try {
         val = System.getProperty(var);
-      } catch(SecurityException se) {
+      } catch (SecurityException se) {
         LOG.warn("Unexpected SecurityException in Configuration", se);
       }
       if (val == null) {
@@ -431,11 +432,11 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
         return eval; // return literal ${var}: var is unbound
       }
       // substitute
-      eval = eval.substring(0, match.start())+val+eval.substring(match.end());
+      eval = eval.substring(0, match.start()) + val + eval.substring(match.end());
     }
     // 如果属性扩展层次太深，超过20层，会报这个错
     throw new IllegalStateException("Variable substitution depth too large: "
-                                    + MAX_SUBST + " " + expr);
+        + MAX_SUBST + " " + expr);
   }
 
   /**
@@ -489,8 +490,8 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
   }
 
   private synchronized Properties getOverlay() {
-    if (overlay==null){
-      overlay=new Properties();
+    if (overlay == null) {
+      overlay = new Properties();
     }
     return overlay;
   }
@@ -618,6 +619,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       return defaultValue;
     }
   }
+
   /**
    * Set the value of the <code>name</code> property to a <code>float</code>.
    *
@@ -625,7 +627,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    * @param value property value.
    */
   public void setFloat(String name, float value) {
-    set(name,Float.toString(value));
+    set(name, Float.toString(value));
   }
 
   /**
@@ -686,8 +688,8 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
   public <T extends Enum<T>> T getEnum(String name, T defaultValue) {
     final String val = get(name);
     return null == val
-      ? defaultValue
-      : Enum.valueOf(defaultValue.getDeclaringClass(), val);
+        ? defaultValue
+        : Enum.valueOf(defaultValue.getDeclaringClass(), val);
   }
 
   /**
@@ -715,7 +717,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
         String[] parts = rng.split("-", 3);
         if (parts.length < 1 || parts.length > 2) {
           throw new IllegalArgumentException("integer range badly formed: " +
-                                             rng);
+              rng);
         }
         Range r = new Range();
         r.start = convertToInt(parts[0], 0);
@@ -726,7 +728,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
         }
         if (r.start > r.end) {
           throw new IllegalArgumentException("IntegerRange from " + r.start +
-                                             " to " + r.end + " is invalid");
+              " to " + r.end + " is invalid");
         }
         ranges.add(r);
       }
@@ -752,7 +754,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
      * @return is the value in the ranges?
      */
     public boolean isIncluded(int value) {
-      for(Range r: ranges) {
+      for (Range r : ranges) {
         if (r.start <= value && value <= r.end) {
           return true;
         }
@@ -764,7 +766,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     public String toString() {
       StringBuffer result = new StringBuffer();
       boolean first = true;
-      for(Range r: ranges) {
+      for (Range r : ranges) {
         if (first) {
           first = false;
         } else {
@@ -870,13 +872,13 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    * @return property value as a <code>Class[]</code>,
    *         or <code>defaultValue</code>.
    */
-  public Class<?>[] getClasses(String name, Class<?> ... defaultValue) {
+  public Class<?>[] getClasses(String name, Class<?>... defaultValue) {
     String[] classnames = getStrings(name);
     if (classnames == null)
       return defaultValue;
     try {
       Class<?>[] classes = new Class<?>[classnames.length];
-      for(int i = 0; i < classnames.length; i++) {
+      for (int i = 0; i < classnames.length; i++) {
         classes[i] = getClassByName(classnames[i]);
       }
       return classes;
@@ -928,7 +930,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     try {
       Class<?> theClass = getClass(name, defaultValue);
       if (theClass != null && !xface.isAssignableFrom(theClass))
-        throw new RuntimeException(theClass+" not "+xface.getName());
+        throw new RuntimeException(theClass + " not " + xface.getName());
       else if (theClass != null)
         return theClass.asSubclass(xface);
       else
@@ -951,7 +953,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    */
   public void setClass(String name, Class<?> theClass, Class<?> xface) {
     if (!xface.isAssignableFrom(theClass))
-      throw new RuntimeException(theClass+" not "+xface.getName());
+      throw new RuntimeException(theClass + " not " + xface.getName());
     set(name, theClass.getName());
   }
 
@@ -966,12 +968,12 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    * @return local file under the directory with the given path.
    */
   public Path getLocalPath(String dirsProp, String path)
-    throws IOException {
+      throws IOException {
     String[] dirs = getStrings(dirsProp);
     int hashCode = path.hashCode();
     FileSystem fs = FileSystem.getLocal(this);
     for (int i = 0; i < dirs.length; i++) {  // try each local dir
-      int index = (hashCode+i & Integer.MAX_VALUE) % dirs.length;
+      int index = (hashCode + i & Integer.MAX_VALUE) % dirs.length;
       Path file = new Path(dirs[index], path);
       Path dir = file.getParent();
       if (fs.mkdirs(dir) || fs.exists(dir)) {
@@ -979,12 +981,12 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       }
     }
     LOG.warn("Could not make " + path +
-             " in local directories from " + dirsProp);
-    for(int i=0; i < dirs.length; i++) {
-      int index = (hashCode+i & Integer.MAX_VALUE) % dirs.length;
+        " in local directories from " + dirsProp);
+    for (int i = 0; i < dirs.length; i++) {
+      int index = (hashCode + i & Integer.MAX_VALUE) % dirs.length;
       LOG.warn(dirsProp + "[" + index + "]=" + dirs[index]);
     }
-    throw new IOException("No valid local directories in property: "+dirsProp);
+    throw new IOException("No valid local directories in property: " + dirsProp);
   }
 
   /**
@@ -998,18 +1000,18 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    * @return local file under the directory with the given path.
    */
   public File getFile(String dirsProp, String path)
-    throws IOException {
+      throws IOException {
     String[] dirs = getStrings(dirsProp);
     int hashCode = path.hashCode();
     for (int i = 0; i < dirs.length; i++) {  // try each local dir
-      int index = (hashCode+i & Integer.MAX_VALUE) % dirs.length;
+      int index = (hashCode + i & Integer.MAX_VALUE) % dirs.length;
       File file = new File(dirs[index], path);
       File dir = file.getParentFile();
       if (dir.exists() || dir.mkdirs()) {
         return file;
       }
     }
-    throw new IOException("No valid local directories in property: "+dirsProp);
+    throw new IOException("No valid local directories in property: " + dirsProp);
   }
 
   /**
@@ -1031,7 +1033,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    */
   public InputStream getConfResourceAsInputStream(String name) {
     try {
-      URL url= getResource(name);
+      URL url = getResource(name);
 
       if (url == null) {
         LOG.info(name + " not found");
@@ -1055,7 +1057,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    */
   public Reader getConfResourceAsReader(String name) {
     try {
-      URL url= getResource(name);
+      URL url = getResource(name);
 
       if (url == null) {
         LOG.info(name + " not found");
@@ -1069,7 +1071,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       return null;
     }
   }
-  
+
   /**
    * 使用懒加载的方式加载资源
    * @return
@@ -1079,11 +1081,11 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       // 这里会重新加载资源
       properties = new Properties();
       loadResources(properties, resources, quietmode);
-      if (overlay!= null) {
+      if (overlay != null) {
         // 将overlay中的资源加载到properties
         properties.putAll(overlay);
         if (storeResource) {
-          for (Map.Entry<Object,Object> item: overlay.entrySet()) {
+          for (Map.Entry<Object, Object> item : overlay.entrySet()) {
             updatingResource.put((String) item.getKey(), "Unknown");
           }
         }
@@ -1120,8 +1122,8 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     // methods that allow non-strings to be put into configurations are removed,
     // we could replace properties with a Map<String,String> and get rid of this
     // code.
-    Map<String,String> result = new HashMap<String,String>();
-    for(Map.Entry<Object,Object> item: getProps().entrySet()) {
+    Map<String, String> result = new HashMap<String, String>();
+    for (Map.Entry<Object, Object> item : getProps().entrySet()) {
       if (item.getKey() instanceof String &&
           item.getValue() instanceof String) {
         result.put((String) item.getKey(), (String) item.getValue());
@@ -1129,7 +1131,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     }
     return result.entrySet().iterator();
   }
-  
+
   /**
    * 加载资源
    * @param properties
@@ -1140,13 +1142,13 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
                              ArrayList resources,
                              boolean quiet) {
     // 加载默认资源
-    if(loadDefaults) {
+    if (loadDefaults) {
       for (String resource : defaultResources) {
         loadResource(properties, resource, quiet);
       }
 
       //support the hadoop-site.xml as a deprecated case
-      if(getResource("hadoop-site.xml")!=null) {
+      if (getResource("hadoop-site.xml") != null) {
         loadResource(properties, "hadoop-site.xml", quiet);
       }
     }
@@ -1155,7 +1157,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
       loadResource(properties, resource, quiet);
     }
   }
-  
+
   /**
    * 使用SAX的方式解析XML文件，读取配置信息
    * @param properties
@@ -1165,26 +1167,26 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
   private void loadResource(Properties properties, Object name, boolean quiet) {
     try {
       DocumentBuilderFactory docBuilderFactory
-        = DocumentBuilderFactory.newInstance();
+          = DocumentBuilderFactory.newInstance();
       //ignore all comments inside the xml file
       docBuilderFactory.setIgnoringComments(true);
 
       //allow includes in the xml file
       docBuilderFactory.setNamespaceAware(true);
       try {
-          docBuilderFactory.setXIncludeAware(true);
+        docBuilderFactory.setXIncludeAware(true);
       } catch (UnsupportedOperationException e) {
         LOG.error("Failed to set setXIncludeAware(true) for parser "
                 + docBuilderFactory
                 + ":" + e,
-                e);
+            e);
       }
       DocumentBuilder builder = docBuilderFactory.newDocumentBuilder();
       Document doc = null;
       Element root = null;
 
       if (name instanceof URL) {                  // an URL resource
-        URL url = (URL)name;
+        URL url = (URL) name;
         if (url != null) {
           if (!quiet) {
             LOG.info("parsing " + url);
@@ -1192,7 +1194,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
           doc = builder.parse(url.toString());
         }
       } else if (name instanceof String) {        // a CLASSPATH resource
-        URL url = getResource((String)name);
+        URL url = getResource((String) name);
         if (url != null) {
           if (!quiet) {
             LOG.info("parsing " + url);
@@ -1204,8 +1206,8 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
         // since FileSystem uses Configuration API.  Use java.io.File instead.
         // 不能使用FileSystem的API，因为这会得到一个死循环
         // 由于FileSystem使用了Configuration的API，所以使用java.io.File来代替
-        File file = new File(((Path)name).toUri().getPath())
-          .getAbsoluteFile();
+        File file = new File(((Path) name).toUri().getPath())
+            .getAbsoluteFile();
         if (file.exists()) {
           if (!quiet) {
             LOG.info("parsing " + file);
@@ -1219,12 +1221,12 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
         }
       } else if (name instanceof InputStream) {
         try {
-          doc = builder.parse((InputStream)name);
+          doc = builder.parse((InputStream) name);
         } finally {
-          ((InputStream)name).close();
+          ((InputStream) name).close();
         }
       } else if (name instanceof Element) {
-        root = (Element)name;
+        root = (Element) name;
       }
 
       if (doc == null && root == null) {
@@ -1246,7 +1248,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
         Node propNode = props.item(i);
         if (!(propNode instanceof Element))
           continue;
-        Element prop = (Element)propNode;
+        Element prop = (Element) propNode;
         // 这里表明其实<configuration>是可以嵌套的
         if ("configuration".equals(prop.getTagName())) {
           loadResource(properties, prop, quiet);
@@ -1263,13 +1265,13 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
           Node fieldNode = fields.item(j);
           if (!(fieldNode instanceof Element))
             continue;
-          Element field = (Element)fieldNode;
+          Element field = (Element) fieldNode;
           if ("name".equals(field.getTagName()) && field.hasChildNodes())
-            attr = ((Text)field.getFirstChild()).getData().trim();
+            attr = ((Text) field.getFirstChild()).getData().trim();
           if ("value".equals(field.getTagName()) && field.hasChildNodes())
-            value = ((Text)field.getFirstChild()).getData();
+            value = ((Text) field.getFirstChild()).getData();
           if ("final".equals(field.getTagName()) && field.hasChildNodes())
-            finalParameter = "true".equals(((Text)field.getFirstChild()).getData());
+            finalParameter = "true".equals(((Text) field.getFirstChild()).getData());
         }
 
         // Ignore this parameter if it has already been marked as 'final'
@@ -1284,8 +1286,8 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
                 updatingResource.put(attr, name.toString());
               }
             } else if (!value.equals(properties.getProperty(attr))) {
-              LOG.warn(name+":a attempt to override final parameter: "+attr
-                     +";  Ignoring.");
+              LOG.warn(name + ":a attempt to override final parameter: " + attr
+                  + ";  Ignoring.");
             }
           }
           if (finalParameter) {
@@ -1319,17 +1321,17 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     Properties properties = getProps();
     try {
       Document doc =
-        DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+          DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
       Element conf = doc.createElement("configuration");
       doc.appendChild(conf);
       conf.appendChild(doc.createTextNode("\n"));
-      for (Enumeration e = properties.keys(); e.hasMoreElements();) {
-        String name = (String)e.nextElement();
+      for (Enumeration e = properties.keys(); e.hasMoreElements(); ) {
+        String name = (String) e.nextElement();
         Object object = properties.get(name);
         String value = null;
         if (object instanceof String) {
           value = (String) object;
-        }else {
+        } else {
           continue;
         }
         Element propNode = doc.createElement("property");
@@ -1368,8 +1370,8 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
    * @throws IOException
    */
   public static void dumpConfiguration(Configuration conf,
-      Writer out) throws IOException {
-    Configuration config = new Configuration(conf,true);
+                                       Writer out) throws IOException {
+    Configuration config = new Configuration(conf, true);
     config.reloadConfiguration();
     JsonFactory dumpFactory = new JsonFactory();
     JsonGenerator dumpGenerator = dumpFactory.createJsonGenerator(out);
@@ -1377,7 +1379,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
     dumpGenerator.writeFieldName("properties");
     dumpGenerator.writeStartArray();
     dumpGenerator.flush();
-    for (Map.Entry<Object,Object> item: config.getProps().entrySet()) {
+    for (Map.Entry<Object, Object> item : config.getProps().entrySet()) {
       dumpGenerator.writeStartObject();
       dumpGenerator.writeStringField("key", (String) item.getKey());
       dumpGenerator.writeStringField("value",
@@ -1415,9 +1417,9 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
   public String toString() {
     StringBuffer sb = new StringBuffer();
     sb.append("Configuration: ");
-    if(loadDefaults) {
+    if (loadDefaults) {
       toString(defaultResources, sb);
-      if(resources.size()>0) {
+      if (resources.size() > 0) {
         sb.append(", ");
       }
     }
@@ -1456,7 +1458,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
   public void readFields(DataInput in) throws IOException {
     clear();
     int size = WritableUtils.readVInt(in);
-    for(int i=0; i < size; ++i) {
+    for (int i = 0; i < size; ++i) {
       set(org.apache.hadoop.io.Text.readString(in),
           org.apache.hadoop.io.Text.readString(in));
     }
@@ -1466,7 +1468,7 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
   public void write(DataOutput out) throws IOException {
     Properties props = getProps();
     WritableUtils.writeVInt(out, props.size());
-    for(Map.Entry<Object, Object> item: props.entrySet()) {
+    for (Map.Entry<Object, Object> item : props.entrySet()) {
       org.apache.hadoop.io.Text.writeString(out, (String) item.getKey());
       org.apache.hadoop.io.Text.writeString(out, (String) item.getValue());
     }
@@ -1475,19 +1477,19 @@ public class Configuration implements Iterable<Map.Entry<String,String>>,
   /**
    * get keys matching the the regex
    * @param regex
-   * @return Map<String,String> with matching keys
+   * @return Map<String , String> with matching keys
    */
-  public Map<String,String> getValByRegex(String regex) {
+  public Map<String, String> getValByRegex(String regex) {
     Pattern p = Pattern.compile(regex);
 
-    Map<String,String> result = new HashMap<String,String>();
+    Map<String, String> result = new HashMap<String, String>();
     Matcher m;
 
-    for(Map.Entry<Object,Object> item: getProps().entrySet()) {
+    for (Map.Entry<Object, Object> item : getProps().entrySet()) {
       if (item.getKey() instanceof String &&
           item.getValue() instanceof String) {
-        m = p.matcher((String)item.getKey());
-        if(m.find()) { // match
+        m = p.matcher((String) item.getKey());
+        if (m.find()) { // match
           result.put((String) item.getKey(), (String) item.getValue());
         }
       }
