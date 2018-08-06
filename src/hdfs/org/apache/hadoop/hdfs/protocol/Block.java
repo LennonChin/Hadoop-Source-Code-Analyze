@@ -124,6 +124,11 @@ public class Block implements Writable, Comparable<Block> {
 
   /////////////////////////////////////
   // Writable
+  // 序列化操作，依次写入block块id，块大小和产生的时间戳
+  // 如在DataNode中存储的blk_826345353453452345_1045.meta块文件元数据中，
+  // 826345353453452345表示blockId，1045表示generationStamp，
+  // generationStamp的产生是为了标记块产生的先后，它是一个自增序列，
+  // 当碰到两个文件名相同的块时，会根据generationStamp取最新的那个块
   /////////////////////////////////////
   public void write(DataOutput out) throws IOException {
     out.writeLong(blockId);
@@ -131,6 +136,11 @@ public class Block implements Writable, Comparable<Block> {
     out.writeLong(generationStamp);
   }
 
+  /**
+   * 反序列化块数据
+   * @param in <code>DataInput</code> to deseriablize this object from. 反序列化时会从这个流中读取数据
+   * @throws IOException
+   */
   public void readFields(DataInput in) throws IOException {
     this.blockId = in.readLong();
     this.numBytes = in.readLong();

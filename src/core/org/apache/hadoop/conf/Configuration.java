@@ -1159,7 +1159,8 @@ public class Configuration implements Iterable<Map.Entry<String, String>>,
   }
 
   /**
-   * 使用SAX的方式解析XML文件，读取配置信息
+   * 使用DOM的方式解析XML文件，读取配置信息
+   * 由于配置文件比较小，所以直接使用DOM的方式解析XML文件
    * @param properties
    * @param name
    * @param quiet

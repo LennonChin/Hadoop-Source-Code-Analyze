@@ -61,8 +61,10 @@ import java.io.IOException;
 public interface Writable {
   /** 
    * Serialize the fields of this object to <code>out</code>.
+   *
+   * 序列化对象到DataOutput流中
    * 
-   * @param out <code>DataOuput</code> to serialize this object into.
+   * @param out <code>DataOuput</code> to serialize this object into. 序列化的对象会存入这个流中
    * @throws IOException
    */
   void write(DataOutput out) throws IOException;
@@ -72,8 +74,11 @@ public interface Writable {
    * 
    * <p>For efficiency, implementations should attempt to re-use storage in the 
    * existing object where possible.</p>
+   *
+   * 从DataInput流中读取数据进行反序列化对象。
+   * 为了效率，该类的实现应该尽可能复用现有的对象
    * 
-   * @param in <code>DataInput</code> to deseriablize this object from.
+   * @param in <code>DataInput</code> to deseriablize this object from. 反序列化时会从这个流中读取数据
    * @throws IOException
    */
   void readFields(DataInput in) throws IOException;

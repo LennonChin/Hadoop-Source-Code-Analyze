@@ -32,6 +32,10 @@ import org.apache.hadoop.io.serializer.DeserializerComparator;
  */
 public interface RawComparator<T> extends Comparator<T> {
 
+  /**
+   * 可以查看{@link org.apache.hadoop.io.IntWritable.Comparator#compare} 的具体实现，
+   * 该方法直接从流中读取了数据并进行了比较
+   */
   public int compare(byte[] b1, int s1, int l1, byte[] b2, int s2, int l2);
 
 }

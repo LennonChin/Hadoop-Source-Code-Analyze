@@ -37,7 +37,13 @@ public class WritableComparator implements RawComparator {
   private static HashMap<Class, WritableComparator> comparators =
     new HashMap<Class, WritableComparator>(); // registry
 
-  /** Get a comparator for a {@link WritableComparable} implementation. */
+  /**
+   * Get a comparator for a {@link WritableComparable} implementation.
+   *
+   * 这个方法可以用于获取实现了WritableComparable接口的WritableComparator类，
+   * 相当于RawComparator的实例工厂方法
+   *
+   * */
   public static synchronized WritableComparator get(Class<? extends WritableComparable> c) {
     WritableComparator comparator = comparators.get(c);
     if (comparator == null)

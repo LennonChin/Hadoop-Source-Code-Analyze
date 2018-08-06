@@ -4,6 +4,10 @@
     <list default="true" id="0e19b82a-85fd-4a20-a9e1-4808272c9caa" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configuration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/io/RawComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/io/RawComparator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/io/Writable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/io/Writable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/io/WritableComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/io/WritableComparator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,37 +21,116 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Configuration.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Configuration.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configuration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="475" column="42" lean-forward="true" selection-start-line="475" selection-start-column="42" selection-end-line="475" selection-end-column="42" />
+            <state relative-caret-position="212">
+              <caret line="313" column="4" lean-forward="true" selection-start-line="313" selection-start-column="4" selection-end-line="313" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5512#5520#0" expanded="true" />
-                <element signature="e#5671#5679#0" expanded="true" />
-                <element signature="e#5921#5943#0" expanded="true" />
-                <element signature="e#6250#6258#0" expanded="true" />
-                <element signature="e#9136#9166#0" expanded="true" />
-                <element signature="e#14578#14579#0" expanded="true" />
-                <element signature="e#14639#14640#0" expanded="true" />
-                <element signature="e#14964#14965#0" expanded="true" />
-                <element signature="e#15009#15010#0" expanded="true" />
-                <element signature="e#17184#17185#0" expanded="true" />
-                <element signature="e#17228#17229#0" expanded="true" />
-                <element signature="e#22198#22205#0" expanded="true" />
-                <element signature="e#35330#35345#0" expanded="true" />
-                <element signature="e#46780#46795#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hdfs-default.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hdfs/hdfs-default.xml">
+      <file leaf-file-name="Writable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/Writable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="9" selection-start-line="9" selection-end-line="15" selection-end-column="11" />
+            <state relative-caret-position="401">
+              <caret line="72" column="49" selection-start-line="72" selection-start-column="49" selection-end-line="72" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Block.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="313">
+              <caret line="135" column="35" selection-start-line="135" selection-start-column="35" selection-end-line="135" selection-end-column="35" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Configurable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configurable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="620">
+              <caret line="31" column="4" lean-forward="true" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ReflectionUtils.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/util/ReflectionUtils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="437">
+              <caret line="77" column="31" lean-forward="true" selection-start-line="77" selection-start-column="31" selection-end-line="77" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IntWritable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/IntWritable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="439">
+              <caret line="77" column="44" selection-start-line="77" selection-start-column="44" selection-end-line="77" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RawComparator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/RawComparator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JAVA/org.apache.hadoop.io.WritableComparator" pinned="false" current-in-tab="false">
+        <entry file="uml://JAVA/org.apache.hadoop.io.WritableComparator">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
+            <state>
+              <ID>JAVA</ID>
+              <OriginalElement>org.apache.hadoop.io.WritableComparator</OriginalElement>
+              <nodes>
+                <node x="13.0" y="79.0">org.apache.hadoop.io.RawComparator</node>
+                <node x="25.5" y="0.0">java.util.Comparator</node>
+                <node x="0.0" y="158.0">org.apache.hadoop.io.WritableComparator</node>
+              </nodes>
+              <notes />
+              <edges>
+                <edge source="org.apache.hadoop.io.WritableComparator" target="org.apache.hadoop.io.RawComparator">
+                  <point x="0.0" y="-14.5" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.io.RawComparator" target="java.util.Comparator">
+                  <point x="0.0" y="-14.5" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+              </edges>
+              <settings layout="Hierarchic Group" zoom="1.0" x="-230.5" y="-33.5" />
+              <SelectedNodes>
+                <node>org.apache.hadoop.io.WritableComparator</node>
+              </SelectedNodes>
+              <Categories />
+              <SCOPE>All</SCOPE>
+              <VISIBILITY>private</VISIBILITY>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WritableComparator.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/WritableComparator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="40" column="64" lean-forward="true" selection-start-line="40" selection-start-column="64" selection-end-line="40" selection-end-column="64" />
             </state>
           </provider>
         </entry>
@@ -58,6 +141,10 @@
     <findStrings>
       <find>LogFactory</find>
       <find>properties</find>
+      <find>SAX</find>
+      <find>sax</find>
+      <find>generationStamp</find>
+      <find>comparators</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -67,7 +154,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/datanode/DataNode.java" />
+        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configurable.java" />
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configuration.java" />
+        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/Writable.java" />
+        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java" />
+        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/RawComparator.java" />
+        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/WritableComparator.java" />
       </list>
     </option>
   </component>
@@ -86,9 +178,9 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="14" />
-    <option name="y" value="24" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="242" />
+    <option name="y" value="23" />
     <option name="width" value="1920" />
     <option name="height" value="985" />
   </component>
@@ -100,6 +192,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -121,64 +214,41 @@
               <item name="Hadoop-Source-Code-Analyze" type="b2602c69:ProjectViewProjectNode" />
               <item name="Hadoop-Source-Code-Analyze" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="hdfs" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Hadoop-Source-Code-Analyze" type="b2602c69:ProjectViewProjectNode" />
               <item name="Hadoop-Source-Code-Analyze" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="hdfs" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="org" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Hadoop-Source-Code-Analyze" type="b2602c69:ProjectViewProjectNode" />
               <item name="Hadoop-Source-Code-Analyze" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="hdfs" type="462c0819:PsiDirectoryNode" />
-              <item name="org" type="462c0819:PsiDirectoryNode" />
-              <item name="apache" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Hadoop-Source-Code-Analyze" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Hadoop-Source-Code-Analyze" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="hdfs" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="org" type="462c0819:PsiDirectoryNode" />
               <item name="apache" type="462c0819:PsiDirectoryNode" />
-              <item name="hadoop" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Hadoop-Source-Code-Analyze" type="b2602c69:ProjectViewProjectNode" />
               <item name="Hadoop-Source-Code-Analyze" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="hdfs" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="org" type="462c0819:PsiDirectoryNode" />
               <item name="apache" type="462c0819:PsiDirectoryNode" />
               <item name="hadoop" type="462c0819:PsiDirectoryNode" />
-              <item name="hdfs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Hadoop-Source-Code-Analyze" type="b2602c69:ProjectViewProjectNode" />
               <item name="Hadoop-Source-Code-Analyze" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="hdfs" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="org" type="462c0819:PsiDirectoryNode" />
               <item name="apache" type="462c0819:PsiDirectoryNode" />
               <item name="hadoop" type="462c0819:PsiDirectoryNode" />
-              <item name="hdfs" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Hadoop-Source-Code-Analyze" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Hadoop-Source-Code-Analyze" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="hdfs" type="462c0819:PsiDirectoryNode" />
-              <item name="org" type="462c0819:PsiDirectoryNode" />
-              <item name="apache" type="462c0819:PsiDirectoryNode" />
-              <item name="hadoop" type="462c0819:PsiDirectoryNode" />
-              <item name="hdfs" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="datanode" type="462c0819:PsiDirectoryNode" />
+              <item name="conf" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -186,10 +256,10 @@
       </pane>
       <pane id="Scope" />
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="RawCo&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/RawComparator.java&#10;IntW&#9;PSI&#9;JAVA://org.apache.hadoop.io.IntWritable&#10;RawComparator&#9;PSI&#9;JAVA://org.apache.hadoop.io.RawComparator&#10;Raw&#9;PSI&#9;JAVA://org.apache.hadoop.io.file.tfile.RawComparable&#10;Block&#9;PSI&#9;JAVA://org.apache.hadoop.hdfs.protocol.Block&#10;Writa&#9;PSI&#9;JAVA://org.apache.hadoop.io.Writable&#10;Reflecti&#9;PSI&#9;JAVA://org.apache.hadoop.util.ReflectionUtils" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -198,7 +268,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -269,15 +339,16 @@
       <option name="presentableId" value="Default" />
       <updated>1533167132842</updated>
       <workItem from="1533167149793" duration="3165000" />
-      <workItem from="1533254290223" duration="1524000" />
+      <workItem from="1533254290223" duration="1821000" />
+      <workItem from="1533512798272" duration="2878000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4689000" />
+    <option name="totallyTimeSpent" value="7864000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="5" y="23" width="1920" height="985" extended-state="6" />
+    <frame x="242" y="23" width="1920" height="985" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
@@ -288,10 +359,10 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24973376" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.24973376" />
       <window_info anchor="bottom" id="Tail" order="7" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info id="Structure" order="1" sideWeight="0.8427896" side_tool="true" visible="true" weight="0.15601704" />
+      <window_info id="Structure" order="1" sideWeight="0.79196215" side_tool="true" weight="0.15761448" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
@@ -303,7 +374,7 @@
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.1572104" visible="true" weight="0.15601704" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.20803782" visible="true" weight="0.15761448" />
       <window_info id="JRebel" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Hybris Console [Experimental]" order="7" />
       <window_info anchor="right" id="Theme Preview" order="3" />
@@ -324,6 +395,24 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configuration.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6340">
+          <caret line="395" column="3" lean-forward="true" selection-start-line="395" selection-start-column="3" selection-end-line="395" selection-end-column="3" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5512#5520#0" expanded="true" />
+            <element signature="e#5671#5679#0" expanded="true" />
+            <element signature="e#5921#5943#0" expanded="true" />
+            <element signature="e#6250#6258#0" expanded="true" />
+            <element signature="e#9136#9166#0" expanded="true" />
+            <element signature="e#22387#22394#0" expanded="true" />
+            <element signature="e#35564#35579#0" expanded="true" />
+            <element signature="e#47599#47614#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configuration.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4300">
           <caret line="285" column="40" lean-forward="true" selection-start-line="285" selection-start-column="40" selection-end-line="285" selection-end-column="40" />
           <folding>
@@ -333,15 +422,9 @@
             <element signature="e#5921#5943#0" expanded="true" />
             <element signature="e#6250#6258#0" expanded="true" />
             <element signature="e#9136#9166#0" expanded="true" />
-            <element signature="e#14578#14579#0" expanded="true" />
-            <element signature="e#14639#14640#0" expanded="true" />
-            <element signature="e#14964#14965#0" expanded="true" />
-            <element signature="e#15009#15010#0" expanded="true" />
-            <element signature="e#17184#17185#0" expanded="true" />
-            <element signature="e#17228#17229#0" expanded="true" />
-            <element signature="e#22198#22205#0" expanded="true" />
-            <element signature="e#35330#35345#0" expanded="true" />
-            <element signature="e#46780#46795#0" expanded="true" />
+            <element signature="e#22387#22394#0" expanded="true" />
+            <element signature="e#35564#35579#0" expanded="true" />
+            <element signature="e#47599#47614#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -380,13 +463,6 @@
     <entry file="file://$PROJECT_DIR$/conf/hdfs-site.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/hdfs/hdfs-default.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="9" selection-start-line="9" selection-end-line="15" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/1.6.0_65_2015.jdk/Contents/Home/src.zip!/java/util/Properties.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="267">
@@ -398,27 +474,148 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/hdfs-default.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configurable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="620">
+          <caret line="31" column="4" lean-forward="true" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/1.6.0_65_2015.jdk/Contents/Home/src.zip!/javax/xml/parsers/DocumentBuilderFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="42" column="22" selection-start-line="42" selection-start-column="22" selection-end-line="42" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configuration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="475" column="42" lean-forward="true" selection-start-line="475" selection-start-column="42" selection-end-line="475" selection-end-column="42" />
+        <state relative-caret-position="212">
+          <caret line="313" column="4" lean-forward="true" selection-start-line="313" selection-start-column="4" selection-end-line="313" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5512#5520#0" expanded="true" />
-            <element signature="e#5671#5679#0" expanded="true" />
-            <element signature="e#5921#5943#0" expanded="true" />
-            <element signature="e#6250#6258#0" expanded="true" />
-            <element signature="e#9136#9166#0" expanded="true" />
-            <element signature="e#14578#14579#0" expanded="true" />
-            <element signature="e#14639#14640#0" expanded="true" />
-            <element signature="e#14964#14965#0" expanded="true" />
-            <element signature="e#15009#15010#0" expanded="true" />
-            <element signature="e#17184#17185#0" expanded="true" />
-            <element signature="e#17228#17229#0" expanded="true" />
-            <element signature="e#22198#22205#0" expanded="true" />
-            <element signature="e#35330#35345#0" expanded="true" />
-            <element signature="e#46780#46795#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/common/GenerationStamp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="26" column="46" lean-forward="true" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/s3/Block.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/Writable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="401">
+          <caret line="72" column="49" selection-start-line="72" selection-start-column="49" selection-end-line="72" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/file/tfile/RawComparable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="40" column="5" lean-forward="true" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="135" column="35" selection-start-line="135" selection-start-column="35" selection-end-line="135" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/1.6.0_65_2015.jdk/Contents/Home/src.zip!/java/util/HashMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="296" column="13" selection-start-line="296" selection-start-column="13" selection-end-line="296" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/IntWritable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="77" column="44" selection-start-line="77" selection-start-column="44" selection-end-line="77" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mapred/org/apache/hadoop/mapred/SequenceFileInputFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="123" column="44" lean-forward="true" selection-start-line="123" selection-start-column="44" selection-end-line="123" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/util/ReflectionUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="77" column="31" lean-forward="true" selection-start-line="77" selection-start-column="31" selection-end-line="77" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/RawComparator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/org.apache.hadoop.io.WritableComparator">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>org.apache.hadoop.io.WritableComparator</OriginalElement>
+          <nodes>
+            <node x="13.0" y="79.0">org.apache.hadoop.io.RawComparator</node>
+            <node x="25.5" y="0.0">java.util.Comparator</node>
+            <node x="0.0" y="158.0">org.apache.hadoop.io.WritableComparator</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="org.apache.hadoop.io.WritableComparator" target="org.apache.hadoop.io.RawComparator">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.io.RawComparator" target="java.util.Comparator">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="1.0" x="-230.5" y="-33.5" />
+          <SelectedNodes>
+            <node>org.apache.hadoop.io.WritableComparator</node>
+          </SelectedNodes>
+          <Categories />
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/WritableComparator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="40" column="64" lean-forward="true" selection-start-line="40" selection-start-column="64" selection-end-line="40" selection-end-column="64" />
         </state>
       </provider>
     </entry>
