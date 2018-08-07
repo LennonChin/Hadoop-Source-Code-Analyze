@@ -19,6 +19,7 @@
 package org.apache.hadoop.io;
 
 import org.apache.hadoop.conf.*;
+import org.apache.hadoop.hdfs.protocol.Block;
 import org.apache.hadoop.util.ReflectionUtils;
 import java.util.HashMap;
 
@@ -30,7 +31,12 @@ public class WritableFactories {
 
   private WritableFactories() {}                  // singleton
 
-  /** Define a factory for a class. */
+  /**
+   * Define a factory for a class.
+   *
+   * 可以查看 {@link org.apache.hadoop.hdfs.protocol.Block} 中静态代码块的实现
+   *
+   * */
   public static synchronized void setFactory(Class c, WritableFactory factory) {
     CLASS_TO_FACTORY.put(c, factory);
   }
@@ -42,14 +48,18 @@ public class WritableFactories {
 
   /** Create a new instance of a class with a defined factory. */
   public static Writable newInstance(Class<? extends Writable> c, Configuration conf) {
+    // 获取工厂
     WritableFactory factory = WritableFactories.getFactory(c);
     if (factory != null) {
+      // 如果工厂不为空，则使用工厂创建对象
       Writable result = factory.newInstance();
       if (result instanceof Configurable) {
+        // 设置Configuration
         ((Configurable) result).setConf(conf);
       }
       return result;
     } else {
+      // 如果工厂为空，则使用反射创建对象
       return ReflectionUtils.newInstance(c, conf);
     }
   }

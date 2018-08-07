@@ -30,8 +30,11 @@ import org.apache.hadoop.conf.*;
  */
 public class ObjectWritable implements Writable, Configurable {
 
+  // 被包装的对象实例的运行时类的CLass对象
   private Class declaredClass;
+  // 被包装的对象实例instance
   private Object instance;
+  // Configuration对象
   private Configuration conf;
 
   public ObjectWritable() {}
@@ -112,26 +115,32 @@ public class ObjectWritable implements Writable, Configurable {
                                  Class declaredClass, 
                                  Configuration conf) throws IOException {
 
+    // 如果对象为null，则输出NullInstance，declaredClass类型为org.apache.hadoop.io.Writable
     if (instance == null) {                       // null
       instance = new NullInstance(declaredClass, conf);
       declaredClass = Writable.class;
     }
 
+    // 类的全限定名
     UTF8.writeString(out, declaredClass.getName()); // always write declared
 
     if (declaredClass.isArray()) {                // array
+      // 数组，先写出数组长度
       int length = Array.getLength(instance);
       out.writeInt(length);
+      // 然后循环写出数组每个元素
       for (int i = 0; i < length; i++) {
+        // declaredClass.getComponentType() 可以获得数组中的元素的类型
         writeObject(out, Array.get(instance, i),
                     declaredClass.getComponentType(), conf);
       }
       
     } else if (declaredClass == String.class) {   // String
+      // 字符串写出
       UTF8.writeString(out, (String)instance);
       
     } else if (declaredClass.isPrimitive()) {     // primitive type
-
+      // 基本类型
       if (declaredClass == Boolean.TYPE) {        // boolean
         out.writeBoolean(((Boolean)instance).booleanValue());
       } else if (declaredClass == Character.TYPE) { // char
@@ -153,10 +162,20 @@ public class ObjectWritable implements Writable, Configurable {
         throw new IllegalArgumentException("Not a primitive: "+declaredClass);
       }
     } else if (declaredClass.isEnum()) {         // enum
+      // 枚举
       UTF8.writeString(out, ((Enum)instance).name());
     } else if (Writable.class.isAssignableFrom(declaredClass)) { // Writable
+      /**
+       * 处理Writable类型，处理Writable类型比较特殊，需要序列化对象类名，对象实际类名和对象序列化结果
+       * isAssignableFrom 是用来判断一个类Class1和另一个类Class2是否相同或是另一个类的超类或接口。
+       * 通常调用格式是 Class1.isAssignableFrom(Class2)。
+       * 调用者和参数都是 java.lang.Class 类型。
+       *
+       * 对象实际类名，这里要求传入实际类名是由于，declaredClass.getName()可能传入的是instance的父类
+       * 而在序列化和反序列化时不能使用父类的序列化方法在序列化子类对象，因此要记住真是的对象类名
+       */
       UTF8.writeString(out, instance.getClass().getName());
-      ((Writable)instance).write(out);
+      ((Writable)instance).write(out); // 对象序列化结果
 
     } else {
       throw new IOException("Can't write: "+instance+" as "+declaredClass);
