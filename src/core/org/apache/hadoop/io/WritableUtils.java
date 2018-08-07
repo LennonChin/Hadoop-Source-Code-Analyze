@@ -260,19 +260,24 @@ public final class WritableUtils  {
    * @throws java.io.IOException 
    */
   public static void writeVLong(DataOutput stream, long i) throws IOException {
+    // [-112, 127] 范围内的直接写出字节，使用一个字节
     if (i >= -112 && i <= 127) {
       stream.writeByte((byte)i);
       return;
     }
-      
+
+    // 计算不在 [-112, 127] 范围内的数的第一个字节
     int len = -112;
+
+    // 如果 < 0 ，
     if (i < 0) {
-      i ^= -1L; // take one's complement'
+      i ^= -1L; // take one's complement'，异或操作
       len = -120;
     }
-      
+
     long tmp = i;
     while (tmp != 0) {
+      // 循环右移，每移一次 len 减1
       tmp = tmp >> 8;
       len--;
     }
@@ -280,7 +285,8 @@ public final class WritableUtils  {
     stream.writeByte((byte)len);
       
     len = (len < -120) ? -(len + 120) : -(len + 112);
-      
+
+    // 输出后续字节
     for (int idx = len; idx != 0; idx--) {
       int shiftbits = (idx - 1) * 8;
       long mask = 0xFFL << shiftbits;

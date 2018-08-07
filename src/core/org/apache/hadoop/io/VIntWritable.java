@@ -22,7 +22,7 @@ import java.io.*;
 
 /** A WritableComparable for integer values stored in variable-length format.
  * Such values take between one and five bytes.  Smaller values take fewer bytes.
- * 
+ *
  * @see org.apache.hadoop.io.WritableUtils#readVInt(DataInput)
  */
 public class VIntWritable implements WritableComparable {
@@ -38,10 +38,20 @@ public class VIntWritable implements WritableComparable {
   /** Return the value of this VIntWritable. */
   public int get() { return value; }
 
+	/**
+	 * 反序列化方法
+	 * @param in <code>DataInput</code> to deseriablize this object from. 反序列化时会从这个流中读取数据
+	 * @throws IOException
+	 */
   public void readFields(DataInput in) throws IOException {
     value = WritableUtils.readVInt(in);
   }
 
+  /**
+   * 序列化方法
+   * @param out <code>DataOuput</code> to serialize this object into. 序列化的对象会存入这个流中
+   * @throws IOException
+   */
   public void write(DataOutput out) throws IOException {
     WritableUtils.writeVInt(out, value);
   }
