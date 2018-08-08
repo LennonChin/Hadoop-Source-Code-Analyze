@@ -27,6 +27,9 @@ import org.apache.hadoop.util.ReflectionUtils;
 
 /**
  * A factory that will find the correct codec for a given filename.
+ *
+ * 可以通过这个工厂类类查找（通过文件名后缀名，详见 {@link #getCodec} 方法）文件对应的CompressionCodec
+ *
  */
 public class CompressionCodecFactory {
 
@@ -153,11 +156,14 @@ public class CompressionCodecFactory {
   public CompressionCodec getCodec(Path file) {
     CompressionCodec result = null;
     if (codecs != null) {
+      // 翻转文件名
       String filename = file.getName();
       String reversedFilename = new StringBuffer(filename).reverse().toString();
+      // 先根据排序过滤一次
       SortedMap<String, CompressionCodec> subMap = 
         codecs.headMap(reversedFilename);
       if (!subMap.isEmpty()) {
+        // 根据文件后缀名在subMap进行查找相应的后缀
         String potentialSuffix = subMap.lastKey();
         if (reversedFilename.startsWith(potentialSuffix)) {
           result = codecs.get(potentialSuffix);

@@ -30,6 +30,8 @@ public interface CompressionCodec {
   /**
    * Create a {@link CompressionOutputStream} that will write to the given 
    * {@link OutputStream}.
+   *
+   * 通过底层输出流创建对应压缩算法的压缩流
    * 
    * @param out the location for the final output stream
    * @return a stream the user can write uncompressed data to have it compressed
@@ -41,6 +43,8 @@ public interface CompressionCodec {
   /**
    * Create a {@link CompressionOutputStream} that will write to the given 
    * {@link OutputStream} with the given {@link Compressor}.
+   *
+   * 通过底层输出流和指定压缩器创建相应压缩算法的压缩流
    * 
    * @param out the location for the final output stream
    * @param compressor compressor to use
@@ -104,6 +108,9 @@ public interface CompressionCodec {
   
   /**
    * Get the default filename extension for this kind of compression.
+   *
+   * 获取对应压缩器生成的文件的扩展名的方法
+   *
    * @return the extension including the '.'
    */
   String getDefaultExtension();
