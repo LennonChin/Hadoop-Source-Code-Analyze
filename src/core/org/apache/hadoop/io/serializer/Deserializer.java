@@ -37,6 +37,9 @@ import java.io.InputStream;
 public interface Deserializer<T> {
   /**
    * <p>Prepare the deserializer for reading.</p>
+   *
+   * 打开Deserializer，为输入（反序列化）对象做准备
+   *
    */
   void open(InputStream in) throws IOException;
   
@@ -48,12 +51,20 @@ public interface Deserializer<T> {
    * stream. Otherwise, if the object <code>t</code> is null a new
    * deserialized object will be created.
    * </p>
+   *
+   * 从将底层的流中将数据反序列化为一个对象
+   *
+   * 传入的t参数用于指定是否复用对象，如果t为空，将会使用创建一个新的对象，否则将复用已有的对象
+   *
    * @return the deserialized object
    */
   T deserialize(T t) throws IOException;
   
   /**
    * <p>Close the underlying input stream and clear up any resources.</p>
+   *
+   * 反序列化结束用于关闭资源
+   *
    */
   void close() throws IOException;
 }

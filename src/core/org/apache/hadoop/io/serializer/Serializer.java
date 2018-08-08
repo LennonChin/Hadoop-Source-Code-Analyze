@@ -37,16 +37,25 @@ import java.io.OutputStream;
 public interface Serializer<T> {
   /**
    * <p>Prepare the serializer for writing.</p>
+   *
+   * 打开Serializer，为输出（序列化）对象做准备
+   *
    */
   void open(OutputStream out) throws IOException;
   
   /**
    * <p>Serialize <code>t</code> to the underlying output stream.</p>
+   *
+   * 将对象序列化到底层的流中
+   *
    */
   void serialize(T t) throws IOException;
   
   /**
    * <p>Close the underlying output stream and clear up any resources.</p>
+   *
+   * 序列化结束用于关闭资源
+   *
    */  
   void close() throws IOException;
 }

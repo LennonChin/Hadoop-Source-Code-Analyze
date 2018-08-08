@@ -29,16 +29,25 @@ public interface Serialization<T> {
   /**
    * Allows clients to test whether this {@link Serialization}
    * supports the given class.
+   *
+   * 客户端用于判断序列化实现是否支持该类对象
+   *
    */
   boolean accept(Class<?> c);
   
   /**
    * @return a {@link Serializer} for the given class.
+   *
+   * 获得用于序列化的Serializer实现
+   *
    */
   Serializer<T> getSerializer(Class<T> c);
 
   /**
    * @return a {@link Deserializer} for the given class.
+   *
+   * 获得用于反序列化对象的Deserizlizer实现
+   *
    */
   Deserializer<T> getDeserializer(Class<T> c);
 }
