@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.apache.hadoop.io.compress.CompressionCodec</OriginalElement>
+  <nodes>
+    <node x="568.0" y="79.5">org.apache.hadoop.io.compress.CompressionCodecFactory</node>
+    <node x="-32.5" y="46.5">org.apache.hadoop.io.compress.CompressionCodec</node>
+    <node x="567.5" y="344.5">org.apache.hadoop.io.compress.DefaultCodec</node>
+    <node x="1167.5" y="366.5">org.apache.hadoop.io.compress.GzipCodec</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.apache.hadoop.io.compress.DefaultCodec" target="org.apache.hadoop.io.compress.CompressionCodec">
+      <point x="-272.5" y="-0.0" />
+      <point x="240.0" y="480.0" />
+      <point x="0.0" y="113.5" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.GzipCodec" target="org.apache.hadoop.io.compress.DefaultCodec">
+      <point x="-272.5" y="-0.0" />
+      <point x="272.5" y="-0.0" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.CompressionCodecFactory" target="org.apache.hadoop.io.compress.CompressionCodec">
+      <point x="-272.0" y="-0.0" />
+      <point x="272.5" y="-0.0" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.CompressionCodecFactory" target="org.apache.hadoop.io.compress.DefaultCodec">
+      <point x="0.0" y="80.5" />
+      <point x="0.0" y="-135.5" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.CompressionCodecFactory" target="org.apache.hadoop.io.compress.GzipCodec">
+      <point x="272.0" y="-0.0" />
+      <point x="1440.0" y="160.0" />
+      <point x="0.0" y="-113.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8924122310305775" x="830.0" y="414.7766497461929" />
+  <SelectedNodes>
+    <node>org.apache.hadoop.io.compress.CompressionCodec</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

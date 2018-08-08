@@ -33,6 +33,8 @@ public interface Compressor {
    * Sets input data for compression. 
    * This should be called whenever #needsInput() returns 
    * <code>true</code> indicating that more input data is required.
+   *
+   * Compressor通过这个方法接受数据，只有在 #needsInput() 返回值为true的时候才被调用
    * 
    * @param b Input data
    * @param off Start offset
@@ -42,7 +44,9 @@ public interface Compressor {
   
   /**
    * Returns true if the input data buffer is empty and 
-   * #setInput() should be called to provide more input. 
+   * #setInput() should be called to provide more input.
+   *
+   * 可以通过这个方法判断缓冲区是否写满
    * 
    * @return <code>true</code> if the input data buffer is empty and 
    * #setInput() should be called in order to provide more input.
@@ -72,12 +76,18 @@ public interface Compressor {
   /**
    * When called, indicates that compression should end
    * with the current contents of the input buffer.
+   *
+   * 这个方法用于使用者调用，以告知压缩器所有数据已经写入
+   *
    */
   public void finish();
   
   /**
    * Returns true if the end of the compressed 
    * data output stream has been reached.
+   *
+   * 通过这个方法判断压缩器中是否还有未读取的压缩数据
+   *
    * @return <code>true</code> if the end of the compressed
    * data output stream has been reached.
    */
@@ -88,11 +98,13 @@ public interface Compressor {
    * of bytes of compressed data. A return value of 0 indicates that
    * needsInput() should be called in order to determine if more input
    * data is required.
+   *
+   * 这个方法用于压缩的数据，返回实际压缩的字节数
    * 
-   * @param b Buffer for the compressed data
-   * @param off Start offset of the data
-   * @param len Size of the buffer
-   * @return The actual number of bytes of compressed data.
+   * @param b Buffer for the compressed data 装载压缩后数据的缓冲区
+   * @param off Start offset of the data 开始压缩的偏移量
+   * @param len Size of the buffer 压缩的长度
+   * @return The actual number of bytes of compressed data. 实际压缩数据的字节数
    */
   public int compress(byte[] b, int off, int len) throws IOException;
   

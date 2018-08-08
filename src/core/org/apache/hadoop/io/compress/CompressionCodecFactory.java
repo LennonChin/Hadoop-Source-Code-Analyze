@@ -38,11 +38,16 @@ public class CompressionCodecFactory {
 
   /**
    * A map from the reversed filename suffixes to the codecs.
-   * This is probably overkill, because the maps should be small, but it 
-   * automatically supports finding the longest matching suffix. 
+   * This is probably overkill, because the maps should be small, but it
+   * automatically supports finding the longest matching suffix.
    */
   private SortedMap<String, CompressionCodec> codecs = null;
   
+  /**
+   * 添加编解码器，会以编解码器的默认扩展名为键，编解码器对象为值存入 {@link #codecs} 中
+   *
+   * @param codec
+   */
   private void addCodec(CompressionCodec codec) {
     String suffix = codec.getDefaultExtension();
     codecs.put(new StringBuffer(suffix).reverse().toString(), codec);
@@ -53,7 +58,7 @@ public class CompressionCodecFactory {
    */
   public String toString() {
     StringBuffer buf = new StringBuffer();
-    Iterator<Map.Entry<String, CompressionCodec>> itr = 
+    Iterator<Map.Entry<String, CompressionCodec>> itr =
       codecs.entrySet().iterator();
     buf.append("{ ");
     if (itr.hasNext()) {
@@ -96,7 +101,7 @@ public class CompressionCodecFactory {
             }
             result.add(cls.asSubclass(CompressionCodec.class));
           } catch (ClassNotFoundException ex) {
-            throw new IllegalArgumentException("Compression codec " + 
+            throw new IllegalArgumentException("Compression codec " +
                                                codecSubstring + " not found.",
                                                ex);
           }
@@ -125,11 +130,11 @@ public class CompressionCodecFactory {
         buf.append(itr.next().getName());
       }
     }
-    conf.set("io.compression.codecs", buf.toString());   
+    conf.set("io.compression.codecs", buf.toString());
   }
   
   /**
-   * Find the codecs specified in the config value io.compression.codecs 
+   * Find the codecs specified in the config value io.compression.codecs
    * and register them. Defaults to gzip and zip.
    */
   public CompressionCodecFactory(Configuration conf) {
@@ -137,12 +142,12 @@ public class CompressionCodecFactory {
     List<Class<? extends CompressionCodec>> codecClasses = getCodecClasses(conf);
     if (codecClasses == null) {
       addCodec(new GzipCodec());
-      addCodec(new DefaultCodec());      
+      addCodec(new DefaultCodec());
     } else {
       Iterator<Class<? extends CompressionCodec>> itr = codecClasses.iterator();
       while (itr.hasNext()) {
         CompressionCodec codec = ReflectionUtils.newInstance(itr.next(), conf);
-        addCodec(codec);     
+        addCodec(codec);
       }
     }
   }
@@ -160,10 +165,10 @@ public class CompressionCodecFactory {
       String filename = file.getName();
       String reversedFilename = new StringBuffer(filename).reverse().toString();
       // 先根据排序过滤一次
-      SortedMap<String, CompressionCodec> subMap = 
+      SortedMap<String, CompressionCodec> subMap =
         codecs.headMap(reversedFilename);
       if (!subMap.isEmpty()) {
-        // 根据文件后缀名在subMap进行查找相应的后缀
+        // 根据文件后缀名在subMap选择最后一个进行判断
         String potentialSuffix = subMap.lastKey();
         if (reversedFilename.startsWith(potentialSuffix)) {
           result = codecs.get(potentialSuffix);
@@ -203,12 +208,12 @@ public class CompressionCodecFactory {
         CompressionCodec codec = factory.getCodec(new Path(args[i]));
         if (codec == null) {
           System.out.println("Codec for " + args[i] + " not found.");
-        } else { 
+        } else {
           if (encode) {
-            CompressionOutputStream out = 
+            CompressionOutputStream out =
               codec.createOutputStream(new java.io.FileOutputStream(args[i]));
             byte[] buffer = new byte[100];
-            String inFilename = removeSuffix(args[i], 
+            String inFilename = removeSuffix(args[i],
                                              codec.getDefaultExtension());
             java.io.InputStream in = new java.io.FileInputStream(inFilename);
             int len = in.read(buffer);
@@ -219,7 +224,7 @@ public class CompressionCodecFactory {
             in.close();
             out.close();
           } else {
-            CompressionInputStream in = 
+            CompressionInputStream in =
               codec.createInputStream(new java.io.FileInputStream(args[i]));
             byte[] buffer = new byte[100];
             int len = in.read(buffer);
