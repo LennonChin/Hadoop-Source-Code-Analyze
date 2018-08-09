@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.apache.hadoop.io.compress.CompressionInputStream</OriginalElement>
+  <nodes>
+    <node x="39.93287037037044" y="156.5">java.io.OutputStream</node>
+    <node x="393.61111111111114" y="1131.0">org.apache.hadoop.io.compress.BlockDecompressorStream</node>
+    <node x="302.51620370370375" y="633.0">org.apache.hadoop.io.compress.DecompressorStream</node>
+    <node x="85.30324074074076" y="1142.0">org.apache.hadoop.io.compress.BlockCompressorStream</node>
+    <node x="364.26620370370375" y="0.0">java.io.Closeable</node>
+    <node x="58.51620370370375" y="421.0">org.apache.hadoop.io.compress.CompressionOutputStream</node>
+    <node x="389.36111111111114" y="443.0">org.apache.hadoop.io.compress.CompressionInputStream</node>
+    <node x="0.0" y="732.0">org.apache.hadoop.io.compress.CompressorStream</node>
+    <node x="26.182870370370438" y="0.0">java.io.Flushable</node>
+    <node x="349.26620370370375" y="101.0">java.io.InputStream</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.apache.hadoop.io.compress.CompressionOutputStream" target="java.io.OutputStream">
+      <point x="74.33333333333343" y="-81.0" />
+      <point x="244.34953703703718" y="401.0" />
+      <point x="207.18287037037044" y="401.0" />
+      <point x="55.75" y="69.5" />
+    </edge>
+    <edge source="java.io.OutputStream" target="java.io.OutputStream">
+      <point x="-92.91666666666663" y="69.5" />
+      <point x="58.51620370370381" y="315.5" />
+      <point x="19.932870370370438" y="315.5" />
+      <point x="19.932870370370438" y="226.0" />
+      <point x="-111.5" y="-0.0" />
+    </edge>
+    <edge source="java.io.InputStream" target="java.io.Closeable">
+      <point x="0.0" y="-125.0" />
+      <point x="35.0" y="25.5" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.BlockDecompressorStream" target="org.apache.hadoop.io.compress.DecompressorStream">
+      <point x="-32.25" y="-81.0" />
+      <point x="490.36111111111114" y="1106.0" />
+      <point x="496.01620370370375" y="1106.0" />
+      <point x="64.5" y="224.0" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.BlockCompressorStream" target="java.io.OutputStream">
+      <point x="83.625" y="-70.0" />
+      <point x="280.42824074074076" y="1106.0" />
+      <point x="292.01620370370375" y="1106.0" />
+      <point x="292.01620370370375" y="391.0" />
+      <point x="244.34953703703707" y="391.0" />
+      <point x="92.91666666666663" y="69.5" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.CompressorStream" target="org.apache.hadoop.io.compress.CompressionOutputStream">
+      <point x="74.33333333333331" y="-125.0" />
+      <point x="185.83333333333331" y="608.0" />
+      <point x="170.01620370370375" y="608.0" />
+      <point x="0.0" y="81.0" />
+    </edge>
+    <edge source="java.io.OutputStream" target="java.io.Flushable">
+      <point x="-55.75" y="-69.5" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.BlockCompressorStream" target="org.apache.hadoop.io.compress.CompressionOutputStream">
+      <point x="27.875" y="-70.0" />
+      <point x="224.67824074074076" y="1106.0" />
+      <point x="248.40509259259264" y="1106.0" />
+      <point x="248.40509259259264" y="608.0" />
+      <point x="244.34953703703707" y="608.0" />
+      <point x="74.33333333333331" y="81.0" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.BlockDecompressorStream" target="org.apache.hadoop.io.compress.CompressionInputStream">
+      <point x="32.25" y="-81.0" />
+      <point x="554.8611111111111" y="1106.0" />
+      <point x="588.4050925925926" y="1106.0" />
+      <point x="588.4050925925926" y="608.0" />
+      <point x="564.3611111111111" y="608.0" />
+      <point x="70.0" y="59.0" />
+    </edge>
+    <edge source="java.io.InputStream" target="java.io.InputStream">
+      <point x="-100.0" y="125.0" />
+      <point x="369.26620370370375" y="371.0" />
+      <point x="329.26620370370375" y="371.0" />
+      <point x="329.26620370370375" y="226.0" />
+      <point x="-120.0" y="-0.0" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.DecompressorStream" target="org.apache.hadoop.io.compress.CompressionInputStream">
+      <point x="0.0" y="-224.0" />
+      <point x="431.51620370370375" y="608.0" />
+      <point x="424.36111111111114" y="608.0" />
+      <point x="-70.0" y="59.0" />
+    </edge>
+    <edge source="java.io.OutputStream" target="java.io.Closeable">
+      <point x="55.75" y="-69.5" />
+      <point x="207.18287037037044" y="76.0" />
+      <point x="399.26620370370375" y="76.0" />
+      <point x="-35.0" y="25.5" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.DecompressorStream" target="java.io.InputStream">
+      <point x="-86.0" y="-224.0" />
+      <point x="345.51620370370375" y="608.0" />
+      <point x="365.04629629629636" y="608.0" />
+      <point x="365.04629629629636" y="401.0" />
+      <point x="409.26620370370375" y="401.0" />
+      <point x="-60.0" y="125.0" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.CompressionInputStream" target="java.io.InputStream">
+      <point x="0.0" y="-59.0" />
+      <point x="494.36111111111114" y="401.0" />
+      <point x="489.26620370370375" y="401.0" />
+      <point x="20.0" y="125.0" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.BlockCompressorStream" target="org.apache.hadoop.io.compress.CompressorStream">
+      <point x="-83.625" y="-70.0" />
+      <point x="113.17824074074076" y="1106.0" />
+      <point x="55.75" y="1106.0" />
+      <point x="-55.75" y="125.0" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.CompressorStream" target="java.io.OutputStream">
+      <point x="-74.33333333333331" y="-125.0" />
+      <point x="37.166666666666686" y="608.0" />
+      <point x="48.01620370370381" y="608.0" />
+      <point x="48.01620370370381" y="391.0" />
+      <point x="95.68287037037044" y="391.0" />
+      <point x="-55.75" y="69.5" />
+    </edge>
+    <edge source="org.apache.hadoop.io.compress.BlockDecompressorStream" target="java.io.InputStream">
+      <point x="96.75" y="-81.0" />
+      <point x="619.3611111111111" y="1106.0" />
+      <point x="609.8611111111112" y="1106.0" />
+      <point x="609.8611111111112" y="391.0" />
+      <point x="569.2662037037037" y="391.0" />
+      <point x="100.0" y="125.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="304.5" y="824.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

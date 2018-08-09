@@ -29,9 +29,19 @@ public class CompressorStream extends CompressionOutputStream {
   protected byte[] buffer;
   protected boolean closed = false;
   
+  /**
+   * 该类主要用于压缩数据，需要传入压缩器和输出流
+   *
+   * 数据通过write方法写出，在写出之前会先进行压缩，然后使用输出流进行输出
+   *
+   * @param out
+   * @param compressor
+   * @param bufferSize
+   */
   public CompressorStream(OutputStream out, Compressor compressor, int bufferSize) {
     super(out);
 
+    // 要求out和compressor都不为空，且bufferSize大于0
     if (out == null || compressor == null) {
       throw new NullPointerException();
     } else if (bufferSize <= 0) {
@@ -43,11 +53,14 @@ public class CompressorStream extends CompressionOutputStream {
   }
 
   public CompressorStream(OutputStream out, Compressor compressor) {
+    // 默认的bufferSize是512字节
     this(out, compressor, 512);
   }
   
   /**
    * Allow derived classes to directly set the underlying stream.
+   *
+   * 允许衍生类直接设置底层流，这个方法是protected保护的，只能被本包或子类调用
    * 
    * @param out Underlying output stream.
    */
@@ -60,6 +73,7 @@ public class CompressorStream extends CompressionOutputStream {
     if (compressor.finished()) {
       throw new IOException("write beyond end of stream");
     }
+    // b.length - (off + len) 表示超出了b的长度
     if ((off | len | (off + len) | (b.length - (off + len))) < 0) {
       throw new IndexOutOfBoundsException();
     } else if (len == 0) {
@@ -73,6 +87,7 @@ public class CompressorStream extends CompressionOutputStream {
   }
 
   protected void compress() throws IOException {
+    // 将流压缩到buffer中，如果压缩的长度大于0，将其使用out直接写出
     int len = compressor.compress(buffer, 0, buffer.length);
     if (len > 0) {
       out.write(buffer, 0, len);
@@ -102,7 +117,9 @@ public class CompressorStream extends CompressionOutputStream {
 
   private byte[] oneByte = new byte[1];
   public void write(int b) throws IOException {
+    // 去除高位，保留8位（一个字节）
     oneByte[0] = (byte)(b & 0xff);
+    // 使用write写出
     write(oneByte, 0, oneByte.length);
   }
 

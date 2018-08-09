@@ -23,16 +23,25 @@ import java.io.OutputStream;
 
 /**
  * A compression output stream.
+ *
+ * {@link CompressorStream} 和 {@link BZip2Codec.BZip2CompressionOutputStream} 是CompressionOutputStream的两个典型实现
+ *
  */
 public abstract class CompressionOutputStream extends OutputStream {
   /**
-   * The output stream to be compressed. 
+   * The output stream to be compressed.
+   *
+   * 用于输出压缩结果的流
+   *
    */
   protected final OutputStream out;
   
   /**
    * Create a compression output stream that writes
    * the compressed bytes to the given stream.
+   *
+   * 构造方法，压缩流需要外界传入
+   *
    * @param out
    */
   protected CompressionOutputStream(OutputStream out) {
