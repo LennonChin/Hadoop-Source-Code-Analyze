@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.apache.hadoop.conf.Configuration</OriginalElement>
+  <nodes>
+    <node x="231.0" y="158.0">org.apache.hadoop.fs.FileSystem.ClientFinalizer</node>
+    <node x="132.5" y="237.0">org.apache.hadoop.fs.FileSystem.Cache.Key</node>
+    <node x="0.0" y="158.0">org.apache.hadoop.fs.FileSystem.Statistics</node>
+    <node x="111.5" y="79.0">org.apache.hadoop.fs.FileSystem</node>
+    <node x="125.0" y="158.0">org.apache.hadoop.fs.FileSystem.Cache</node>
+    <node x="109.5" y="0.0">org.apache.hadoop.conf.Configured</node>
+    <node x="285.25" y="79.0">java.lang.Thread</node>
+    <node x="0.0" y="311.0">org.apache.hadoop.conf.Configuration</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.apache.hadoop.fs.FileSystem" target="org.apache.hadoop.conf.Configured">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="org.apache.hadoop.fs.FileSystem.Statistics" target="org.apache.hadoop.fs.FileSystem">
+      <point x="0.0" y="-14.5" />
+      <point x="52.5" y="133.0" />
+      <point x="130.33333333333334" y="133.0" />
+      <point x="-37.66666666666666" y="14.5" />
+    </edge>
+    <edge source="org.apache.hadoop.fs.FileSystem.ClientFinalizer" target="java.lang.Thread">
+      <point x="33.25" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="org.apache.hadoop.fs.FileSystem.ClientFinalizer" target="org.apache.hadoop.fs.FileSystem">
+      <point x="-33.25" y="-14.5" />
+      <point x="264.25" y="133.0" />
+      <point x="205.66666666666666" y="133.0" />
+      <point x="37.66666666666666" y="14.5" />
+    </edge>
+    <edge source="org.apache.hadoop.fs.FileSystem.Cache" target="org.apache.hadoop.fs.FileSystem">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="org.apache.hadoop.fs.FileSystem.Cache.Key" target="org.apache.hadoop.fs.FileSystem.Cache">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="177.0" y="280.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

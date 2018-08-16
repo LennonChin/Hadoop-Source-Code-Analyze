@@ -25,12 +25,12 @@ import org.apache.hadoop.io.Writable;
 
 /** Store the summary of a content (a directory or a file). */
 public class ContentSummary implements Writable{
-  private long length;
-  private long fileCount;
-  private long directoryCount;
-  private long quota;
-  private long spaceConsumed;
-  private long spaceQuota;
+  private long length; // 文件长度
+  private long fileCount; // 文件数（目录）
+  private long directoryCount; // 目录数（目录）
+  private long quota; // 文件配额
+  private long spaceConsumed; // 已使用空间
+  private long spaceQuota; // 已使用文件配额
   
 
   /** Constructor */

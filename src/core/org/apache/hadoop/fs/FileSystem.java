@@ -156,7 +156,11 @@ public abstract class FileSystem extends Configured implements Closeable {
     statistics = getStatistics(name.getScheme(), getClass());    
   }
 
-  /** Returns a URI whose scheme and authority identify this FileSystem.*/
+  /**
+   * Returns a URI whose scheme and authority identify this FileSystem.
+   *
+   * 获得当前文件系统的URI
+   * */
   public abstract URI getUri();
   
   /**
@@ -321,6 +325,8 @@ public abstract class FileSystem extends Configured implements Closeable {
   /** create a directory with the provided permission
    * The permission of the directory is set to be the provided permission as in
    * setPermission, not permission&~umask
+   *
+   * 创建目录，需要指定权限
    * 
    * @see #create(FileSystem, Path, FsPermission)
    * 
@@ -413,6 +419,9 @@ public abstract class FileSystem extends Configured implements Closeable {
   
   /**
    * Opens an FSDataInputStream at the indicated Path.
+   *
+   * 为读打开一个文件并返回一个输入流
+   *
    * @param f the file name to open
    * @param bufferSize the size of the buffer to be used.
    */
@@ -559,6 +568,9 @@ public abstract class FileSystem extends Configured implements Closeable {
   /**
    * Opens an FSDataOutputStream at the indicated Path with write-progress
    * reporting.
+   *
+   * 创建一个文件，并返回一个输出流
+   *
    * @param f the file name to open
    * @param permission
    * @param overwrite if a file with this name already exists, then if true,
@@ -662,6 +674,9 @@ public abstract class FileSystem extends Configured implements Closeable {
 
   /**
    * Append to an existing file (optional operation).
+   *
+   * 在一个已经存在的文件中追加数据
+   *
    * @param f the existing file to be appended.
    * @param bufferSize the size of the buffer to be used.
    * @param progress for reporting progress if it is not null.
@@ -672,6 +687,8 @@ public abstract class FileSystem extends Configured implements Closeable {
   
   /**
    * Get replication.
+   *
+   * 获取文件的副本数
    * 
    * @deprecated Use getFileStatus() instead
    * @param src file name
@@ -685,6 +702,8 @@ public abstract class FileSystem extends Configured implements Closeable {
 
   /**
    * Set replication for an existing file.
+   *
+   * 设置文件系统上文件的副本数
    * 
    * @param src file name
    * @param replication new replication
@@ -700,14 +719,23 @@ public abstract class FileSystem extends Configured implements Closeable {
   /**
    * Renames Path src to Path dst.  Can take place on local fs
    * or remote DFS.
+   *
+   * 重命名文件或目录
+   *
    */
   public abstract boolean rename(Path src, Path dst) throws IOException;
     
-  /** Delete a file. */
+  /**
+   * Delete a file.
+   *
+   * 删除文件
+   * */
   /** @deprecated Use delete(Path, boolean) instead */ @Deprecated 
   public abstract boolean delete(Path f) throws IOException;
   
   /** Delete a file.
+   *
+   * 删除文件
    *
    * @param f the path to delete.
    * @param recursive if path is a directory and set to 
@@ -796,7 +824,13 @@ public abstract class FileSystem extends Configured implements Closeable {
     return getFileStatus(f).getLen();
   }
     
-  /** Return the {@link ContentSummary} of a given {@link Path}. */
+  /**
+   * Return the {@link ContentSummary} of a given {@link Path}.
+   *
+   * 提供了类似Linux中du / df命令的功能
+   * 用于报告指定文件或目录的存储空间信息，具体信息查看 {@link ContentSummary}
+   *
+   * */
   public ContentSummary getContentSummary(Path f) throws IOException {
     FileStatus status = getFileStatus(f);
     if (!status.isDir()) {
@@ -824,6 +858,9 @@ public abstract class FileSystem extends Configured implements Closeable {
   /**
    * List the statuses of the files/directories in the given path if the path is
    * a directory.
+   *
+   * 如果path是目录，则读取目录下的所有项目和项目属性
+   * 如果path是一个文件，则获取文件属性
    * 
    * @param f
    *          given path
@@ -1108,6 +1145,8 @@ public abstract class FileSystem extends Configured implements Closeable {
   /**
    * Set the current working directory for the given file system. All relative
    * paths will be resolved relative to it.
+   *
+   * 设置当前的工作目录
    * 
    * @param new_dir
    */
@@ -1115,6 +1154,9 @@ public abstract class FileSystem extends Configured implements Closeable {
     
   /**
    * Get the current working directory for the given file system
+   *
+   * 获取当前的工作目录
+   *
    * @return the directory pathname
    */
   public abstract Path getWorkingDirectory();
@@ -1289,6 +1331,10 @@ public abstract class FileSystem extends Configured implements Closeable {
 
   /**
    * Return a file status object that represents the path.
+   *
+   * 这个方法可以<strong>一次性</strong>获得文件 / 目录的所有属性
+   * FileStatus类是实现了Writable接口的，因此它可以被序列化传输
+   *
    * @param f The path we want information from
    * @return a FileStatus object
    * @throws FileNotFoundException when the path does not exist;

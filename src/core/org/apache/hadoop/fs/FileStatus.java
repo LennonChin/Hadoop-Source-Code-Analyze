@@ -29,16 +29,16 @@ import org.apache.hadoop.io.Writable;
  */
 public class FileStatus implements Writable, Comparable {
 
-  private Path path;
-  private long length;
-  private boolean isdir;
-  private short block_replication;
-  private long blocksize;
-  private long modification_time;
-  private long access_time;
-  private FsPermission permission;
-  private String owner;
-  private String group;
+  private Path path; // 文件路径
+  private long length; // 文件长度
+  private boolean isdir; // 是否是目录
+  private short block_replication; // 副本数
+  private long blocksize; // 块大小
+  private long modification_time; // 最后修改时间
+  private long access_time; // 最后访问时间
+  private FsPermission permission; // 许可权限信息
+  private String owner; // 文件所有者
+  private String group; // 文件所有组
   
   public FileStatus() { this(0, false, 0, 0, 0, 0, null, null, null, null); }
   
