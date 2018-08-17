@@ -19,17 +19,19 @@ package org.apache.hadoop.fs.permission;
 
 /**
  * File system actions, e.g. read, write, etc.
+ *
+ * 这个枚举模拟了Linux下的POSIX风格的文件权限标识方法
  */
 public enum FsAction {
   // POSIX style
-  NONE("---"),
-  EXECUTE("--x"),
-  WRITE("-w-"),
-  WRITE_EXECUTE("-wx"),
-  READ("r--"),
-  READ_EXECUTE("r-x"),
-  READ_WRITE("rw-"),
-  ALL("rwx");
+  NONE("---"),            // 0 -> 000
+  EXECUTE("--x"),         // 1 -> 001
+  WRITE("-w-"),           // 2 -> 010
+  WRITE_EXECUTE("-wx"),   // 3 -> 011
+  READ("r--"),            // 4 -> 100
+  READ_EXECUTE("r-x"),    // 5 -> 101
+  READ_WRITE("rw-"),      // 6 -> 110
+  ALL("rwx");             // 7 -> 111
 
   /** Retain reference to value array. */
   private final static FsAction[] vals = values();
@@ -47,6 +49,13 @@ public enum FsAction {
    */
   public boolean implies(FsAction that) {
     if (that != null) {
+      /**
+       * 通过位运算来判断当前权限是否包含that表示的权限，如：
+       * 当前权限READ_WRITE（110），that权限READ（100），有计算方式：
+       * 110 & 100 = 100 == 100 ，即当前权限包含that表示的权限
+       * 当前权限READ_WRITE（110），that权限READ_EXECUTE（101），有计算方式：
+       * 110 & 101 = 111 != 100 ，即当前权限不包含that表示的权限
+       */
       return (ordinal() & that.ordinal()) == that.ordinal();
     }
     return false;
