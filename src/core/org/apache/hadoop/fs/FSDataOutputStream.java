@@ -19,13 +19,19 @@ package org.apache.hadoop.fs;
 
 import java.io.*;
 
-/** Utility that wraps a {@link OutputStream} in a {@link DataOutputStream},
+/**
+ * Utility that wraps a {@link OutputStream} in a {@link DataOutputStream},
  * buffers output through a {@link BufferedOutputStream} and creates a checksum
- * file. */
+ * file.
+ *
+ * 不支持随机写，即不能在文件中重新定位写位置，覆盖文件原有内容
+ * 但可以使用 {@link #getPos()} 来获取当前流的写位置，这个方法是通过内部类 {@link PositionCache} 实现的
+ * */
 public class FSDataOutputStream extends DataOutputStream implements Syncable {
   private OutputStream wrappedStream;
 
   private static class PositionCache extends FilterOutputStream {
+    // 读写操作的统计信息
     private FileSystem.Statistics statistics;
     long position;
 
@@ -39,6 +45,7 @@ public class FSDataOutputStream extends DataOutputStream implements Syncable {
 
     public void write(int b) throws IOException {
       out.write(b);
+      // 跟踪流的位置
       position++;
       if (statistics != null) {
         statistics.incrementBytesWritten(1);
@@ -47,6 +54,7 @@ public class FSDataOutputStream extends DataOutputStream implements Syncable {
     
     public void write(byte b[], int off, int len) throws IOException {
       out.write(b, off, len);
+      // 跟踪流的位置
       position += len;                            // update position
       if (statistics != null) {
         statistics.incrementBytesWritten(len);
@@ -54,6 +62,7 @@ public class FSDataOutputStream extends DataOutputStream implements Syncable {
     }
       
     public long getPos() throws IOException {
+      // 直接返回在写操作中实时保证更新的流的位置
       return position;                            // return cached position
     }
     
@@ -67,6 +76,7 @@ public class FSDataOutputStream extends DataOutputStream implements Syncable {
     this(out, null);
   }
 
+  // 构造方法表明，我们需要提供一个具体的能够发送数据的流来构造FSDataOutputStream
   public FSDataOutputStream(OutputStream out, FileSystem.Statistics stats)
     throws IOException {
     this(out, stats, 0);
@@ -74,11 +84,16 @@ public class FSDataOutputStream extends DataOutputStream implements Syncable {
 
   public FSDataOutputStream(OutputStream out, FileSystem.Statistics stats,
                             long startPosition) throws IOException {
+    // 在父类中这个PositionCache对象会被记录在out属性中
     super(new PositionCache(out, stats, startPosition));
+    // 然后用wrappedStream来引用这个out
     wrappedStream = out;
   }
   
   public long getPos() throws IOException {
+    /**
+     * 直接调用 {@link PositionCache#getPos()} 返回实时更新的流的写位置
+     */
     return ((PositionCache)out).getPos();
   }
 
@@ -91,7 +106,11 @@ public class FSDataOutputStream extends DataOutputStream implements Syncable {
     return wrappedStream;
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   *
+   * 用于将流中保存的数据同步到设备中
+   * */
   public void sync() throws IOException {
     if (wrappedStream instanceof Syncable) {
       ((Syncable)wrappedStream).sync();

@@ -29,7 +29,8 @@ import java.io.*;
  * */
 public class FSDataInputStream extends DataInputStream
     implements Seekable, PositionedReadable, Closeable {
-
+  
+  // 构造方法表明，我们需要提供一个具体的能够接收数据的流来构造FSDataOutputStream
   public FSDataInputStream(InputStream in)
     throws IOException {
     super(in);
