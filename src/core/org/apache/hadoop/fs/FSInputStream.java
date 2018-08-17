@@ -43,16 +43,33 @@ public abstract class FSInputStream extends InputStream
    * found a new source, false otherwise.
    */
   public abstract boolean seekToNewSource(long targetPos) throws IOException;
-
+  
+  /**
+   * 这个方法中通过 {@link Seekable#seek} 实现了 {@link PositionedReadable#read} 方法
+   * @param position
+   * @param buffer
+   * @param offset
+   * @param length
+   * @return
+   * @throws IOException
+   */
   public int read(long position, byte[] buffer, int offset, int length)
     throws IOException {
+    /**
+     * 由于PositionedReadable中的方法是线程安全的，所以在这里需要使用同步锁
+     * 以保证在操作过程中不会有其他线程修改了记录好的旧的position
+     */
     synchronized (this) {
+      // 记录旧的position（即流的位置）
       long oldPos = getPos();
       int nread = -1;
       try {
+        // 设置到新的position
         seek(position);
+        // 进行读取
         nread = read(buffer, offset, length);
       } finally {
+        // 将position复位为旧的position，保持position不被改变
         seek(oldPos);
       }
       return nread;

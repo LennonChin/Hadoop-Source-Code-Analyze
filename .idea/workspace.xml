@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="0e19b82a-85fd-4a20-a9e1-4808272c9caa" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/ContentSummary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/ContentSummary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSDataInputStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSDataInputStream.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSInputStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSInputStream.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/PositionedReadable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/PositionedReadable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/Seekable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/Seekable.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,11 +20,52 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="FileSystem.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="FileSystem.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="1349" column="63" lean-forward="true" selection-start-line="1349" selection-start-column="63" selection-end-line="1349" selection-end-column="63" />
+            <state relative-caret-position="340">
+              <caret line="729" column="4" lean-forward="true" selection-start-line="729" selection-start-column="4" selection-end-line="729" selection-end-column="4" />
+              <folding>
+                <element signature="e#3090#3131#0" expanded="true" />
+                <element signature="e#3383#3389#0" expanded="true" />
+                <element signature="e#30722#30734#0" expanded="true" />
+                <element signature="e#31775#31787#0" expanded="true" />
+                <element signature="e#34834#34846#0" expanded="true" />
+                <element signature="e#36603#36609#0" expanded="true" />
+                <element signature="e#46062#46074#0" expanded="true" />
+                <element signature="e#48048#48065#0" expanded="true" />
+                <element signature="e#49454#49467#0" expanded="true" />
+                <element signature="e#50132#50144#0" expanded="true" />
+                <element signature="e#50599#50612#0" expanded="true" />
+                <element signature="e#55820#55840#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Seekable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/Seekable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="22" column="25" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FSDataInputStream.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSDataInputStream.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="218">
+              <caret line="45" column="43" lean-forward="true" selection-start-line="45" selection-start-column="43" selection-end-line="45" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FSInputStream.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSInputStream.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="212">
+              <caret line="70" column="17" lean-forward="true" selection-start-line="70" selection-start-column="17" selection-end-line="70" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -40,8 +82,8 @@
       <file leaf-file-name="FileStatus.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileStatus.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="37" column="37" lean-forward="true" selection-start-line="37" selection-start-column="37" selection-end-line="37" selection-end-column="37" />
+            <state relative-caret-position="300">
+              <caret line="37" column="37" selection-start-line="37" selection-start-column="37" selection-end-line="37" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -91,6 +133,10 @@
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileStatus.java" />
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/ContentSummary.java" />
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileSystem.java" />
+        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/Seekable.java" />
+        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/PositionedReadable.java" />
+        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSDataInputStream.java" />
+        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSInputStream.java" />
       </list>
     </option>
   </component>
@@ -110,8 +156,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="791" />
-    <option name="y" value="62" />
+    <option name="x" value="752" />
+    <option name="y" value="23" />
     <option name="width" value="1920" />
     <option name="height" value="985" />
   </component>
@@ -150,7 +196,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="Configu&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/conf/Configuration.java&#10;FileSyste&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FileSystem&#10;C&#9;FILE&#9;uml://JAVA/org.apache.hadoop.io.compress.CompressionInputStream&#10;CompressorOu&#9;PSI&#9;JAVA://org.vafer.jdeb.shaded.compress.compress.compressors.CompressorOutputStream&#10;OutputStream&#9;PSI&#9;JAVA://java.io.OutputStream&#10;CompressionIn&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionInputStream&#10;CompressionCodecFa&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/CompressionCodecFactory.java&#10;Bzip&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/BZip2Codec.java&#10;DefaultCo&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.DefaultCodec&#10;CompressCode&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/CompressionCodec.java&#10;Compressor&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.Compressor&#10;CompressionF&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionCodecFactory&#10;CompressionCode&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionCodec&#10;Serialization&#9;PSI&#9;JAVA://org.apache.hadoop.io.serializer.Serialization&#10;Block&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java&#10;GenericW&#9;PSI&#9;JAVA://org.apache.hadoop.io.GenericWritable&#10;Conf&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/conf/Configuration.java&#10;ObjectW&#9;PSI&#9;JAVA://org.apache.hadoop.io.ObjectWritable&#10;VInt&#9;PSI&#9;JAVA://org.apache.hadoop.io.VIntWritable&#10;Vint&#9;PSI&#9;JAVA://org.apache.hadoop.io.VIntWritable&#10;BooleanWritable&#9;PSI&#9;JAVA://org.apache.hadoop.io.BooleanWritable&#10;RawCo&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/RawComparator.java&#10;IntW&#9;PSI&#9;JAVA://org.apache.hadoop.io.IntWritable&#10;RawComparator&#9;PSI&#9;JAVA://org.apache.hadoop.io.RawComparator&#10;Raw&#9;PSI&#9;JAVA://org.apache.hadoop.io.file.tfile.RawComparable&#10;Writa&#9;PSI&#9;JAVA://org.apache.hadoop.io.Writable&#10;Reflecti&#9;PSI&#9;JAVA://org.apache.hadoop.util.ReflectionUtils" />
+    <property name="SearchEverywhereHistoryKey" value="FSInpu&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FSInputStream&#10;Seekable&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/Seekable.java&#10;Configu&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/conf/Configuration.java&#10;FileSyste&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FileSystem&#10;C&#9;FILE&#9;uml://JAVA/org.apache.hadoop.io.compress.CompressionInputStream&#10;CompressorOu&#9;PSI&#9;JAVA://org.vafer.jdeb.shaded.compress.compress.compressors.CompressorOutputStream&#10;OutputStream&#9;PSI&#9;JAVA://java.io.OutputStream&#10;CompressionIn&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionInputStream&#10;CompressionCodecFa&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/CompressionCodecFactory.java&#10;Bzip&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/BZip2Codec.java&#10;DefaultCo&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.DefaultCodec&#10;CompressCode&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/CompressionCodec.java&#10;Compressor&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.Compressor&#10;CompressionF&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionCodecFactory&#10;CompressionCode&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionCodec&#10;Serialization&#9;PSI&#9;JAVA://org.apache.hadoop.io.serializer.Serialization&#10;Block&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java&#10;GenericW&#9;PSI&#9;JAVA://org.apache.hadoop.io.GenericWritable&#10;Conf&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/conf/Configuration.java&#10;ObjectW&#9;PSI&#9;JAVA://org.apache.hadoop.io.ObjectWritable&#10;VInt&#9;PSI&#9;JAVA://org.apache.hadoop.io.VIntWritable&#10;Vint&#9;PSI&#9;JAVA://org.apache.hadoop.io.VIntWritable&#10;BooleanWritable&#9;PSI&#9;JAVA://org.apache.hadoop.io.BooleanWritable&#10;RawCo&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/RawComparator.java&#10;IntW&#9;PSI&#9;JAVA://org.apache.hadoop.io.IntWritable&#10;RawComparator&#9;PSI&#9;JAVA://org.apache.hadoop.io.RawComparator&#10;Raw&#9;PSI&#9;JAVA://org.apache.hadoop.io.file.tfile.RawComparable&#10;Writa&#9;PSI&#9;JAVA://org.apache.hadoop.io.Writable&#10;Reflecti&#9;PSI&#9;JAVA://org.apache.hadoop.util.ReflectionUtils" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -238,25 +284,27 @@
       <workItem from="1533857783669" duration="902000" />
       <workItem from="1534118432419" duration="669000" />
       <workItem from="1534202977870" duration="261000" />
-      <workItem from="1534378230026" duration="2159000" />
+      <workItem from="1534378230026" duration="2656000" />
+      <workItem from="1534463038781" duration="1219000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28669000" />
+    <option name="totallyTimeSpent" value="30385000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="791" y="62" width="1920" height="985" extended-state="0" />
+    <frame x="752" y="23" width="1920" height="985" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="JRebel Console" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" weight="0.32960597" />
-      <window_info anchor="bottom" id="JRebel Executor" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="JRebel Executor" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
+      <window_info active="true" anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.24973376" />
       <window_info anchor="bottom" id="Tail" order="7" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info x="679" y="232" width="442" height="670" id="Structure" order="1" sideWeight="0.7931442" side_tool="true" type="FLOATING" weight="0.15921193" />
@@ -268,8 +316,8 @@
       <window_info id="Image Layers" order="2" />
       <window_info anchor="bottom" id="Java Enterprise" order="7" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.20685579" weight="0.10436635" />
       <window_info id="JRebel" order="2" side_tool="true" />
@@ -278,10 +326,9 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.32978722" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24973376" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.32978722" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -291,44 +338,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/RawComparator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="uml://JAVA/org.apache.hadoop.io.WritableComparator">
-      <provider selected="true" editor-type-id="UmlEditorProvider">
-        <state>
-          <ID>JAVA</ID>
-          <OriginalElement>org.apache.hadoop.io.WritableComparator</OriginalElement>
-          <nodes>
-            <node x="13.0" y="79.0">org.apache.hadoop.io.RawComparator</node>
-            <node x="25.5" y="0.0">java.util.Comparator</node>
-            <node x="0.0" y="158.0">org.apache.hadoop.io.WritableComparator</node>
-          </nodes>
-          <notes />
-          <edges>
-            <edge source="org.apache.hadoop.io.WritableComparator" target="org.apache.hadoop.io.RawComparator">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="org.apache.hadoop.io.RawComparator" target="java.util.Comparator">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-          </edges>
-          <settings layout="Hierarchic Group" zoom="1.0" x="-230.0" y="-33.0" />
-          <SelectedNodes>
-            <node>org.apache.hadoop.io.WritableComparator</node>
-          </SelectedNodes>
-          <Categories />
-          <SCOPE>All</SCOPE>
-          <VISIBILITY>private</VISIBILITY>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/WritableComparator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
@@ -557,27 +566,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/Seekable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/DataInputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSDataInputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="23" column="42" lean-forward="true" selection-start-line="23" selection-start-column="42" selection-end-line="23" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/OutputStream.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-478">
@@ -642,10 +630,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2360">
           <caret line="148" column="33" selection-start-line="148" selection-start-column="23" selection-end-line="148" selection-end-column="51" />
-          <folding>
-            <element signature="e#4614#4615#0" expanded="true" />
-            <element signature="e#4637#4638#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -706,9 +690,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="461">
           <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -763,7 +744,7 @@
           </nodes>
           <notes />
           <edges />
-          <settings layout="Hierarchic Group" zoom="1.0" x="176.5" y="280.0" />
+          <settings layout="Hierarchic Group" zoom="1.0" x="177.0" y="280.0" />
           <SelectedNodes />
           <Categories>
             <Category>Inner Classes</Category>
@@ -782,8 +763,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileStatus.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="37" column="37" lean-forward="true" selection-start-line="37" selection-start-column="37" selection-end-line="37" selection-end-column="37" />
+        <state relative-caret-position="300">
+          <caret line="37" column="37" selection-start-line="37" selection-start-column="37" selection-end-line="37" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -796,8 +777,57 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="1349" column="63" lean-forward="true" selection-start-line="1349" selection-start-column="63" selection-end-line="1349" selection-end-column="63" />
+        <state relative-caret-position="340">
+          <caret line="729" column="4" lean-forward="true" selection-start-line="729" selection-start-column="4" selection-end-line="729" selection-end-column="4" />
+          <folding>
+            <element signature="e#3090#3131#0" expanded="true" />
+            <element signature="e#3383#3389#0" expanded="true" />
+            <element signature="e#30722#30734#0" expanded="true" />
+            <element signature="e#31775#31787#0" expanded="true" />
+            <element signature="e#34834#34846#0" expanded="true" />
+            <element signature="e#36603#36609#0" expanded="true" />
+            <element signature="e#46062#46074#0" expanded="true" />
+            <element signature="e#48048#48065#0" expanded="true" />
+            <element signature="e#49454#49467#0" expanded="true" />
+            <element signature="e#50132#50144#0" expanded="true" />
+            <element signature="e#50599#50612#0" expanded="true" />
+            <element signature="e#55820#55840#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/DataInputStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSDataInputStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="45" column="43" lean-forward="true" selection-start-line="45" selection-start-column="43" selection-end-line="45" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/Seekable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="22" column="25" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/PositionedReadable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FSInputStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="70" column="17" lean-forward="true" selection-start-line="70" selection-start-column="17" selection-end-line="70" selection-end-column="17" />
         </state>
       </provider>
     </entry>

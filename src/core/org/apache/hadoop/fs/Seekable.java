@@ -25,17 +25,24 @@ public interface Seekable {
    * Seek to the given offset from the start of the file.
    * The next read() will be from that location.  Can't
    * seek past the end of the file.
+   *
+   * 随机读取相关方法
+   *
    */
   void seek(long pos) throws IOException;
   
   /**
    * Return the current offset from the start of the file
+   *
+   * 随机读取相关方法
    */
   long getPos() throws IOException;
 
   /**
    * Seeks a different copy of the data.  Returns true if 
    * found a new source, false otherwise.
+   *
+   * 当文件数据有多个副本时，重新选择一个副本
    */
   boolean seekToNewSource(long targetPos) throws IOException;
 }

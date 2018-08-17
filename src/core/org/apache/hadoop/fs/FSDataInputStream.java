@@ -19,8 +19,14 @@ package org.apache.hadoop.fs;
 
 import java.io.*;
 
-/** Utility that wraps a {@link FSInputStream} in a {@link DataInputStream}
- * and buffers input through a {@link BufferedInputStream}. */
+/**
+ * Utility that wraps a {@link FSInputStream} in a {@link DataInputStream}
+ * and buffers input through a {@link BufferedInputStream}.
+ *
+ * 这里的Seekable和PositionedReadable都可以进行随机读取，不同的是，
+ * PositionedReadable中的读取方法不会改变流的当前位置，且是线程安全的
+ *
+ * */
 public class FSDataInputStream extends DataInputStream
     implements Seekable, PositionedReadable, Closeable {
 
