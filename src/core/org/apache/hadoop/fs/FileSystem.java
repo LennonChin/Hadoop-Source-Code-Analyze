@@ -128,6 +128,7 @@ public abstract class FileSystem extends Configured implements Closeable {
    * @return the uri of the default filesystem
    */
   public static URI getDefaultUri(Configuration conf) {
+    // 说明在配置文件中，使用 fs.default.name 来设置默认的文件系统，如果没有设置的话，默认值是 file:///
     return URI.create(fixName(conf.get(FS_DEFAULT_NAME_KEY, "file:///")));
   }
 
@@ -221,11 +222,15 @@ public abstract class FileSystem extends Configured implements Closeable {
 
   /**
    * Get the local file syste
+   *
+   * 用于获取本地文件系统
+   *
    * @param conf the configuration to configure the file system with
    * @return a LocalFileSystem
    */
   public static LocalFileSystem getLocal(Configuration conf)
     throws IOException {
+  	// LocalFileSystem.NAME 即 file:///
     return (LocalFileSystem)get(LocalFileSystem.NAME, conf);
   }
 
@@ -235,10 +240,13 @@ public abstract class FileSystem extends Configured implements Closeable {
    * The entire URI is passed to the FileSystem instance's initialize method.
    */
   public static FileSystem get(URI uri, Configuration conf) throws IOException {
+  	// 获取schema
     String scheme = uri.getScheme();
+    // 获取鉴权信息
     String authority = uri.getAuthority();
 
     if (scheme == null) {                       // no scheme: use default FS
+    	// 当schema为空则返回默认的文件系统
       return get(conf);
     }
 
@@ -249,12 +257,14 @@ public abstract class FileSystem extends Configured implements Closeable {
         return get(defaultUri, conf);              // return default
       }
     }
-    
-    String disableCacheName = String.format("fs.%s.impl.disable.cache", scheme);
+    // 是否使用被Cache的文件系统
+    String disableCacheName = String.format("fs.%s.impl.disable.cache", scheme); // 拼装key
+    // 使用key从Configuration中取disableCacheName，如果disableCacheName为true，就新创建对应的FileSystem
     if (conf.getBoolean(disableCacheName, false)) {
+      // 创建对应的文件系统并返回
       return createFileSystem(uri, conf);
     }
-
+    // 否则从缓存中取
     return CACHE.get(uri, conf);
   }
 
@@ -1423,12 +1433,15 @@ public abstract class FileSystem extends Configured implements Closeable {
 
   private static FileSystem createFileSystem(URI uri, Configuration conf
       ) throws IOException {
+    // 从Configuration中获取文件系统对应的Class类对象
     Class<?> clazz = conf.getClass("fs." + uri.getScheme() + ".impl", null);
     LOG.debug("Creating filesystem for " + uri);
     if (clazz == null) {
       throw new IOException("No FileSystem for scheme: " + uri.getScheme());
     }
+    // 通过反射创建对应的FileSystem
     FileSystem fs = (FileSystem)ReflectionUtils.newInstance(clazz, conf);
+    // 完成构造后的初始化工作（构造FileSys.Statistics对象）
     fs.initialize(uri, conf);
     return fs;
   }
@@ -1438,9 +1451,11 @@ public abstract class FileSystem extends Configured implements Closeable {
     private final Map<Key, FileSystem> map = new HashMap<Key, FileSystem>();
 
     FileSystem get(URI uri, Configuration conf) throws IOException{
+      // 构造一个用于查找的key
       Key key = new Key(uri, conf);
       FileSystem fs = null;
       synchronized (this) {
+        // 从map中查找key对应的键
         fs = map.get(key);
       }
       if (fs != null) {
@@ -1457,6 +1472,7 @@ public abstract class FileSystem extends Configured implements Closeable {
 
         // now insert the new file system into the map
         if (map.isEmpty() && !clientFinalizer.isAlive()) {
+          // CACHE会使用Hook在虚拟机退出时方式将用户使用完没有关闭的文件系统关闭。
           Runtime.getRuntime().addShutdownHook(clientFinalizer);
         }
         fs.key = key;
@@ -1530,9 +1546,10 @@ public abstract class FileSystem extends Configured implements Closeable {
 
     /** FileSystem.Cache.Key */
     static class Key {
-      final String scheme;
-      final String authority;
-      final UserGroupInformation ugi;
+      // 三类比较字段
+      final String scheme;            // schema
+      final String authority;        // 鉴权
+      final UserGroupInformation ugi; // 打开具体文件系统的本地用户的信息（不同本地用户打开的具体文件系统是不能共享的）
 
       Key(URI uri, Configuration conf) throws IOException {
         scheme = uri.getScheme()==null?"":uri.getScheme().toLowerCase();
@@ -1542,6 +1559,9 @@ public abstract class FileSystem extends Configured implements Closeable {
 
       /** {@inheritDoc} */
       public int hashCode() {
+        /**
+         * 利用三类比较字段生成hashCode，这个hashCode会在 {@link map} 中比较使用
+         */
         return (scheme + authority).hashCode() + ugi.hashCode();
       }
 
@@ -1555,6 +1575,7 @@ public abstract class FileSystem extends Configured implements Closeable {
           return true;
         }
         if (obj != null && obj instanceof Key) {
+          // equals方法比较的是三个字段
           Key that = (Key)obj;
           return isEqual(this.scheme, that.scheme)
                  && isEqual(this.authority, that.authority)

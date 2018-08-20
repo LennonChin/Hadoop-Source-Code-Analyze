@@ -114,6 +114,9 @@ public class ReflectionUtils {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+    /**
+     * 如果创建的对象实现了Configurable接口，将会被调用{@link org.apache.hadoop.conf.Configurable#setConf}方法
+     */
     setConf(result, conf);
     return result;
   }
