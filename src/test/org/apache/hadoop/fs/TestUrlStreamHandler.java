@@ -58,6 +58,7 @@ public class TestUrlStreamHandler extends TestCase {
     // in TestStreamHandler
     FsUrlStreamHandlerFactory factory =
         new org.apache.hadoop.fs.FsUrlStreamHandlerFactory();
+    // 安装协议处理器
     java.net.URL.setURLStreamHandlerFactory(factory);
 
     Path filePath = new Path("/thefile");

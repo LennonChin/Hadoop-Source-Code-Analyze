@@ -62,12 +62,16 @@ public class FsUrlStreamHandlerFactory implements
   }
 
   public java.net.URLStreamHandler createURLStreamHandler(String protocol) {
+    // 检查缓存是否存在
     if (!protocols.containsKey(protocol)) {
+      // 尝试从配置文件中读取是否存在相应protocol对应的流Class对象
       boolean known =
           (conf.getClass("fs." + protocol + ".impl", null) != null);
+      // 存入缓存
       protocols.put(protocol, known);
     }
     if (protocols.get(protocol)) {
+      // 最终其实返回了都是FsUrlStreamHandler实例
       return handler;
     } else {
       // FileSystem does not know the protocol, let the VM handle this

@@ -42,6 +42,7 @@ class FsUrlConnection extends URLConnection {
   @Override
   public void connect() throws IOException {
     try {
+      // 直接创建一个FileSystem兵将其打开后返回的流作为通信处理流
       FileSystem fs = FileSystem.get(url.toURI(), conf);
       is = fs.open(new Path(url.getPath()));
     } catch (URISyntaxException e) {
