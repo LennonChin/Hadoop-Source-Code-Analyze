@@ -47,6 +47,12 @@ import org.apache.hadoop.util.Progressable;
  * file is sorted with hash code of the paths that it contains 
  * and the master index contains pointers to the positions in 
  * index for ranges of hashcodes.
+ *
+ * 用于归档小文件的类（类似于Unix的tar）
+ * Har将文件的目录信息和文件数据的起始位置、长度保存在索引文件中，
+ * 索引文件和归档文件存放的数据一起，保存在原始文件系统上。
+ * Har文件使MR可以处理大量的小文件输入
+ *
  */
 
 public class HarFileSystem extends FilterFileSystem {

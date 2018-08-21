@@ -32,7 +32,7 @@ import org.apache.hadoop.util.Shell;
 
 /****************************************************************
  * Implement the FileSystem API for the raw local filesystem.
- *
+ * 不带校验的本地文件系统，带校验的本地文件系统请看 {@link LocalFileSystem}
  *****************************************************************/
 public class RawLocalFileSystem extends FileSystem {
   static final URI NAME = URI.create("file:///");
@@ -52,10 +52,13 @@ public class RawLocalFileSystem extends FileSystem {
   
   /** Convert a path to a File. */
   public File pathToFile(Path path) {
+    // 检查路径合法性
     checkPath(path);
     if (!path.isAbsolute()) {
+      // 相对路径的处理
       path = new Path(getWorkingDirectory(), path);
     }
+    // 绝对路径的处理
     return new File(path.toUri().getPath());
   }
 
@@ -98,6 +101,7 @@ public class RawLocalFileSystem extends FileSystem {
 
   /*******************************************************
    * For open()'s FSInputStream
+   * RawLocalFileSystem是本地文件系统，所以它的大部分操作都是直接通过FileInputStream实现的
    *******************************************************/
   class LocalFSFileInputStream extends FSInputStream {
     FileInputStream fis;
@@ -106,16 +110,33 @@ public class RawLocalFileSystem extends FileSystem {
     public LocalFSFileInputStream(Path f) throws IOException {
       this.fis = new TrackingFileInputStream(pathToFile(f));
     }
-    
+  
+    /**
+     * 来自于Seekable接口
+     * @param pos
+     * @throws IOException
+     */
     public void seek(long pos) throws IOException {
       fis.getChannel().position(pos);
       this.position = pos;
     }
-    
+  
+    /**
+     * 来自于Seekable接口
+     * @return
+     * @throws IOException
+     */
     public long getPos() throws IOException {
       return this.position;
     }
-    
+  
+    /**
+     * 来自于Seekable接口
+     * 当文件数据有多个副本时，重新选择一个副本，由于本地文件系统的文件副本数默认为1，所以直接返回false
+     * @param targetPos
+     * @return
+     * @throws IOException
+     */
     public boolean seekToNewSource(long targetPos) throws IOException {
       return false;
     }
@@ -310,11 +331,12 @@ public class RawLocalFileSystem extends FileSystem {
     if (!localf.exists()) {
       return null;
     }
+    // 是文件的情况下
     if (localf.isFile()) {
       return new FileStatus[] {
           new RawLocalFileStatus(localf, getDefaultBlockSize(), this) };
     }
-
+    // 目录的情况将遍历所有的子项判断
     String[] names = localf.list();
     if (names == null) {
       return null;
@@ -331,8 +353,17 @@ public class RawLocalFileSystem extends FileSystem {
    * treat existence as an error.
    */
   public boolean mkdirs(Path f) throws IOException {
+    // 获取父目录
     Path parent = f.getParent();
+    // 获取本级目录，将目录转换为File对象
     File p2f = pathToFile(f);
+    /**
+     * 如果父目录为空，先尝试创建父目录，这是一个递归操作
+     * 父目录创建成功后，再尝试创建本级目录
+     * 创建目录的操作是通过 {@link File#mkdir} 实现的
+     *
+     * 这里使用了逻辑运算的短路求值
+     */
     return (parent == null || mkdirs(parent)) &&
       (p2f.mkdir() || p2f.isDirectory());
   }
@@ -399,15 +430,19 @@ public class RawLocalFileSystem extends FileSystem {
   }
 
   static class RawLocalFileStatus extends FileStatus {
-    /* We can add extra fields here. It breaks at least CopyFiles.FilePair().
+    /**
+     * We can add extra fields here. It breaks at least CopyFiles.FilePair().
      * We recognize if the information is already loaded by check if
      * onwer.equals("").
+     *
+     * 用于避免重复执行对某些权限的判断操作，判断方法为文件加载后owner不为空
      */
     private boolean isPermissionLoaded() {
       return !super.getOwner().equals(""); 
     }
     
     RawLocalFileStatus(File f, long defaultBlockSize, FileSystem fs) {
+      // RawLocalFileStatus的副本数恒为1
       super(f.length(), f.isDirectory(), 1, defaultBlockSize,
             f.lastModified(), new Path(f.getPath()).makeQualified(fs));
     }
@@ -435,8 +470,13 @@ public class RawLocalFileSystem extends FileSystem {
       }
       return super.getGroup();
     }
-
-    /// loads permissions, owner, and group from `ls -ld`
+  
+    /**
+     * loads permissions, owner, and group from `ls -ld`
+     *
+     * 使用`ls -ld`命令来获取文件的权限 {@link Shell#getGET_PERMISSION_COMMAND}
+     * windows下为`ls -ld`，Linux下为`/bin/ls -ld`
+     */
     private void loadPermissionInfo() {
       IOException e = null;
       try {

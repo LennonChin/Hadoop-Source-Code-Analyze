@@ -24,7 +24,7 @@ import java.util.*;
 
 /****************************************************************
  * Implement the FileSystem API for the checksumed local filesystem.
- *
+ * 带校验的本地文件系统，不带校验的本地文件系统请看 {@link RawLocalFileSystem}
  *****************************************************************/
 public class LocalFileSystem extends ChecksumFileSystem {
   static final URI NAME = URI.create("file:///");

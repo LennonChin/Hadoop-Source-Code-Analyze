@@ -26,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.permission.FsPermission;
+import org.apache.hadoop.hdfs.ChecksumDistributedFileSystem;
 import org.apache.hadoop.util.Progressable;
 import org.apache.hadoop.util.StringUtils;
 
@@ -35,6 +36,11 @@ import org.apache.hadoop.util.StringUtils;
  * which creates a checksum file for each raw file.
  * It generates & verifies checksums at the client side.
  *
+ * 用于在原始文件系统上添加校验功能
+ * 它有三个子类：
+ *     - {@link ChecksumDistributedFileSystem}：用于校验分布式文件系统
+ *     - {@link InMemoryFileSystem}：用于校验内存文件系统
+ *     - {@link LocalFileSystem}：用于校验本地文件系统
  *****************************************************************/
 public abstract class ChecksumFileSystem extends FilterFileSystem {
   private static final byte[] CHECKSUM_VERSION = new byte[] {'c', 'r', 'c', 0};

@@ -363,7 +363,12 @@ public abstract class FileSystem extends Configured implements Closeable {
     super(null);
   }
 
-  /** Check that a Path belongs to this FileSystem. */
+  /**
+   * Check that a Path belongs to this FileSystem.
+   *
+   * - 无schema的相对路径是合格的
+   *
+   * */
   protected void checkPath(Path path) {
     URI uri = path.toUri();
     String thatScheme = uri.getScheme();

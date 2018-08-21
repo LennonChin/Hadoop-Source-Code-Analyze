@@ -71,6 +71,9 @@ import org.xml.sax.helpers.XMLReaderFactory;
 /** An implementation of a protocol for accessing filesystems over HTTP.
  * The following implementation provides a limited, read-only interface
  * to a filesystem over HTTP.
+ *
+ * 该文件系统通常和distcp命令结合，在不同版本的HDFS集群间复制数据
+ *
  * @see org.apache.hadoop.hdfs.server.namenode.ListPathsServlet
  * @see org.apache.hadoop.hdfs.server.namenode.FileDataServlet
  */

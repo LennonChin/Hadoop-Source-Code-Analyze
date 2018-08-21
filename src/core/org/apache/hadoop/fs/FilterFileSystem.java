@@ -40,6 +40,7 @@ import org.apache.hadoop.util.Progressable;
  * and may also provide additional methods
  * and fields.
  *
+ * 用于在某些已有的文件系统的基础上添加新的功能
  *****************************************************************/
 public class FilterFileSystem extends FileSystem {
   
