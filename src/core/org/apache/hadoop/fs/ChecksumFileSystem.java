@@ -74,12 +74,20 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
     return fs;
   }
 
-  /** Return the name of the checksum file associated with a file.*/
+  /**
+   * Return the name of the checksum file associated with a file.
+   *
+   * 用于获取一个文件对应的CRC-32校验信息文件
+   * */
   public Path getChecksumFile(Path file) {
     return new Path(file.getParent(), "." + file.getName() + ".crc");
   }
 
-  /** Return true iff file is a checksum file name.*/
+  /**
+   * Return true iff file is a checksum file name.
+   *
+   * 判断某个文件是否是校验信息文件
+   * */
   public static boolean isChecksumFile(Path file) {
     String name = file.getName();
     return name.startsWith(".") && name.endsWith(".crc");
@@ -107,18 +115,26 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
   /*******************************************************
    * For open()'s FSInputStream
    * It verifies that data matches checksums.
+   *
+   * 用于在读文件时进行校验工作
    *******************************************************/
   private static class ChecksumFSInputChecker extends FSInputChecker {
     public static final Log LOG 
       = LogFactory.getLog(FSInputChecker.class);
     
     private ChecksumFileSystem fs;
-    private FSDataInputStream datas;
-    private FSDataInputStream sums;
-    
+    private FSDataInputStream datas;  // 原始数据文件输入流
+    private FSDataInputStream sums;   // 原始校验文件输入流
+  
+    /**
+     * CRC文件头的长度（8字节） = 魔数（4字节） + 数据块大小（4字节）
+     * 在本例中，文件头十六进制内容为： 63 72 63 00 00 00 02 00
+     * 即魔数为 63 72 63 00 ，数据块大小为 00 00 02 00
+     * 每个数据块的校验信息长度为4个字节
+     */
     private static final int HEADER_LENGTH = 8;
     
-    private int bytesPerSum = 1;
+    private int bytesPerSum = 1;  // 保存了每个数据块的大小，即每bytesPerSum个字节的原始数据形成一个数据块
     private long fileLen = -1L;
     
     public ChecksumFSInputChecker(ChecksumFileSystem fs, Path file)
@@ -129,17 +145,19 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
     public ChecksumFSInputChecker(ChecksumFileSystem fs, Path file, int bufferSize)
       throws IOException {
       super( file, fs.getFileStatus(file).getReplication() );
+      // 在这里打开的文件流，缓冲区大小默认为4K
       this.datas = fs.getRawFileSystem().open(file, bufferSize);
       this.fs = fs;
       Path sumFile = fs.getChecksumFile(file);
       try {
         int sumBufferSize = fs.getSumBufferSize(fs.getBytesPerSum(), bufferSize);
         sums = fs.getRawFileSystem().open(sumFile, sumBufferSize);
-
+        // 检查CRC校验文件的魔数
         byte[] version = new byte[CHECKSUM_VERSION.length];
         sums.readFully(version);
         if (!Arrays.equals(version, CHECKSUM_VERSION))
           throw new IOException("Not a checksum file: "+sumFile);
+        // 从CRC校验文件中读取指定的每个数据块的大小
         this.bytesPerSum = sums.readInt();
         set(fs.verifyChecksum, new CRC32(), bytesPerSum, 4);
       } catch (FileNotFoundException e) {         // quietly ignore
@@ -148,16 +166,23 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
         LOG.warn("Problem opening checksum file: "+ file + 
                  ".  Ignoring exception: " + 
                  StringUtils.stringifyException(e));
+        /**
+         * 当检查CRC校验文件失败的时候，异常会在这里被捕获，并关闭校验功能
+         * 因此，当CRC文件出错的时候，也不会影响对数据文件的读取
+         */
         set(fs.verifyChecksum, null, 1, 0);
       }
     }
     
+    // 获取相应位置数据对应的CheckSum起始地址
     private long getChecksumFilePos( long dataPos ) {
-      return HEADER_LENGTH + 4*(dataPos/bytesPerSum);
+      // CRC文件头长度（8字节） +  4（每块数据块校验信息长度） * (数据块偏移量 / 数据块大小)
+      return HEADER_LENGTH + 4 * (dataPos / bytesPerSum);
     }
     
+    // 根据偏移量获取某一块的起始地址
     protected long getChunkPosition( long dataPos ) {
-      return dataPos/bytesPerSum*bytesPerSum;
+      return dataPos / bytesPerSum * bytesPerSum;
     }
     
     public int available() throws IOException {
@@ -207,19 +232,24 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
       boolean eof = false;
       if(needChecksum()) {
         try {
+          // 获取当前数据位置上的checksum
           long checksumPos = getChecksumFilePos(pos); 
           if(checksumPos != sums.getPos()) {
+            // 将校验流定位到当前需要的checksum边界上
             sums.seek(checksumPos);
           }
+          // 读取效应的校验信息
           sums.readFully(checksum);
         } catch (EOFException e) {
           eof = true;
         }
         len = bytesPerSum;
       }
+      // 定位数据边界
       if(pos != datas.getPos()) {
         datas.seek(pos);
       }
+      // 在这里对打开的文件流进行读取
       int nread = readFully(datas, buf, offset, len);
       if( eof && nread > 0) {
         throw new ChecksumException("Checksum error: "+file+" at "+pos, pos);
@@ -309,8 +339,12 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
              CHECKSUM_VERSION.length + 4;  
   }
 
-  /** This class provides an output stream for a checksummed file.
-   * It generates checksums for data. */
+  /**
+   * This class provides an output stream for a checksummed file.
+   * It generates checksums for data.
+   *
+   * 在基本具体文件系统输出流的基础上实现数据文件和校验信息文件的数据输出
+   * */
   private static class ChecksumFSOutputSummer extends FSOutputSummer {
     private FSDataOutputStream datas;    
     private FSDataOutputStream sums;
@@ -336,15 +370,20 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
                           long blockSize,
                           Progressable progress)
       throws IOException {
+      // 使用CRC32校验类，每512（bytesPerChecksum）字节输出一个校验和，校验和文件大小为4字节
       super(new CRC32(), fs.getBytesPerSum(), 4);
       int bytesPerSum = fs.getBytesPerSum();
+      // 输出文件数据的流
       this.datas = fs.getRawFileSystem().create(file, overwrite, bufferSize, 
                                          replication, blockSize, progress);
       int sumBufferSize = fs.getSumBufferSize(bytesPerSum, bufferSize);
+      // 输出校验和数据的流
       this.sums = fs.getRawFileSystem().create(fs.getChecksumFile(file), true, 
                                                sumBufferSize, replication,
                                                blockSize);
+      // 校验文件的头部会有检验版本的头信息，即`crc\0`
       sums.write(CHECKSUM_VERSION, 0, CHECKSUM_VERSION.length);
+      // 头部还会写入数据块的大小，即512
       sums.writeInt(bytesPerSum);
     }
     
@@ -353,7 +392,15 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
       sums.close();
       datas.close();
     }
-    
+  
+    /**
+     * 写出文件数据和校验和数据
+     * @param b 装载了数据的字节数组
+     * @param offset 读取偏移量
+     * @param len 读取长度
+     * @param checksum 装载了校验和字节数组
+     * @throws IOException
+     */
     @Override
     protected void writeChunk(byte[] b, int offset, int len, byte[] checksum)
     throws IOException {
@@ -425,6 +472,8 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
 
   /**
    * Rename files/dirs
+   *
+   * 在重命名的时候，如果重命名的是文件，则其CRC-32校验文件也要重命名
    */
   public boolean rename(Path src, Path dst) throws IOException {
     if (fs.isDirectory(src)) {
@@ -435,6 +484,7 @@ public abstract class ChecksumFileSystem extends FilterFileSystem {
       if (!value)
         return false;
 
+      // 重命名CRC-32校验文件
       Path checkFile = getChecksumFile(src);
       if (fs.exists(checkFile)) { //try to rename checksum
         if (fs.isDirectory(dst)) {

@@ -28,13 +28,28 @@ import java.util.zip.Checksum;
  */
 
 abstract public class FSOutputSummer extends OutputStream {
-  // data checksum
+  /**
+   * data checksum
+   * 用于计算校验和
+   */
   private Checksum sum;
-  // internal buffer for storing data before it is checksumed
+  /**
+   * internal buffer for storing data before it is checksumed
+   *
+   * 用于暂时保存输出数据的缓冲区
+   */
   private byte buf[];
-  // internal buffer for storing checksum
+  /**
+   * internal buffer for storing checksum
+   *
+   * 用于暂时保存校验和结果的缓冲区
+   */
   private byte checksum[];
-  // The number of valid bytes in the buffer.
+  /**
+   * The number of valid bytes in the buffer.
+   *
+   * buffer已使用空间计数
+   */
   private int count;
   
   protected FSOutputSummer(Checksum sum, int maxChunkSize, int checksumSize) {
@@ -46,6 +61,12 @@ abstract public class FSOutputSummer extends OutputStream {
   
   /* write the data chunk in <code>b</code> staring at <code>offset</code> with
    * a length of <code>len</code>, and its checksum
+   *
+   * 由子类实现
+   * 需要同时写出缓冲区中的文件数据和这部分数据的校验信息
+   *
+   * b 中存放了文件数据
+   * checksum 中存放了这部分数据的校验信息
    */
   protected abstract void writeChunk(byte[] b, int offset, int len, byte[] checksum)
   throws IOException;
@@ -84,6 +105,7 @@ abstract public class FSOutputSummer extends OutputStream {
     }
 
     for (int n=0;n<len;n+=write1(b, off+n, len-n)) {
+      // 每次读取的长度有write1方法返回，然后进行offset更新
     }
   }
   
@@ -102,9 +124,11 @@ abstract public class FSOutputSummer extends OutputStream {
     }
     
     // copy user data to local buffer
+    // count是已使用空间数，buf.length-count即为空闲空间数
     int bytesToCopy = buf.length-count;
     bytesToCopy = (len<bytesToCopy) ? len : bytesToCopy;
     sum.update(b, off, bytesToCopy);
+    // 将b中从off开始的bytesToCopy拷贝到buf中从count开始的空间
     System.arraycopy(b, off, buf, count, bytesToCopy);
     count += bytesToCopy;
     if (count == buf.length) {
@@ -144,10 +168,10 @@ abstract public class FSOutputSummer extends OutputStream {
   throws IOException {
     int tempChecksum = (int)sum.getValue();
     if (!keep) {
-      sum.reset();
+      sum.reset(); // 复位checksum对象
     }
     int2byte(tempChecksum, checksum);
-    writeChunk(b, off, len, checksum);
+    writeChunk(b, off, len, checksum); // 输出数据
   }
 
   /**

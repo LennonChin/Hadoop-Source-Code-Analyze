@@ -28,8 +28,9 @@ import org.apache.hadoop.util.StringUtils;
 /**
  * This is a generic input stream for verifying checksums for
  * data before it is read by a user.
+ *
+ * 输入流，将带有校验信息的文件读入
  */
-
 abstract public class FSInputChecker extends FSInputStream {
   public static final Log LOG 
   = LogFactory.getLog(FSInputChecker.class);
@@ -38,15 +39,30 @@ abstract public class FSInputChecker extends FSInputStream {
   protected Path file;
   private Checksum sum;
   private boolean verifyChecksum = true;
+  // 暂时保存输入数据的缓冲区
   private byte[] buf;
+  // 校验和缓冲区
   private byte[] checksum;
+  // 已读数据位置
   private int pos;
+  // buf已使用的空间数
   private int count;
-  
+  // 出错重试次数
   private int numOfRetries;
   
   // cached file position
+  // 当前数据块位置，记录了下一次读取数据所在的数据块的起始位置
   private long chunkPos = 0;
+  
+  /**
+   * 对于上面的几个变量，有以下的规则：
+   *
+   *    |<----------------- buf 已存有数据部分 ---------------->|<--- buf 空闲部分 -------...
+   *    0                      pos                          count
+   *    |-----------------------|-----------------------------|
+   *    |<--- 已被应用读取数据--->|<--- 已缓冲，未被取走的数据 --->|
+   *    |<--------------------- 当前数据块 -------------------->|
+   */
   
   /** Constructor
    * 
@@ -185,10 +201,12 @@ abstract public class FSInputChecker extends FSInputStream {
     int avail = count-pos;
     if( avail <= 0 ) {
       if(len>=buf.length) {
+        // 读一块数据到用户缓冲区，避免数据拷贝
         // read a chunk to user buffer directly; avoid one copy
         int nread = readChecksumChunk(b, off, len);
         return nread;
       } else {
+        // 读一整块数据到FSInputChecker的缓冲区
         // read a chunk into the local buffer
         fill();
         if( count <= 0 ) {
@@ -199,6 +217,7 @@ abstract public class FSInputChecker extends FSInputStream {
       }
     }
     
+    // 拷贝数据，从内部缓冲区buf复制到用户缓冲区b中
     // copy content of the local buffer to the user buffer
     int cnt = (avail < len) ? avail : len;
     System.arraycopy(buf, pos, b, off, cnt);
@@ -229,36 +248,38 @@ abstract public class FSInputChecker extends FSInputStream {
           
     int read = 0;
     boolean retry = true;
+    // 重试次数
     int retriesLeft = numOfRetries; 
     do {
       retriesLeft--;
 
       try {
+        // 调用子类实现的readChunk方法进行读取
         read = readChunk(chunkPos, b, off, len, checksum);
         if( read > 0 ) {
           if( needChecksum() ) {
+            // 需要校验，校验失败会直接抛出ChecksumException异常
             sum.update(b, off, read);
             verifySum(chunkPos);
           }
+          // 位移
           chunkPos += read;
         } 
         retry = false;
       } catch (ChecksumException ce) {
           LOG.info("Found checksum error: b[" + off + ", " + (off+read) + "]="
               + StringUtils.byteToHexString(b, off, off + read), ce);
+          // 如果重试次数达到上限，就抛出错误
           if (retriesLeft == 0) {
             throw ce;
           }
           
-          // try a new replica
+          // 尝试一个新的副本，此时chunkPos还是当前数据块的起始位置
           if (seekToNewSource(chunkPos)) {
-            // Since at least one of the sources is different, 
-            // the read might succeed, so we'll retry.
+            // 如果副本可用，则定位到副本相应的位置
             seek(chunkPos);
           } else {
-            // Neither the data stream nor the checksum stream are being read
-            // from different sources, meaning we'll still get a checksum error 
-            // if we try to do the read again.  We throw an exception instead.
+            // 否则抛出异常
             throw ce;
           }
         }
@@ -347,6 +368,9 @@ abstract public class FSInputChecker extends FSInputStream {
       return;
     }
     // optimize: check if the pos is in the buffer
+    /**
+     * 对于同一个数据块内的定位做优化
+     */
     long start = chunkPos - this.count;
     if( pos>=start && pos<chunkPos) {
       this.pos = (int)(pos-start);
