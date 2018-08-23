@@ -39,7 +39,9 @@ import org.apache.hadoop.util.Progressable;
 public class InMemoryFileSystem extends ChecksumFileSystem {
   private static class RawInMemoryFileSystem extends FileSystem {
     private URI uri;
+    // 文件系统预留空间
     private long fsSize;
+    // 目前已使用空间
     private volatile long totalUsed;
     private Path staticWorkingDir;
   
@@ -51,6 +53,10 @@ public class InMemoryFileSystem extends ChecksumFileSystem {
     //files we are going to create. It is read in the createRaw method and the
     //temp key/value is discarded. If the file makes it to "close", then it
     //ends up being in the pathToFileAttribs map.
+    /**
+     * 用于保存正在产生中的文件，即已经分配了空间，但还没有写入数据或正在写入数据的文件
+     * 如果文件正常关闭，会将文件名和其对应的FileAttributes移动到 {@link #pathToFileAttribs} 中
+     */
     private Map<String, FileAttributes> tempFileAttribs =
       new HashMap<String, FileAttributes>();
   
@@ -83,15 +89,18 @@ public class InMemoryFileSystem extends ChecksumFileSystem {
     }
 
     private class InMemoryInputStream extends FSInputStream {
+      // DataInputBuffer的主要用处是将字节数据转换为一个DataInputStream
       private DataInputBuffer din = new DataInputBuffer();
       private FileAttributes fAttr;
     
       public InMemoryInputStream(Path f) throws IOException {
         synchronized (RawInMemoryFileSystem.this) {
+          // 获取文件的FileAttributes对象
           fAttr = pathToFileAttribs.get(getPath(f));
           if (fAttr == null) { 
             throw new FileNotFoundException("File " + f + " does not exist");
-          }                            
+          }
+          // 设置文件数据
           din.reset(fAttr.data, 0, fAttr.size);
         }
       }
@@ -120,6 +129,7 @@ public class InMemoryFileSystem extends ChecksumFileSystem {
       }
 
       public int read(byte[] b, int off, int len) throws IOException {
+        // 从DataInputBuffer中读取数据
         return din.read(b, off, len);
       }
     
@@ -234,6 +244,7 @@ public class InMemoryFileSystem extends ChecksumFileSystem {
         if (exists(dst)) {
           throw new IOException ("Path " + dst + " already exists");
         }
+        // 先从pathToFileAttribs中取出，然后修改文件名并且放回
         FileAttributes fAttr = pathToFileAttribs.remove(getPath(src));
         if (fAttr == null) return false;
         pathToFileAttribs.put(getPath(dst), fAttr);
@@ -378,6 +389,7 @@ public class InMemoryFileSystem extends ChecksumFileSystem {
       return f.toUri().getPath();
     }
   
+    // 用于描述预留空间和该空间大小的信息
     private static class FileAttributes {
       private byte[] data;
       private int size;
