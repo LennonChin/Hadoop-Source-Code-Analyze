@@ -24,6 +24,8 @@ import java.io.IOException;
  * Superclass of all protocols that use Hadoop RPC.
  * Subclasses of this interface are also supposed to have
  * a static final long versionID field.
+ *
+ * 版本约定接口
  */
 public interface VersionedProtocol {
   

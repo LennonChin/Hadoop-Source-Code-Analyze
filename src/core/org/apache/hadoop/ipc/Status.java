@@ -19,6 +19,7 @@ package org.apache.hadoop.ipc;
 
 /**
  * Status of a Hadoop IPC call.
+ * 定义了远程过程调用的返回结果
  */
 enum Status {
   SUCCESS (0),

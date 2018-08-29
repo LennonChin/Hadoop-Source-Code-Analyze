@@ -31,6 +31,8 @@ import org.apache.hadoop.security.SaslRpcServer.AuthMethod;
 /**
  * The IPC connection header sent by the client to the server
  * on connection establishment.
+ *
+ * IPC客户端与服务器简历连接时发送的消息头
  */
 class ConnectionHeader implements Writable {
   public static final Log LOG = LogFactory.getLog(ConnectionHeader.class);

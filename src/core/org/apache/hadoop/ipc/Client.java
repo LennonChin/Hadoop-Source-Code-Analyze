@@ -184,7 +184,17 @@ public class Client {
   private class Connection extends Thread {
     private InetSocketAddress server;             // server ip:port
     private String serverPrincipal;  // server's krb5 principal name
+    /**
+     * 连接消息头，客户端与服务器间TCP连接建立后交换的第一条消息
+     * 携带了ConnectionId中的用户信息和IPC接口信息
+     * 分别用于服务器对连接的权限检查，并检查服务器是否实现了请求的IPC接口
+     */
     private ConnectionHeader header;              // connection header
+    /**
+     * 客户端会复用到服务器的连接，以提高通讯效率
+     * 连接标识，用于区分不同的连接
+     * 具有相同的remoteId的多个IPC客户端共享同一个IPC连接
+     */
     private final ConnectionId remoteId;                // connection id
     private AuthMethod authMethod; // authentication method
     private boolean useSasl;
@@ -886,8 +896,12 @@ public class Client {
     }
   }
 
-  /** Call implementation used for parallel calls. */
+  /**
+   * Call implementation used for parallel calls.
+   * 并行调用多个远程IPC服务器上的方法，并等待这些请求都得到响应，或者超时
+   * */
   private class ParallelCall extends Call {
+    // 保存已经返回的部分结果
     private ParallelResults results;
     private int index;
     
@@ -903,7 +917,10 @@ public class Client {
     }
   }
 
-  /** Result collector for parallel calls. */
+  /**
+   * Result collector for parallel calls.
+   * 辅助类，用于在ParallelCall中并发请求时保存已经返回的部分结果
+   * */
   private static class ParallelResults {
     private Writable[] values;
     private int size;
@@ -1044,14 +1061,16 @@ public class Client {
                        throws InterruptedException, IOException {
     Call call = new Call(param);
     Connection connection = getConnection(remoteId, call);
+    // 发送远程过程调用
     connection.sendParam(call);                 // send the parameter
     boolean interrupted = false;
     synchronized (call) {
       while (!call.done) {
         try {
+          // 等待直到收到调用结果
           call.wait();                           // wait for the result
         } catch (InterruptedException ie) {
-          // save the fact that we were interrupted
+          // 如果发生中断，就记录中断的状态
           interrupted = true;
         }
       }
@@ -1208,8 +1227,11 @@ public class Client {
     * to servers are uniquely identified by <remoteAddress, protocol, ticket>
     */
    static class ConnectionId {
+     // 服务器地址
      InetSocketAddress address;
+     // 用户和用户所在用户组的信息
      UserGroupInformation ticket;
+     // IPC接口对应的类对象
      Class<?> protocol;
      private static final int PRIME = 16777619;
      private int rpcTimeout;

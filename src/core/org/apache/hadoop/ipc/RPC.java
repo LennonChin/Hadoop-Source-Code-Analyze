@@ -221,7 +221,11 @@ public class RPC {
       if (logDebug) {
         startTime = System.currentTimeMillis();
       }
-
+      /**
+       * 首先根据method和args生成Invocation对象，
+       * 然后调用client的call方法，使用Invocation对象创建远程调用的Client.Call对象
+       * 将该对象序列化并通过IPC连接发送到服务器
+       */
       ObjectWritable value = (ObjectWritable)
         client.call(new Invocation(method, args), remoteId);
       if (logDebug) {

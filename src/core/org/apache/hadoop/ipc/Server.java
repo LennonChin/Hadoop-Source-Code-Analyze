@@ -1294,17 +1294,17 @@ public abstract class Server {
     private void processData(byte[] buf) throws  IOException, InterruptedException {
       DataInputStream dis =
         new DataInputStream(new ByteArrayInputStream(buf));
-      int id = dis.readInt();                    // try to read an id
+      int id = dis.readInt(); // 读取调用id
         
       if (LOG.isDebugEnabled())
         LOG.debug(" got #" + id);
 
-      Writable param = ReflectionUtils.newInstance(paramClass, conf);//read param
+      Writable param = ReflectionUtils.newInstance(paramClass, conf); // 读取参数
       param.readFields(dis);        
         
-      Call call = new Call(id, param, this);
-      callQueue.put(call);              // queue the call; maybe blocked here
-      incRpcCount();  // Increment the rpc count
+      Call call = new Call(id, param, this); // 反序列化为Call对象
+      callQueue.put(call); // 扔进待处理队列，这里可能被阻塞
+      incRpcCount();  // 维护RPC请求数量记录
     }
 
     private boolean authorizeConnection() throws IOException {
@@ -1403,16 +1403,20 @@ public abstract class Server {
             // responder.doResponse() since setupResponse may use
             // SASL to encrypt response data and SASL enforces
             // its own message ordering.
+            // SASL, Simple Authentication and Security Layer
             setupResponse(buf, call, 
                         (error == null) ? Status.SUCCESS : Status.ERROR, 
                         value, errorClass, error);
           // Discard the large buf and reset it back to 
           // smaller size to freeup heap
           if (buf.size() > maxRespSize) {
+            // 超过1M的响应结果将被认为是过大的响应
             LOG.warn("Large response size " + buf.size() + " for call " + 
                 call.toString());
+              // 重置buf
               buf = new ByteArrayOutputStream(INITIAL_RESP_BUF_SIZE);
             }
+            // 由响应器进行响应
             responder.doRespond(call);
           }
         } catch (InterruptedException e) {

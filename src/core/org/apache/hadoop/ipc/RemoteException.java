@@ -23,6 +23,9 @@ import java.lang.reflect.Constructor;
 
 import org.xml.sax.Attributes;
 
+/**
+ * 远程异常，应用于IPC客户端，表示远程过程调用中的错误
+ */
 public class RemoteException extends IOException {
   /** For java.io.Serializable */
   private static final long serialVersionUID = 1L;
@@ -43,7 +46,7 @@ public class RemoteException extends IOException {
    * then return this exception.
    * <p>
    * Unwraps any IOException.
-   * 
+   *
    * @param lookupTypes the desired exception class.
    * @return IOException, which is either the lookupClass exception or this.
    */
@@ -66,11 +69,11 @@ public class RemoteException extends IOException {
 
   /**
    * Instantiate and return the exception wrapped up by this remote exception.
-   * 
+   *
    * <p> This unwraps any <code>Throwable</code> that has a constructor taking
    * a <code>String</code> as a parameter.
    * Otherwise it returns this.
-   * 
+   *
    * @return <code>Throwable
    */
   public IOException unwrapRemoteException() {
@@ -100,6 +103,6 @@ public class RemoteException extends IOException {
   /** Create RemoteException from attributes */
   public static RemoteException valueOf(Attributes attrs) {
     return new RemoteException(attrs.getValue("class"),
-        attrs.getValue("message")); 
+        attrs.getValue("message"));
   }
 }
