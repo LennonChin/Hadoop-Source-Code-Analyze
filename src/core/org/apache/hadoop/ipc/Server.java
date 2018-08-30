@@ -296,8 +296,11 @@ public abstract class Server {
       // Create a new server socket and set to non blocking mode
       acceptChannel = ServerSocketChannel.open();
       acceptChannel.configureBlocking(false);
-
-      // Bind the server socket to the local host and port
+  
+      /**
+       * 绑定主机地址和端口
+       * backlogLength：等待连接队列的最大容量，可通过${ipc.server.listen.queue.size}指定，当队列满后，新的连接请求会被拒绝
+       */
       bind(acceptChannel.socket(), address, backlogLength);
       port = acceptChannel.socket().getLocalPort(); //Could be an ephemeral port
       // create a selector;
@@ -444,6 +447,7 @@ public abstract class Server {
             try {
               if (key.isValid()) {
                 if (key.isAcceptable())
+                  // 处理Accept事件
                   doAccept(key);
               }
             } catch (IOException e) {
@@ -454,6 +458,7 @@ public abstract class Server {
           // we can run out of memory if we have too many threads
           // log the event and sleep for a minute and give 
           // some thread(s) a chance to finish
+          // 内存溢出
           LOG.warn("Out of Memory in server select", e);
           closeCurrentConnection(key, e);
           cleanupConnections(true);
@@ -542,6 +547,7 @@ public abstract class Server {
         LOG.info(getName() + ": readAndProcess threw exception " + e + ". Count of bytes read: " + count, e);
         count = -1; //so that the (count < 0) block is executed
       }
+      // 当返回值小于0时会关闭连接
       if (count < 0) {
         if (LOG.isDebugEnabled())
           LOG.debug(getName() + ": disconnecting client " + 
@@ -824,20 +830,24 @@ public abstract class Server {
 
   /** Reads calls from a connection and queues them for handling. */
   public class Connection {
-    private boolean rpcHeaderRead = false; // if initial rpc header is read
-    private boolean headerRead = false;  //if the connection header that
-                                         //follows version is read.
+    // 是否已读入初始化RPC头
+    private boolean rpcHeaderRead = false;
+    // 是否已读入连接消息头
+    private boolean headerRead = false;
 
     private SocketChannel channel;
+    // 缓冲区和其大小
     private ByteBuffer data;
     private ByteBuffer dataLengthBuffer;
+    // 应答队列
     private LinkedList<Call> responseQueue;
-    private volatile int rpcCount = 0; // number of outstanding rpcs
+    // 当前正在处理的RPC请求量
+    private volatile int rpcCount = 0;
+    // 本连接中的客户端与服务器最后通信时间
     private long lastContact;
     private int dataLength;
     private Socket socket;
-    // Cache the remote host & port info so that even if the socket is 
-    // disconnected, we can say where it used to connect to.
+    // 缓存客户端的主机号和端口，以便在连接中断时也能知道以前是否连接过
     private String hostAddress;
     private int remotePort;
     private InetAddress addr;
@@ -856,7 +866,7 @@ public abstract class Server {
     UserGroupInformation user = null;
     public UserGroupInformation attemptingUser = null; // user name before auth
 
-    // Fake 'call' for failed authorization response
+    // 鉴权失败时的应答
     private final int AUTHROIZATION_FAILED_CALLID = -1;
     private final Call authFailedCall = 
       new Call(AUTHROIZATION_FAILED_CALLID, null, this);
@@ -1090,12 +1100,14 @@ public abstract class Server {
          * then iterate until we read first RPC or until there is no data left.
          */    
         int count = -1;
+        // 读取魔数，4字节
         if (dataLengthBuffer.remaining() > 0) {
           count = channelRead(channel, dataLengthBuffer);       
           if (count < 0 || dataLengthBuffer.remaining() > 0) 
             return count;
         }
       
+        // 读连接头信息，第一个字节为版本信息，第二个字节为AuthMethod
         if (!rpcHeaderRead) {
           //Every connection is expected to send the header.
           if (rpcHeaderBuffer == null) {
@@ -1109,7 +1121,11 @@ public abstract class Server {
           byte[] method = new byte[] {rpcHeaderBuffer.get(1)};
           authMethod = AuthMethod.read(new DataInputStream(
               new ByteArrayInputStream(method)));
-          dataLengthBuffer.flip();          
+          dataLengthBuffer.flip();
+          /**
+           * 如果魔数或者版本信息不对，将会打印警告日志，并直接返回-1
+           * 在上层方法{@link Listener#doRead}中如果拿到-1返回值会关闭连接
+           */
           if (!HEADER.equals(dataLengthBuffer) || version != CURRENT_VERSION) {
             //Warning is ok since this is not supposed to happen.
             LOG.warn("Incorrect header or version mismatch from " + 
@@ -1150,6 +1166,7 @@ public abstract class Server {
         
         if (data == null) {
           dataLengthBuffer.flip();
+          // 读取主体数据（可以是连接头，也可以是IPC调用信息数据）的长度
           dataLength = dataLengthBuffer.getInt();
        
           if (dataLength == Client.PING_CALL_ID) {
@@ -1165,6 +1182,7 @@ public abstract class Server {
           data = ByteBuffer.allocate(dataLength);
         }
         
+        // 读取主体数据
         count = channelRead(channel, data);
         
         if (data.remaining() == 0) {
@@ -1179,6 +1197,7 @@ public abstract class Server {
           if (useSasl) {
             saslReadAndProcess(data.array());
           } else {
+            // 处理RPC操作
             processOneRpc(data.array());
           }
           data = null;
@@ -1192,10 +1211,12 @@ public abstract class Server {
 
     /// Reads the connection header following version
     private void processHeader(byte[] buf) throws IOException {
+      // 读入连接头信息
       DataInputStream in =
         new DataInputStream(new ByteArrayInputStream(buf));
       header.readFields(in);
       try {
+        // 获取protocol，并判断Server端是否实现了相应的protocol
         String protocolClassName = header.getProtocol();
         if (protocolClassName != null) {
           protocol = getProtocolClass(header.getProtocol(), conf);
@@ -1203,7 +1224,7 @@ public abstract class Server {
       } catch (ClassNotFoundException cnfe) {
         throw new IOException("Unknown protocol: " + header.getProtocol());
       }
-      
+      // 处理客户端权限验证相关的业务
       UserGroupInformation protocolUser = header.getUgi();
       if (!useSasl) {
         user = protocolUser;
@@ -1279,10 +1300,13 @@ public abstract class Server {
     private void processOneRpc(byte[] buf) throws IOException,
         InterruptedException {
       if (headerRead) {
+        // 处理IPC调用数据
         processData(buf);
       } else {
+        // 处理连接头数据
         processHeader(buf);
         headerRead = true;
+        // 验证客户端权限
         if (!authorizeConnection()) {
           throw new AccessControlException("Connection from " + this
               + " for protocol " + header.getProtocol()

@@ -4,12 +4,7 @@
     <list default="true" id="0e19b82a-85fd-4a20-a9e1-4808272c9caa" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/ConnectionHeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/ConnectionHeader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/RPC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/RPC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/RemoteException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/RemoteException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Status.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Status.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/VersionedProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/VersionedProtocol.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,8 +21,14 @@
       <file leaf-file-name="Client.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="791" column="22" selection-start-line="791" selection-start-column="22" selection-end-line="791" selection-end-column="22" />
+            <state relative-caret-position="20">
+              <caret line="706" column="27" lean-forward="true" selection-start-line="706" selection-start-column="27" selection-end-line="706" selection-end-column="27" />
+              <folding>
+                <element signature="e#2831#2857#0" expanded="true" />
+                <element signature="e#7398#7413#0" expanded="true" />
+                <element signature="e#10396#10397#0" expanded="true" />
+                <element signature="e#10454#10455#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -35,71 +36,22 @@
       <file leaf-file-name="Server.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="1405" column="61" selection-start-line="1405" selection-start-column="61" selection-end-line="1405" selection-end-column="61" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserGroupInformation.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/security/UserGroupInformation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="1081" column="22" selection-start-line="1081" selection-start-column="22" selection-end-line="1081" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Configuration.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configuration.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="522" column="13" selection-start-line="522" selection-start-column="13" selection-end-line="522" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommonConfigurationKeys.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/CommonConfigurationKeys.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="33" column="49" selection-start-line="33" selection-start-column="49" selection-end-line="33" selection-end-column="49" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RPC.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/RPC.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="554" column="20" selection-start-line="554" selection-start-column="20" selection-end-line="554" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObjectWritable.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/ObjectWritable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="55" column="2" selection-start-line="55" selection-start-column="2" selection-end-line="55" selection-end-column="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VersionedProtocol.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/VersionedProtocol.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="27" column="7" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ConnectionHeader.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/ConnectionHeader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="110" selection-start-line="110" selection-end-line="110" />
+            <state relative-caret-position="397">
+              <caret line="1308" column="16" selection-start-line="1308" selection-start-column="16" selection-end-line="1308" selection-end-column="16" />
+              <folding>
+                <element signature="e#57838#57839#0" expanded="true" />
+                <element signature="e#57859#57860#0" expanded="true" />
+                <element signature="e#57964#57965#0" expanded="true" />
+                <element signature="e#58004#58005#0" expanded="true" />
+                <element signature="e#58108#58109#0" expanded="true" />
+                <element signature="e#58147#58148#0" expanded="true" />
+                <element signature="e#59607#59608#0" expanded="true" />
+                <element signature="e#59645#59646#0" expanded="true" />
+                <element signature="e#61107#61108#0" expanded="true" />
+                <element signature="e#61138#61139#0" expanded="true" />
+                <element signature="e#61280#61281#0" expanded="true" />
+                <element signature="e#61313#61314#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -108,9 +60,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>LogFactory</find>
-      <find>properties</find>
-      <find>SAX</find>
       <find>sax</find>
       <find>generationStamp</find>
       <find>comparators</find>
@@ -137,6 +86,10 @@
       <find>callQueue.p</find>
       <find>callQueue.put</find>
       <find>maxRespSize</find>
+      <find>shouldCloseConnection</find>
+      <find>headerRe</find>
+      <find>hrpc</find>
+      <find>maxRetries</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -217,7 +170,7 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="38" />
+    <option name="x" value="97" />
     <option name="y" value="23" />
     <option name="width" value="1861" />
     <option name="height" value="985" />
@@ -391,10 +344,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74864000" />
+    <option name="totallyTimeSpent" value="84428000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="38" y="23" width="1861" height="985" extended-state="0" />
+    <frame x="97" y="23" width="1861" height="985" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
@@ -444,27 +397,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/net/URLStreamHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="71" column="74" selection-start-line="71" selection-start-column="74" selection-end-line="71" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FsUrlStreamHandlerFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="63" column="10" selection-start-line="63" selection-start-column="10" selection-end-line="63" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FsUrlConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="32" column="29" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/net/URL.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="313">
@@ -542,13 +474,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/net/NetUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="372" column="20" selection-start-line="372" selection-start-column="20" selection-end-line="372" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/ChecksumDistributedFileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -581,13 +506,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="427">
           <caret line="488" column="60" selection-start-line="488" selection-start-column="60" selection-end-line="488" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/DataOutputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="103" column="29" selection-start-line="103" selection-start-column="29" selection-end-line="103" selection-end-column="29" />
         </state>
       </provider>
     </entry>
@@ -682,13 +600,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/ByteArrayInputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="43" column="6" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/DataInputBuffer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
@@ -736,71 +647,133 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/VersionedProtocol.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
+        <state relative-caret-position="220">
           <caret line="27" column="7" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/ObjectWritable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
+        <state relative-caret-position="640">
           <caret line="55" column="2" selection-start-line="55" selection-start-column="2" selection-end-line="55" selection-end-column="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/ConnectionHeader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
+        <state relative-caret-position="1700">
           <caret line="110" selection-start-line="110" selection-end-line="110" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="791" column="22" selection-start-line="791" selection-start-column="22" selection-end-line="791" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/lang/Thread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="138" column="6" selection-start-line="138" selection-start-column="6" selection-end-line="138" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/CommonConfigurationKeys.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
+        <state relative-caret-position="340">
           <caret line="33" column="49" selection-start-line="33" selection-start-column="49" selection-end-line="33" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configuration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
+        <state relative-caret-position="8800">
           <caret line="522" column="13" selection-start-line="522" selection-start-column="13" selection-end-line="522" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/RPC.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
+        <state relative-caret-position="10000">
           <caret line="554" column="20" selection-start-line="554" selection-start-column="20" selection-end-line="554" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/security/UserGroupInformation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
+        <state relative-caret-position="119">
           <caret line="1081" column="22" selection-start-line="1081" selection-start-column="22" selection-end-line="1081" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/net/ServerSocket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="348" column="53" lean-forward="true" selection-start-line="347" selection-start-column="32" selection-end-line="348" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/net/NetUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="653" column="40" lean-forward="true" selection-start-line="653" selection-start-column="40" selection-end-line="653" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/lang/Thread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="672" column="29" selection-start-line="672" selection-start-column="29" selection-end-line="672" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/ByteArrayInputStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="102" column="11" selection-start-line="102" selection-start-column="11" selection-end-line="102" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/DataOutputStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29">
+          <caret line="184" column="5" lean-forward="true" selection-start-line="184" selection-start-column="5" selection-end-line="184" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/DataOutput.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/security/SaslRpcServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="153" column="47" lean-forward="true" selection-start-line="153" selection-start-column="47" selection-end-line="153" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="706" column="27" lean-forward="true" selection-start-line="706" selection-start-column="27" selection-end-line="706" selection-end-column="27" />
+          <folding>
+            <element signature="e#2831#2857#0" expanded="true" />
+            <element signature="e#7398#7413#0" expanded="true" />
+            <element signature="e#10396#10397#0" expanded="true" />
+            <element signature="e#10454#10455#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="1405" column="61" selection-start-line="1405" selection-start-column="61" selection-end-line="1405" selection-end-column="61" />
+        <state relative-caret-position="397">
+          <caret line="1308" column="16" selection-start-line="1308" selection-start-column="16" selection-end-line="1308" selection-end-column="16" />
+          <folding>
+            <element signature="e#57838#57839#0" expanded="true" />
+            <element signature="e#57859#57860#0" expanded="true" />
+            <element signature="e#57964#57965#0" expanded="true" />
+            <element signature="e#58004#58005#0" expanded="true" />
+            <element signature="e#58108#58109#0" expanded="true" />
+            <element signature="e#58147#58148#0" expanded="true" />
+            <element signature="e#59607#59608#0" expanded="true" />
+            <element signature="e#59645#59646#0" expanded="true" />
+            <element signature="e#61107#61108#0" expanded="true" />
+            <element signature="e#61138#61139#0" expanded="true" />
+            <element signature="e#61280#61281#0" expanded="true" />
+            <element signature="e#61313#61314#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

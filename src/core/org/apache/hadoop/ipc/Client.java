@@ -182,7 +182,8 @@ public class Client {
    * socket connected to a remote address.  Calls are multiplexed through this
    * socket: responses may be delivered out of order. */
   private class Connection extends Thread {
-    private InetSocketAddress server;             // server ip:port
+    // IPC服务器地址
+    private InetSocketAddress server;
     private String serverPrincipal;  // server's krb5 principal name
     /**
      * 连接消息头，客户端与服务器间TCP连接建立后交换的第一条消息
@@ -201,7 +202,8 @@ public class Client {
     private Token<? extends TokenIdentifier> token;
     private SaslRpcClient saslRpcClient;
     
-    private Socket socket = null;                 // connected socket
+    // TCP连接的Socket对象
+    private Socket socket = null;
     private DataInputStream in;
     private DataOutputStream out;
     private int rpcTimeout;
@@ -211,11 +213,14 @@ public class Client {
     private boolean tcpNoDelay; // if T then disable Nagle's Algorithm
     private int pingInterval; // how often sends ping to the server in msecs
     
-    // currently active calls
+    // 当前正在处理的远程调用
     private Hashtable<Integer, Call> calls = new Hashtable<Integer, Call>();
-    private AtomicLong lastActivity = new AtomicLong();// last I/O activity time
-    private AtomicBoolean shouldCloseConnection = new AtomicBoolean();  // indicate if the connection is closed
-    private IOException closeException; // close reason
+    // I/O操作的最后一次时间
+    private AtomicLong lastActivity = new AtomicLong();
+    // 连接关闭的标志
+    private AtomicBoolean shouldCloseConnection = new AtomicBoolean();
+    // 导致IPC连接关闭的异常
+    private IOException closeException;
 
     public Connection(ConnectionId remoteId) throws IOException {
       this.remoteId = remoteId;
@@ -294,6 +299,7 @@ public class Client {
      * @return true if the call was added.
      */
     private synchronized boolean addCall(Call call) {
+      // 当连接正处于关闭状态时，返回false，以防止IPC调用的放入
       if (shouldCloseConnection.get())
         return false;
       calls.put(call.id, call);
@@ -418,6 +424,7 @@ public class Client {
       while (true) {
         try {
           this.socket = socketFactory.createSocket();
+          // 设置TcpNoDelay标志，配置项 ${ipc.client.tcpnodelay} 用于控制这个变量
           this.socket.setTcpNoDelay(tcpNoDelay);
           
           /*
@@ -564,12 +571,15 @@ public class Client {
           LOG.debug("Connecting to "+server);
         }
         short numRetries = 0;
+        // 重试建立连接的最大次数，可以通过${ipc.client.connect.max.retries}设置
         final short maxRetries = 15;
         Random rand = null;
         while (true) {
+          // 建立连接
           setupConnection();
           InputStream inStream = NetUtils.getInputStream(socket);
           OutputStream outStream = NetUtils.getOutputStream(socket);
+          // 与IPC服务器握手，将IPC魔数、协议版本号及认证方法写到服务器
           writeRpcHeader(outStream);
           if (useSasl) {
             final InputStream in2 = inStream;
@@ -613,12 +623,13 @@ public class Client {
               (new PingInputStream(inStream)));
           this.out = new DataOutputStream
           (new BufferedOutputStream(outStream));
+          // 将连接头写到服务器
           writeHeader();
 
-          // update last activity time
+          // 记录最后一次I/O发生的时间
           touch();
 
-          // start the receiver thread after the socket connection has been set up
+          // 启动接收响应的线程
           start();
           return;
         }
@@ -677,9 +688,9 @@ public class Client {
     private void writeRpcHeader(OutputStream outStream) throws IOException {
       DataOutputStream out = new DataOutputStream(new BufferedOutputStream(outStream));
       // Write out the header, version and authentication method
-      out.write(Server.HEADER.array());
-      out.write(Server.CURRENT_VERSION);
-      authMethod.write(out);
+      out.write(Server.HEADER.array()); // IPC魔数，hrpc
+      out.write(Server.CURRENT_VERSION); // 协议版本号，4
+      authMethod.write(out); // 认证方法
       out.flush();
     }
     
@@ -689,7 +700,7 @@ public class Client {
     private void writeHeader() throws IOException {
       // Write out the ConnectionHeader
       DataOutputBuffer buf = new DataOutputBuffer();
-      header.write(buf);
+      header.write(buf); // header即是ConnectionHeader对象
       
       // Write out the payload length
       int bufLen = buf.getLength();
@@ -1200,7 +1211,11 @@ public class Client {
       throw new IOException("The client is stopped");
     }
     Connection connection;
-    /* we could avoid this allocation for each RPC by having a  
+    /**
+     * 在while的循环条件中，尝试调用addCall将call对象放入connection中，
+     * 如果addCall返回false表示当前connection正处于关闭过程中，
+     * 因此该connection是不可用的，需要重新获取
+     * we could avoid this allocation for each RPC by having a
      * connectionsId object and with set() method. We need to manage the
      * refs for keys in HashMap properly. For now its ok.
      */
@@ -1218,6 +1233,7 @@ public class Client {
     //block above. The reason for that is if the server happens to be slow,
     //it will take longer to establish a connection and that will slow the
     //entire system down.
+     // 与服务器建立连接
     connection.setupIOstreams();
     return connection;
   }
