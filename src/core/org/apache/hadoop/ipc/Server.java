@@ -1169,7 +1169,7 @@ public abstract class Server {
           // 读取主体数据（可以是连接头，也可以是IPC调用信息数据）的长度
           dataLength = dataLengthBuffer.getInt();
        
-          if (dataLength == Client.PING_CALL_ID) {
+          if (dataLength == Client.PING_CALL_ID) { // 读到心跳消息，直接清空缓冲区，并返回0
             if(!useWrap) { //covers the !useSasl too
               dataLengthBuffer.clear();
               return 0;  //ping message
@@ -1549,10 +1549,13 @@ public abstract class Server {
   throws IOException {
     response.reset();
     DataOutputStream out = new DataOutputStream(response);
-    out.writeInt(call.id);                // write call id
-    out.writeInt(status.state);           // write status
+    // 写入call id
+    out.writeInt(call.id);
+    // 写入状态
+    out.writeInt(status.state);
 
     if (status == Status.SUCCESS) {
+      // 写入结果数据
       rv.write(out);
     } else {
       WritableUtils.writeString(out, errorClass);

@@ -317,11 +317,10 @@ public class Client {
         super(in);
       }
 
-      /* Process timeout exception
-       * if the connection is not going to be closed or 
-       * is not configured to have a RPC timeout, send a ping.
-       * (if rpcTimeout is not set to be 0, then RPC should timeout.
-       * otherwise, throw the timeout exception.
+      /**
+       * 处理超时异常，
+       * 如果连接正在关闭，或没有运行，或设置了RPC超时时间，将抛出异常
+       * 否则将发送一个心跳消息
        */
       private void handleTimeout(SocketTimeoutException e) throws IOException {
         if (shouldCloseConnection.get() || !running.get() || rpcTimeout > 0) {
@@ -331,11 +330,7 @@ public class Client {
         }
       }
       
-      /** Read a byte from the stream.
-       * Send a ping if timeout on read. Retries if no failure is detected
-       * until a byte is read.
-       * @throws IOException for any IO problem other than socket timeout
-       */
+      //不断重试读取操作，如果读操作超时，将发送一个心跳消息
       public int read() throws IOException {
         do {
           try {
@@ -346,12 +341,7 @@ public class Client {
         } while (true);
       }
 
-      /** Read bytes into a buffer starting from offset <code>off</code>
-       * Send a ping if timeout on read. Retries if no failure is detected
-       * until a byte is read.
-       * 
-       * @return the total number of bytes read; -1 if the connection is closed.
-       */
+      // 不断重试读入部分字节到缓冲区buf中，如果读操作超时，将发送一个心跳消息
       public int read(byte[] buf, int off, int len) throws IOException {
         do {
           try {
@@ -619,6 +609,7 @@ public class Client {
               useSasl = false;
             }
           }
+          // 将PingInputStream类型的扩展流作为输入流，扩展心跳检查方法
           this.in = new DataInputStream(new BufferedInputStream
               (new PingInputStream(inStream)));
           this.out = new DataOutputStream
@@ -715,24 +706,31 @@ public class Client {
      * Return true if it is time to read a response; false otherwise.
      */
     private synchronized boolean waitForWork() {
+      // 目前没有正在处理的远程调用 || 连接不需要关闭 || 客户端还处于运行状态
       if (calls.isEmpty() && !shouldCloseConnection.get()  && running.get())  {
+        // 计算无通信的持续的超时时间（针对于maxIdleTime）
         long timeout = maxIdleTime-
               (System.currentTimeMillis()-lastActivity.get());
         if (timeout>0) {
           try {
+            // 进入等待
             wait(timeout);
           } catch (InterruptedException e) {}
         }
       }
       
       if (!calls.isEmpty() && !shouldCloseConnection.get() && running.get()) {
+        // 当需要处理响应时，返回true
         return true;
       } else if (shouldCloseConnection.get()) {
+        // 连接需要关闭时，返回false
         return false;
-      } else if (calls.isEmpty()) { // idle connection closed or stopped
+      } else if (calls.isEmpty()) {
+        // 连接长时间处于空闲状态，需要关闭，返回false
         markClosed(null);
         return false;
-      } else { // get stopped but there are still pending requests 
+      } else {
+        // 连接上还有未结束的远程调用，客户端被打断，记录原因，返回false
         markClosed((IOException)new IOException().initCause(
             new InterruptedException()));
         return false;
@@ -750,6 +748,7 @@ public class Client {
       long curTime = System.currentTimeMillis();
       if ( curTime - lastActivity.get() >= pingInterval) {
         lastActivity.set(curTime);
+        // 发送心跳消息，内容是-1
         synchronized (out) {
           out.writeInt(PING_CALL_ID);
           out.flush();
@@ -795,7 +794,9 @@ public class Client {
           call.param.write(d);
           byte[] data = d.getData();
           int dataLength = d.getLength();
+          // 输出数据长度
           out.writeInt(dataLength);      //first put the data length
+          // 输出数据
           out.write(data, 0, dataLength);//write the data
           out.flush();
         }
@@ -810,6 +811,7 @@ public class Client {
 
     /* Receive a response.
      * Because only one receiver, so no synchronization on in.
+     * 接收服务端发回的响应
      */
     private void receiveResponse() {
       if (shouldCloseConnection.get()) {
@@ -827,6 +829,7 @@ public class Client {
 
         int state = in.readInt();     // read call status
         if (state == Status.SUCCESS.state) {
+          // 读取响应结果
           Writable value = ReflectionUtils.newInstance(valueClass, conf);
           value.readFields(in);                 // read value
           call.setValue(value);
@@ -983,19 +986,19 @@ public class Client {
     if (LOG.isDebugEnabled()) {
       LOG.debug("Stopping client");
     }
-
+    // CAS设置运行状态为false
     if (!running.compareAndSet(true, false)) {
       return;
     }
     
-    // wake up all connections
+    // 唤醒所有阻塞的connection线程
     synchronized (connections) {
       for (Connection conn : connections.values()) {
         conn.interrupt();
       }
     }
     
-    // wait until all connections are closed
+    // 等待所有connection全部关闭
     while (!connections.isEmpty()) {
       try {
         Thread.sleep(100);
