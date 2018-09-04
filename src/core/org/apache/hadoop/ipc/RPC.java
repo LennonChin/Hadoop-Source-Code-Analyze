@@ -69,10 +69,18 @@ public class RPC {
   private RPC() {}                                  // no public ctor
 
 
-  /** A method invocation, including the method name and its parameters.*/
+  /**
+   * A method invocation, including the method name and its parameters.
+   *
+   * 由于在之前建立Connection的过程中，ConnectionHeader已经包含了接口的名称
+   * 所以在IPC连接上进行方法调用时不需要传递接口名称了
+   * */
   private static class Invocation implements Writable, Configurable {
+    // 方法名
     private String methodName;
+    // 形式参数列表
     private Class[] parameterClasses;
+    // 实际参数列表
     private Object[] parameters;
     private Configuration conf;
 
@@ -211,6 +219,7 @@ public class RPC {
         int rpcTimeout) throws IOException {
       this.remoteId = Client.ConnectionId.getConnectionId(address, protocol,
           ticket, rpcTimeout, conf);
+      // 初始化client成员变量
       this.client = CLIENTS.getClient(conf, factory);
     }
 

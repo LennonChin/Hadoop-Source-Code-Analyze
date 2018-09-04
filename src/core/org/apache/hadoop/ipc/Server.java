@@ -250,12 +250,16 @@ public abstract class Server {
 
   /** A call queued for handling. */
   private static class Call {
+    // 标识符
     private int id;                               // the client's call id
+    // RPC.Invocation对象
     private Writable param;                       // the parameter passed
+    // IPC连接
     private Connection connection;                // connection to client
-    private long timestamp;     // the time received when response is null
-                                   // the time served when response is not null
-    private ByteBuffer response;                      // the response for this call
+    // 用于超时检查；当response为空时为接收请求时间，当response不为空时为提供服务的时间
+    private long timestamp;     // the time received when response is null, the time served when response is not null
+    // 应答，可能是正常返回值，也有可能是异常
+    private ByteBuffer response; // the response for this call
 
     public Call(int id, Writable param, Connection connection) { 
       this.id = id;

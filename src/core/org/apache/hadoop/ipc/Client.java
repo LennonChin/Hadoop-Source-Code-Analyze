@@ -137,10 +137,18 @@ public class Client {
 
   /** A call waiting for a value. */
   private class Call {
+    // 标识符
     int id;                                       // call id
+    // RPC.Invocation对象
     Writable param;                               // parameter
+    /**
+     * 返回值
+     * 在没有异常产生的情况下，即使没有返回值，这个值也不为空，而是一个NullWritable对象
+     */
     Writable value;                               // value, null if error
+    // 异常返回时的异常
     IOException error;                            // exception, null if value
+    // 标识该调用是否已经完成
     boolean done;                                 // true when call is done
 
     protected Call(Writable param) {
@@ -820,6 +828,7 @@ public class Client {
       touch();
       
       try {
+        // 获取调用ID
         int id = in.readInt();                    // try to read an id
 
         if (LOG.isDebugEnabled())
@@ -827,12 +836,15 @@ public class Client {
 
         Call call = calls.get(id);
 
+        // 获取远程调用结果
         int state = in.readInt();     // read call status
         if (state == Status.SUCCESS.state) {
           // 读取响应结果
           Writable value = ReflectionUtils.newInstance(valueClass, conf);
+          // 读取并设置返回值
           value.readFields(in);                 // read value
           call.setValue(value);
+          // 从正在处理的远程调用的字典中移除此调用
           calls.remove(id);
         } else if (state == Status.ERROR.state) {
           call.setException(new RemoteException(WritableUtils.readString(in),
@@ -1079,6 +1091,7 @@ public class Client {
     connection.sendParam(call);                 // send the parameter
     boolean interrupted = false;
     synchronized (call) {
+      // 当call没有完成时，一直等待
       while (!call.done) {
         try {
           // 等待直到收到调用结果
