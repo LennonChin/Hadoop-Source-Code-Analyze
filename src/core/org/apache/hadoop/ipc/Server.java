@@ -88,7 +88,7 @@ import org.apache.hadoop.util.StringUtils;
 /** An abstract IPC service.  IPC calls take a single {@link Writable} as a
  * parameter, and return a {@link Writable} as their value.  A service runs on
  * a port and is defined by a parameter class and a value class.
- * 
+ *
  * @see Client
  */
 public abstract class Server {
@@ -109,29 +109,29 @@ public abstract class Server {
    * How many calls/handler are allowed in the queue.
    */
   private static final int IPC_SERVER_HANDLER_QUEUE_SIZE_DEFAULT = 100;
-  private static final String  IPC_SERVER_HANDLER_QUEUE_SIZE_KEY = 
+  private static final String  IPC_SERVER_HANDLER_QUEUE_SIZE_KEY =
                                             "ipc.server.handler.queue.size";
   
   /**
    * Initial and max size of response buffer
    */
   static int INITIAL_RESP_BUF_SIZE = 10240;
-  static final String IPC_SERVER_RPC_MAX_RESPONSE_SIZE_KEY = 
+  static final String IPC_SERVER_RPC_MAX_RESPONSE_SIZE_KEY =
                         "ipc.server.max.response.size";
   static final int IPC_SERVER_RPC_MAX_RESPONSE_SIZE_DEFAULT = 1024*1024;
   
   public static final Log LOG = LogFactory.getLog(Server.class);
-  private static final Log AUDITLOG = 
+  private static final Log AUDITLOG =
     LogFactory.getLog("SecurityLogger."+Server.class.getName());
   private static final String AUTH_FAILED_FOR = "Auth failed for ";
-  private static final String AUTH_SUCCESSFULL_FOR = "Auth successfull for "; 
+  private static final String AUTH_SUCCESSFULL_FOR = "Auth successfull for ";
 
   private static final ThreadLocal<Server> SERVER = new ThreadLocal<Server>();
 
-  private static final Map<String, Class<?>> PROTOCOL_CACHE = 
+  private static final Map<String, Class<?>> PROTOCOL_CACHE =
     new ConcurrentHashMap<String, Class<?>>();
   
-  static Class<?> getProtocolClass(String protocolName, Configuration conf) 
+  static Class<?> getProtocolClass(String protocolName, Configuration conf)
   throws ClassNotFoundException {
     Class<?> protocol = PROTOCOL_CACHE.get(protocolName);
     if (protocol == null) {
@@ -172,7 +172,7 @@ public abstract class Server {
     return (addr == null) ? null : addr.getHostAddress();
   }
 
-  private String bindAddress; 
+  private String bindAddress;
   private int port;                               // port we listen on
   private int handlerCount;                       // number of handler threads
   private int readThreads;                        // number of read threads
@@ -181,7 +181,7 @@ public abstract class Server {
                                                   // which a client may be disconnected
   private int thresholdIdleConnections;           // the number of idle connections
                                                   // after which we will start
-                                                  // cleaning up idle 
+                                                  // cleaning up idle
                                                   // connections
   int maxConnectionsToNuke;                       // the max number of 
                                                   // connections to nuke
@@ -200,7 +200,7 @@ public abstract class Server {
   volatile private boolean running = true;         // true while server runs
   private BlockingQueue<Call> callQueue; // queued calls
 
-  private List<Connection> connectionList = 
+  private List<Connection> connectionList =
     Collections.synchronizedList(new LinkedList<Connection>());
   //maintain a list
   //of client connections
@@ -219,7 +219,7 @@ public abstract class Server {
    * @throws UnknownHostException if the address isn't a valid host name
    * @throws IOException other random errors from bind
    */
-  public static void bind(ServerSocket socket, InetSocketAddress address, 
+  public static void bind(ServerSocket socket, InetSocketAddress address,
                           int backlog) throws IOException {
     try {
       socket.bind(address, backlog);
@@ -232,7 +232,7 @@ public abstract class Server {
       // If they try to bind to a different host's address, give a better
       // error message.
       if ("Unresolved address".equals(e.getMessage())) {
-        throw new UnknownHostException("Invalid hostname for server: " + 
+        throw new UnknownHostException("Invalid hostname for server: " +
                                        address.getHostName());
       } else {
         throw e;
@@ -261,7 +261,7 @@ public abstract class Server {
     // 应答，可能是正常返回值，也有可能是异常
     private ByteBuffer response; // the response for this call
 
-    public Call(int id, Writable param, Connection connection) { 
+    public Call(int id, Writable param, Connection connection) {
       this.id = id;
       this.param = param;
       this.connection = connection;
@@ -293,7 +293,7 @@ public abstract class Server {
     private long cleanupInterval = 10000; //the minimum interval between 
                                           //two cleanup runs
     private int backlogLength = conf.getInt("ipc.server.listen.queue.size", 128);
-    private ExecutorService readPool; 
+    private ExecutorService readPool;
    
     public Listener() throws IOException {
       address = new InetSocketAddress(bindAddress, port);
@@ -337,10 +337,15 @@ public abstract class Server {
           while (running) {
             SelectionKey key = null;
             try {
+              // Listener的doAccept()方法会调用startAdd()方法唤醒select等待
               readSelector.select();
+              /**
+               * Listener的doAccept()方法会调用startAdd()方法将adding标记置为true
+               * 当Listener注册完客户端通道的可读监听后，调用finishAdd()方法将adding标记为false，并且唤醒该等待
+               */
               while (adding) {
                 this.wait(1000);
-              }              
+              }
 
               Iterator<SelectionKey> iter = readSelector.selectedKeys().iterator();
               while (iter.hasNext()) {
@@ -348,6 +353,7 @@ public abstract class Server {
                 iter.remove();
                 if (key.isValid()) {
                   if (key.isReadable()) {
+                    // 进行读操作处理
                     doRead(key);
                   }
                 }
@@ -373,6 +379,7 @@ public abstract class Server {
        * in while(adding) for finishAdd call
        */
       public void startAdd() {
+        // 这个标识会在run()方法中结束等待循环
         adding = true;
         readSelector.wakeup();
       }
@@ -384,7 +391,7 @@ public abstract class Server {
 
       public synchronized void finishAdd() {
         adding = false;
-        this.notify();        
+        this.notify();
       }
     }
 
@@ -508,15 +515,21 @@ public abstract class Server {
     
     void doAccept(SelectionKey key) throws IOException,  OutOfMemoryError {
       Connection c = null;
+      // 获取Server的channel
       ServerSocketChannel server = (ServerSocketChannel) key.channel();
       SocketChannel channel;
       while ((channel = server.accept()) != null) {
+        // 设置客户端channel非阻塞
         channel.configureBlocking(false);
         channel.socket().setTcpNoDelay(tcpNoDelay);
+        // 获取一个读取器
         Reader reader = getReader();
         try {
+          // 唤醒reader读取器上的读选择操作，但让其线程处于阻塞等待
           reader.startAdd();
+          // 注册客户端channel可读键
           SelectionKey readKey = reader.registerChannel(channel);
+          // 创建一个Connection实例并attach到可读键上
           c = new Connection(readKey, channel, System.currentTimeMillis());
           readKey.attach(c);
           synchronized (connectionList) {
@@ -526,9 +539,10 @@ public abstract class Server {
           if (LOG.isDebugEnabled())
             LOG.debug("Server connection from " + c.toString() +
                 "; # active connections: " + numConnections +
-                "; # queued calls: " + callQueue.size());          
+                "; # queued calls: " + callQueue.size());
         } finally {
-          reader.finishAdd(); 
+          // 唤醒Reader线程的等待
+          reader.finishAdd();
         }
 
       }
@@ -536,13 +550,15 @@ public abstract class Server {
 
     void doRead(SelectionKey key) throws InterruptedException {
       int count = 0;
+      // 获取选择键上的附件Connection对象
       Connection c = (Connection)key.attachment();
       if (c == null) {
-        return;  
+        return;
       }
       c.setLastContact(System.currentTimeMillis());
       
       try {
+        // 读取并处理数据
         count = c.readAndProcess();
       } catch (InterruptedException ieo) {
         LOG.info(getName() + ": readAndProcess caught InterruptedException", ieo);
@@ -554,7 +570,7 @@ public abstract class Server {
       // 当返回值小于0时会关闭连接
       if (count < 0) {
         if (LOG.isDebugEnabled())
-          LOG.debug(getName() + ": disconnecting client " + 
+          LOG.debug(getName() + ": disconnecting client " +
                     c + ". Number of active connections: "+
                     numConnections);
         closeConnection(c);
@@ -563,7 +579,7 @@ public abstract class Server {
       else {
         c.setLastContact(System.currentTimeMillis());
       }
-    }   
+    }
 
     synchronized void doStop() {
       if (selector != null) {
@@ -611,14 +627,21 @@ public abstract class Server {
 
       while (running) {
         try {
-          waitPending();     // If a channel is being registered, wait.
+          /**
+           * 见 {@link Responder#processResponse} 方法
+           * 该方法与当前方法使用pending属性做操作的隔离，防止Selector的select和register操作互相影响
+           */
+          waitPending();
+          // 等待通道可写
           writeSelector.select(PURGE_INTERVAL);
           Iterator<SelectionKey> iter = writeSelector.selectedKeys().iterator();
           while (iter.hasNext()) {
             SelectionKey key = iter.next();
             iter.remove();
             try {
+              // 通道可写的时候
               if (key.isValid() && key.isWritable()) {
+                  // 写出响应
                   doAsyncWrite(key);
               }
             } catch (IOException e) {
@@ -627,29 +650,27 @@ public abstract class Server {
           }
           long now = System.currentTimeMillis();
           if (now < lastPurgeTime + PURGE_INTERVAL) {
+            // 未超时，进行下一次选择循环
             continue;
           }
           lastPurgeTime = now;
-          //
-          // If there were some calls that have not been sent out for a
-          // long time, discard them.
-          //
+          // 当某些调用结果长时间（15分钟）没有被发送，就丢弃这些结果
           LOG.debug("Checking for old call responses.");
           ArrayList<Call> calls;
           
-          // get the list of channels from list of keys.
+          // 获取writeSelector上所有key上的附件Call对象
           synchronized (writeSelector.keys()) {
             calls = new ArrayList<Call>(writeSelector.keys().size());
             iter = writeSelector.keys().iterator();
             while (iter.hasNext()) {
               SelectionKey key = iter.next();
               Call call = (Call)key.attachment();
-              if (call != null && key.channel() == call.connection.channel) { 
+              if (call != null && key.channel() == call.connection.channel) {
                 calls.add(call);
               }
             }
           }
-          
+          // 清除这些Call对象
           for(Call call : calls) {
             try {
               doPurge(call, now);
@@ -658,15 +679,10 @@ public abstract class Server {
             }
           }
         } catch (OutOfMemoryError e) {
-          //
-          // we can run out of memory if we have too many threads
-          // log the event and sleep for a minute and give
-          // some thread(s) a chance to finish
-          //
           LOG.warn("Out of Memory in server select", e);
           try { Thread.sleep(60000); } catch (Exception ie) {}
         } catch (Exception e) {
-          LOG.warn("Exception in Responder " + 
+          LOG.warn("Exception in Responder " +
                    StringUtils.stringifyException(e));
         }
       }
@@ -683,8 +699,10 @@ public abstract class Server {
       }
 
       synchronized(call.connection.responseQueue) {
+        // 返回true表明通道上没有等待的数据
         if (processResponse(call.connection.responseQueue, false)) {
           try {
+            // 清除监听的选择键
             key.interestOps(0);
           } catch (CancelledKeyException e) {
             /* The Listener/reader might have closed the socket.
@@ -733,11 +751,10 @@ public abstract class Server {
           numElements = responseQueue.size();
           if (numElements == 0) {
             error = false;
-            return true;              // no more data for this channel.
+            // 没有应答数据，直接返回true
+            return true;
           }
-          //
-          // Extract the first call
-          //
+          // 获取第一个应答
           call = responseQueue.removeFirst();
           SocketChannel channel = call.connection.channel;
           if (LOG.isDebugEnabled()) {
@@ -746,49 +763,47 @@ public abstract class Server {
           }
           //
           // Send as much data as we can in the non-blocking fashion
-          //
+          // 发送数据
           int numBytes = channelWrite(channel, call.response);
           if (numBytes < 0) {
             return true;
           }
           if (!call.response.hasRemaining()) {
+            // 应答数据已写完
             call.connection.decRpcCount();
             if (numElements == 1) {    // last call fully processes.
-              done = true;             // no more data for this channel.
+              done = true; // 该通道上没有需要写的数据
             } else {
-              done = false;            // more calls pending to be sent.
+              done = false; // 该通道上还有需要写的数据
             }
             if (LOG.isDebugEnabled()) {
               LOG.debug(getName() + ": responding to #" + call.id + " from " +
                         call.connection + " Wrote " + numBytes + " bytes.");
             }
           } else {
-            //
-            // If we were unable to write the entire response out, then 
-            // insert in Selector queue. 
-            //
+            // 应答数据没有写完，插入对猎头，等待再次发送
             call.connection.responseQueue.addFirst(call);
             
             if (inHandler) {
-              // set the serve time when the response has to be sent later
+              // 本方法在Handler中调用
               call.timestamp = System.currentTimeMillis();
-              
+              // 增加pending计数器，用于selector register时防止被select影响
               incPending();
               try {
-                // Wakeup the thread blocked on select, only then can the call 
-                // to channel.register() complete.
+                // 唤醒在select()方法上等待的Responder线程，以便再次注册选择器
                 writeSelector.wakeup();
                 channel.register(writeSelector, SelectionKey.OP_WRITE, call);
               } catch (ClosedChannelException e) {
-                //Its ok. channel might be closed else where.
+                // 通道可能在其他地方被关闭了
                 done = true;
               } finally {
+                // 释放pending计数器
                 decPending();
               }
             }
             if (LOG.isDebugEnabled()) {
               LOG.debug(getName() + ": responding to #" + call.id + " from " +
-                        call.connection + " Wrote partial " + numBytes + 
+                        call.connection + " Wrote partial " + numBytes +
                         " bytes.");
             }
           }
@@ -797,7 +812,7 @@ public abstract class Server {
       } finally {
         if (error && call != null) {
           LOG.warn(getName()+", call " + call + ": output error");
-          done = true;               // error. no more data for this channel.
+          done = true;  // 有错误产生，关闭连接，且通道上也没有数据可写了
           closeConnection(call.connection);
         }
       }
@@ -809,7 +824,9 @@ public abstract class Server {
     //
     void doRespond(Call call) throws IOException {
       synchronized (call.connection.responseQueue) {
+        // 将应答对应的远程调用对象放入IPC连接的应答队列里
         call.connection.responseQueue.addLast(call);
+        // 如果应答队列长度为1，表示应答队列比较空闲，就直接调用processResponse处理应答
         if (call.connection.responseQueue.size() == 1) {
           processResponse(call.connection.responseQueue, true);
         }
@@ -872,7 +889,7 @@ public abstract class Server {
 
     // 鉴权失败时的应答
     private final int AUTHROIZATION_FAILED_CALLID = -1;
-    private final Call authFailedCall = 
+    private final Call authFailedCall =
       new Call(AUTHROIZATION_FAILED_CALLID, null, this);
     private ByteArrayOutputStream authFailedResponse = new ByteArrayOutputStream();
     // Fake 'call' for SASL context setup
@@ -882,7 +899,7 @@ public abstract class Server {
     
     private boolean useWrap = false;
     
-    public Connection(SelectionKey key, SocketChannel channel, 
+    public Connection(SelectionKey key, SocketChannel channel,
                       long lastContact) {
       this.channel = channel;
       this.lastContact = lastContact;
@@ -907,11 +924,11 @@ public abstract class Server {
                    socketSendBufferSize);
         }
       }
-    }   
+    }
 
     @Override
     public String toString() {
-      return getHostAddress() + ":" + remotePort; 
+      return getHostAddress() + ":" + remotePort;
     }
     
     public String getHostAddress() {
@@ -1029,7 +1046,7 @@ public abstract class Server {
             }
             cause = cause.getCause();
           }
-          doSaslReply(SaslStatus.ERROR, null, sendToClient.getClass().getName(), 
+          doSaslReply(SaslStatus.ERROR, null, sendToClient.getClass().getName(),
               sendToClient.getLocalizedMessage());
           rpcMetrics.incrAuthenticationFailures();
           String clientIP = this.toString();
@@ -1102,12 +1119,12 @@ public abstract class Server {
       while (true) {
         /* Read at most one RPC. If the header is not read completely yet
          * then iterate until we read first RPC or until there is no data left.
-         */    
+         */
         int count = -1;
         // 读取魔数，4字节
         if (dataLengthBuffer.remaining() > 0) {
-          count = channelRead(channel, dataLengthBuffer);       
-          if (count < 0 || dataLengthBuffer.remaining() > 0) 
+          count = channelRead(channel, dataLengthBuffer);
+          if (count < 0 || dataLengthBuffer.remaining() > 0)
             return count;
         }
       
@@ -1132,9 +1149,9 @@ public abstract class Server {
            */
           if (!HEADER.equals(dataLengthBuffer) || version != CURRENT_VERSION) {
             //Warning is ok since this is not supposed to happen.
-            LOG.warn("Incorrect header or version mismatch from " + 
+            LOG.warn("Incorrect header or version mismatch from " +
                      hostAddress + ":" + remotePort +
-                     " got version " + version + 
+                     " got version " + version +
                      " expected version " + CURRENT_VERSION);
             return -1;
           }
@@ -1180,7 +1197,7 @@ public abstract class Server {
             }
           }
           if (dataLength < 0) {
-            LOG.warn("Unexpected data length " + dataLength + "!! from " + 
+            LOG.warn("Unexpected data length " + dataLength + "!! from " +
                 getHostAddress());
           }
           data = ByteBuffer.allocate(dataLength);
@@ -1208,7 +1225,7 @@ public abstract class Server {
           if (!isHeaderRead) {
             continue;
           }
-        } 
+        }
         return count;
       }
     }
@@ -1323,13 +1340,13 @@ public abstract class Server {
       DataInputStream dis =
         new DataInputStream(new ByteArrayInputStream(buf));
       int id = dis.readInt(); // 读取调用id
-        
+      
       if (LOG.isDebugEnabled())
         LOG.debug(" got #" + id);
 
       Writable param = ReflectionUtils.newInstance(paramClass, conf); // 读取参数
-      param.readFields(dis);        
-        
+      param.readFields(dis);
+      
       Call call = new Call(id, param, this); // 反序列化为Call对象
       callQueue.put(call); // 扔进待处理队列，这里可能被阻塞
       incRpcCount();  // 维护RPC请求数量记录
@@ -1385,11 +1402,11 @@ public abstract class Server {
     public void run() {
       LOG.info(getName() + ": starting");
       SERVER.set(Server.this);
-      ByteArrayOutputStream buf = 
+      ByteArrayOutputStream buf =
         new ByteArrayOutputStream(INITIAL_RESP_BUF_SIZE);
       while (running) {
         try {
-          final Call call = callQueue.take(); // pop the queue; maybe blocked here
+          final Call call = callQueue.take(); // 从队列中取出一个远程调用请求
 
           if (LOG.isDebugEnabled())
             LOG.debug(getName() + ": has #" + call.id + " from " +
@@ -1401,23 +1418,23 @@ public abstract class Server {
 
           CurCall.set(call);
           try {
-            // Make the call as the user via Subject.doAs, thus associating
-            // the call with the Subject
             if (call.connection.user == null) {
-              value = call(call.connection.protocol, call.param, 
+              // 不需要鉴权
+              // 通过call方法完成服务端的方法调用
+              value = call(call.connection.protocol, call.param,
                            call.timestamp);
             } else {
-              value = 
-                call.connection.user.doAs
-                  (new PrivilegedExceptionAction<Writable>() {
-                     @Override
-                     public Writable run() throws Exception {
-                       // make the call
-                       return call(call.connection.protocol, 
-                                   call.param, call.timestamp);
-
-                     }
-                   }
+              // 需要鉴权
+              value =
+                  call.connection.user.doAs(new PrivilegedExceptionAction<Writable>() {
+                                              @Override
+                                              public Writable run() throws Exception {
+                                                // 通过call方法完成服务端的方法调用
+                                                return call(call.connection.protocol,
+                                                    call.param, call.timestamp);
+        
+                                              }
+                                            }
                   );
             }
           } catch (Throwable e) {
@@ -1432,15 +1449,14 @@ public abstract class Server {
             // SASL to encrypt response data and SASL enforces
             // its own message ordering.
             // SASL, Simple Authentication and Security Layer
-            setupResponse(buf, call, 
-                        (error == null) ? Status.SUCCESS : Status.ERROR, 
+            setupResponse(buf, call,
+                        (error == null) ? Status.SUCCESS : Status.ERROR,
                         value, errorClass, error);
-          // Discard the large buf and reset it back to 
-          // smaller size to freeup heap
-          if (buf.size() > maxRespSize) {
-            // 超过1M的响应结果将被认为是过大的响应
-            LOG.warn("Large response size " + buf.size() + " for call " + 
-                call.toString());
+            // Discard the large buf and reset it back to
+            // smaller size to freeup heap
+            if (buf.size() > maxRespSize) {
+              // 超过1M的响应结果将被认为是过大的响应
+              LOG.warn("Large response size " + buf.size() + " for call " + call.toString());
               // 重置buf
               buf = new ByteArrayOutputStream(INITIAL_RESP_BUF_SIZE);
             }
@@ -1463,17 +1479,17 @@ public abstract class Server {
   }
   
   protected Server(String bindAddress, int port,
-      Class<? extends Writable> paramClass, int handlerCount, 
+      Class<? extends Writable> paramClass, int handlerCount,
       Configuration conf)
-  throws IOException 
+  throws IOException
   {
     this(bindAddress, port, paramClass, handlerCount,  conf, Integer.toString(port), null);
   }
 
   protected Server(String bindAddress, int port,
-      Class<? extends Writable> paramClass, int handlerCount, 
+      Class<? extends Writable> paramClass, int handlerCount,
       Configuration conf, String serverName)
-  throws IOException 
+  throws IOException
   {
     this(bindAddress, port, paramClass, handlerCount,  conf, serverName, null);
   }
@@ -1481,12 +1497,12 @@ public abstract class Server {
   /** Constructs a server listening on the named port and address.  Parameters passed must
    * be of the named class.  The <code>handlerCount</handlerCount> determines
    * the number of handler threads that will be used to process calls.
-   * 
+   *
    */
   @SuppressWarnings("unchecked")
-  protected Server(String bindAddress, int port, 
-                  Class<? extends Writable> paramClass, int handlerCount, 
-                  Configuration conf, String serverName, SecretManager<? extends TokenIdentifier> secretManager) 
+  protected Server(String bindAddress, int port,
+                  Class<? extends Writable> paramClass, int handlerCount,
+                  Configuration conf, String serverName, SecretManager<? extends TokenIdentifier> secretManager)
     throws IOException {
     this.bindAddress = bindAddress;
     this.conf = conf;
@@ -1502,18 +1518,18 @@ public abstract class Server {
     this.readThreads = conf.getInt(
         IPC_SERVER_RPC_READ_THREADS_KEY,
         IPC_SERVER_RPC_READ_THREADS_DEFAULT);
-    this.callQueue  = new LinkedBlockingQueue<Call>(maxQueueSize); 
+    this.callQueue  = new LinkedBlockingQueue<Call>(maxQueueSize);
     this.maxIdleTime = 2*conf.getInt("ipc.client.connection.maxidletime", 1000);
     this.maxConnectionsToNuke = conf.getInt("ipc.client.kill.max", 10);
     this.thresholdIdleConnections = conf.getInt("ipc.client.idlethreshold", 4000);
     this.secretManager = (SecretManager<TokenIdentifier>) secretManager;
-    this.authorize = 
+    this.authorize =
       conf.getBoolean(HADOOP_SECURITY_AUTHORIZATION, false);
     this.isSecurityEnabled = UserGroupInformation.isSecurityEnabled();
     
     // Start the listener here and let it bind to the port
     listener = new Listener();
-    this.port = listener.getAddress().getPort();    
+    this.port = listener.getAddress().getPort();
     this.rpcMetrics = RpcInstrumentation.create(serverName, this.port);
     this.tcpNoDelay = conf.getBoolean("ipc.server.tcpnodelay", false);
 
@@ -1538,7 +1554,7 @@ public abstract class Server {
   
   /**
    * Setup response for the IPC Call.
-   * 
+   *
    * @param response buffer to serialize the response into
    * @param call {@link Call} to which we are setting up the response
    * @param status {@link Status} of the IPC call
@@ -1547,9 +1563,9 @@ public abstract class Server {
    * @param error error message, if the call failed
    * @throws IOException
    */
-  private void setupResponse(ByteArrayOutputStream response, 
-                             Call call, Status status, 
-                             Writable rv, String errorClass, String error) 
+  private void setupResponse(ByteArrayOutputStream response,
+                             Call call, Status status,
+                             Writable rv, String errorClass, String error)
   throws IOException {
     response.reset();
     DataOutputStream out = new DataOutputStream(response);
@@ -1594,12 +1610,12 @@ public abstract class Server {
     return conf;
   }
   
-  /** for unit testing only, should be called before server is started */ 
+  /** for unit testing only, should be called before server is started */
   void disableSecurity() {
     this.isSecurityEnabled = false;
   }
   
-  /** for unit testing only, should be called before server is started */ 
+  /** for unit testing only, should be called before server is started */
   void enableSecurity() {
     this.isSecurityEnabled = true;
   }
@@ -1657,7 +1673,7 @@ public abstract class Server {
     return listener.getAddress();
   }
   
-  /** 
+  /**
    * Called for each call. 
    * @deprecated Use {@link #call(Class, Writable, long)} instead
    */
@@ -1666,20 +1682,27 @@ public abstract class Server {
     return call(null, param, receiveTime);
   }
   
-  /** Called for each call. */
+  /**
+   *
+   * @param protocol 接口名称
+   * @param param 调用方法名称、形式参数列表、实际参数列表
+   * @param receiveTime 接受请求的时间
+   * @return
+   * @throws IOException
+   */
   public abstract Writable call(Class<?> protocol,
                                Writable param, long receiveTime)
   throws IOException;
   
   /**
    * Authorize the incoming client connection.
-   * 
+   *
    * @param user client user
    * @param connection incoming connection
    * @param addr InetAddress of incoming connection
    * @throws AuthorizationException when the client isn't authorized to talk the protocol
    */
-  public void authorize(UserGroupInformation user, 
+  public void authorize(UserGroupInformation user,
                         ConnectionHeader connection,
                         InetAddress addr
                         ) throws AuthorizationException {
@@ -1688,7 +1711,7 @@ public abstract class Server {
       try {
         protocol = getProtocolClass(connection.getProtocol(), getConf());
       } catch (ClassNotFoundException cfne) {
-        throw new AuthorizationException("Unknown protocol: " + 
+        throw new AuthorizationException("Unknown protocol: " +
                                          connection.getProtocol());
       }
       ServiceAuthorizationManager.authorize(user, protocol, getConf(), addr);
@@ -1729,7 +1752,7 @@ public abstract class Server {
    *
    * @see WritableByteChannel#write(ByteBuffer)
    */
-  private int channelWrite(WritableByteChannel channel, 
+  private int channelWrite(WritableByteChannel channel,
                            ByteBuffer buffer) throws IOException {
     
     int count =  (buffer.remaining() <= NIO_BUFFER_LIMIT) ?
@@ -1746,10 +1769,10 @@ public abstract class Server {
    * If the amount of data is large, it writes to channel in smaller chunks. 
    * This is to avoid jdk from creating many direct buffers as the size of 
    * ByteBuffer increases. There should not be any performance degredation.
-   * 
+   *
    * @see ReadableByteChannel#read(ByteBuffer)
    */
-  private int channelRead(ReadableByteChannel channel, 
+  private int channelRead(ReadableByteChannel channel,
                           ByteBuffer buffer) throws IOException {
     
     int count = (buffer.remaining() <= NIO_BUFFER_LIMIT) ?
@@ -1764,11 +1787,11 @@ public abstract class Server {
    * Helper for {@link #channelRead(ReadableByteChannel, ByteBuffer)}
    * and {@link #channelWrite(WritableByteChannel, ByteBuffer)}. Only
    * one of readCh or writeCh should be non-null.
-   * 
+   *
    * @see #channelRead(ReadableByteChannel, ByteBuffer)
    * @see #channelWrite(WritableByteChannel, ByteBuffer)
    */
-  private static int channelIO(ReadableByteChannel readCh, 
+  private static int channelIO(ReadableByteChannel readCh,
                                WritableByteChannel writeCh,
                                ByteBuffer buf) throws IOException {
     
@@ -1781,18 +1804,18 @@ public abstract class Server {
         int ioSize = Math.min(buf.remaining(), NIO_BUFFER_LIMIT);
         buf.limit(buf.position() + ioSize);
         
-        ret = (readCh == null) ? writeCh.write(buf) : readCh.read(buf); 
+        ret = (readCh == null) ? writeCh.write(buf) : readCh.read(buf);
         
         if (ret < ioSize) {
           break;
         }
 
       } finally {
-        buf.limit(originalLimit);        
+        buf.limit(originalLimit);
       }
     }
 
-    int nBytes = initialRemaining - buf.remaining(); 
+    int nBytes = initialRemaining - buf.remaining();
     return (nBytes > 0) ? nBytes : ret;
-  }      
+  }
 }

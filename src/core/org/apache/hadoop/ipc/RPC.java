@@ -566,13 +566,14 @@ public class RPC {
       try {
         Invocation call = (Invocation)param;
         if (verbose) log("Call: " + call);
-
+        // 根据方法名和形式参数列表获取method
         Method method =
           protocol.getMethod(call.getMethodName(),
                                    call.getParameterClasses());
         method.setAccessible(true);
 
         long startTime = System.currentTimeMillis();
+        // 调用method
         Object value = method.invoke(instance, call.getParameters());
         int processingTime = (int) (System.currentTimeMillis() - startTime);
         int qTime = (int) (startTime-receivedTime);
