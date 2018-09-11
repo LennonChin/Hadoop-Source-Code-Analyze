@@ -1519,21 +1519,25 @@ public abstract class Server {
         IPC_SERVER_RPC_READ_THREADS_KEY,
         IPC_SERVER_RPC_READ_THREADS_DEFAULT);
     this.callQueue  = new LinkedBlockingQueue<Call>(maxQueueSize);
+    // 连接空闲时间
     this.maxIdleTime = 2*conf.getInt("ipc.client.connection.maxidletime", 1000);
+    // 一次最多清理的连接数
     this.maxConnectionsToNuke = conf.getInt("ipc.client.kill.max", 10);
+    // 连接数超过了该阈值才会进行空闲连接清理
     this.thresholdIdleConnections = conf.getInt("ipc.client.idlethreshold", 4000);
     this.secretManager = (SecretManager<TokenIdentifier>) secretManager;
     this.authorize =
       conf.getBoolean(HADOOP_SECURITY_AUTHORIZATION, false);
     this.isSecurityEnabled = UserGroupInformation.isSecurityEnabled();
     
-    // Start the listener here and let it bind to the port
+    // 创建Listener
     listener = new Listener();
     this.port = listener.getAddress().getPort();
     this.rpcMetrics = RpcInstrumentation.create(serverName, this.port);
+    // 是否禁用TCP的Nagle算法
     this.tcpNoDelay = conf.getBoolean("ipc.server.tcpnodelay", false);
 
-    // Create the responder here
+    // 创建Responder
     responder = new Responder();
     
     if (isSecurityEnabled) {
@@ -1638,16 +1642,20 @@ public abstract class Server {
   /** Stops the service.  No new calls will be handled after this is called. */
   public synchronized void stop() {
     LOG.info("Stopping server on " + port);
+    // 设置标志位
     running = false;
     if (handlers != null) {
       for (int i = 0; i < handlerCount; i++) {
         if (handlers[i] != null) {
+          // 中断线程
           handlers[i].interrupt();
         }
       }
     }
+    // 中断线程
     listener.interrupt();
     listener.doStop();
+    // 中断线程
     responder.interrupt();
     notifyAll();
     if (this.rpcMetrics != null) {

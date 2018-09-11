@@ -398,16 +398,19 @@ public class RPC {
       Class<? extends VersionedProtocol> protocol,
       long clientVersion, InetSocketAddress addr, UserGroupInformation ticket,
       Configuration conf, SocketFactory factory, int rpcTimeout) throws IOException {
-
+    // 身份鉴权
     if (UserGroupInformation.isSecurityEnabled()) {
       SaslRpcServer.init(conf);
     }
+    // 通过反射获得代理类
     VersionedProtocol proxy =
         (VersionedProtocol) Proxy.newProxyInstance(
             protocol.getClassLoader(), new Class[] { protocol },
             new Invoker(protocol, addr, ticket, conf, factory, rpcTimeout));
+    // 获取服务端的服务调用提供者接口的版本
     long serverVersion = proxy.getProtocolVersion(protocol.getName(), 
                                                   clientVersion);
+    // 比较客户端与服务端服务调用提供者接口的版本，如果不一致将抛出异常
     if (serverVersion == clientVersion) {
       return proxy;
     } else {
@@ -511,6 +514,18 @@ public class RPC {
 
   /** Construct a server for a protocol implementation instance listening on a
    * port and address, with a secret manager. */
+  /**
+   *
+   * @param instance IPC方法调用的目标接口
+   * @param bindAddress 服务器绑定的IP地址
+   * @param port 监听端口
+   * @param numHandlers Handler线程的个数
+   * @param verbose 是否打开调试方法日志
+   * @param conf 对象的配置参数
+   * @param secretManager 安全管理器
+   * @return
+   * @throws IOException
+   */
   public static Server getServer(final Object instance, final String bindAddress, final int port,
                                  final int numHandlers,
                                  final boolean verbose, Configuration conf,
