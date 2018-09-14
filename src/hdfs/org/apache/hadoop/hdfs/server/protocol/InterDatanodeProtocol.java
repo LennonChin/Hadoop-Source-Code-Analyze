@@ -28,6 +28,8 @@ import org.apache.hadoop.ipc.VersionedProtocol;
 import org.apache.hadoop.security.KerberosInfo;
 
 /** An inter-datanode protocol for updating generation stamp
+ * 数据节点与数据节点间的接口
+ * 恢复数据块，保证数据一致性等
  */
 @KerberosInfo(
     serverPrincipal = DFSConfigKeys.DFS_DATANODE_USER_NAME_KEY,

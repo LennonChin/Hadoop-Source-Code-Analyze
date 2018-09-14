@@ -25,7 +25,7 @@ import org.apache.hadoop.ipc.VersionedProtocol;
 
 /**
  * Protocol use 
- *
+ * 安全机制相关的接口
  */
 @KerberosInfo(
     serverPrincipal=CommonConfigurationKeys.HADOOP_SECURITY_SERVICE_USER_NAME_KEY)

@@ -31,10 +31,14 @@ import org.apache.hadoop.io.WritableFactory;
 
 /**
  * Collection of blocks with their locations and the file length.
+ * 用于一次定位多个数据块
  */
 public class LocatedBlocks implements Writable {
+  // 文件长度
   private long fileLength;
+  // 包含多个LocatedBlock对象
   private List<LocatedBlock> blocks; // array of blocks with prioritized locations
+  // 该文件是否处于构建状态（如客户端正在写文件）
   private boolean underConstruction;
 
   LocatedBlocks() {

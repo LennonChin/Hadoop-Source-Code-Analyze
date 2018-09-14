@@ -39,7 +39,9 @@ import org.apache.hadoop.hdfs.security.token.delegation.DelegationTokenSelector;
  * {@link org.apache.hadoop.hdfs.DistributedFileSystem} class to communicate 
  * with the NameNode.  User code can manipulate the directory namespace, 
  * as well as open/close file streams, etc.
- *
+ * 客户端与名字节点间的接口
+ * 错误发生时，客户端需要数据节点配合进行恢复
+ * 或者当客户端进行本地文件读优化时，需要通过IPC接口获取一些信息
  **********************************************************************/
 @KerberosInfo(
     serverPrincipal = DFSConfigKeys.DFS_NAMENODE_USER_NAME_KEY)

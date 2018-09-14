@@ -30,6 +30,8 @@ import org.apache.hadoop.security.KerberosInfo;
 /*****************************************************************************
  * Protocol that a secondary NameNode uses to communicate with the NameNode.
  * It's used to get part of the name node state
+ * 第二名字节点、HDFS均衡器与名字节点间的接口
+ * 镜像融合，balancer操作
  *****************************************************************************/
 @KerberosInfo(
     serverPrincipal = DFSConfigKeys.DFS_NAMENODE_USER_NAME_KEY,

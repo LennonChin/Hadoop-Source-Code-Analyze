@@ -34,7 +34,8 @@ import org.apache.hadoop.security.KerberosInfo;
  *
  * The only way a NameNode can communicate with a DataNode is by
  * returning values from these functions.
- *
+ * 数据节点与名字节点间的接口
+ * 数据节点向名称节点汇报信息等
  **********************************************************************/
 @KerberosInfo(
     serverPrincipal = DFSConfigKeys.DFS_NAMENODE_USER_NAME_KEY, 

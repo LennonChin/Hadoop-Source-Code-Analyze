@@ -44,7 +44,9 @@ public class BlockLocalPathInfo implements Writable {
   }
 
   private Block block;
+  // 本地文件的路径
   private String localBlockPath = "";  // local file storing the data
+  // 数据块校验信息文件的路径，表示的文件保存了数据块的校验信息
   private String localMetaPath = "";   // local file storing the checksum
 
   public BlockLocalPathInfo() {}

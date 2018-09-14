@@ -29,7 +29,7 @@ import org.apache.hadoop.io.WritableComparable;
  * DatanodeID is composed of the data node 
  * name (hostname:portNumber) and the data storage ID, 
  * which it currently represents.
- * 
+ * 用于在HDFS集群中确定一个数据节点
  */
 public class DatanodeID implements WritableComparable<DatanodeID> {
   public static final DatanodeID[] EMPTY_ARRAY = {}; 

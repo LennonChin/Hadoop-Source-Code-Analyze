@@ -25,6 +25,7 @@ import org.apache.hadoop.security.KerberosInfo;
 
 /**
  * Protocol which is used to refresh the authorization policy in use currently.
+ * 安全机制相关的接口
  */
 @KerberosInfo(
     serverPrincipal=CommonConfigurationKeys.HADOOP_SECURITY_SERVICE_USER_NAME_KEY)

@@ -25,7 +25,7 @@ import org.apache.hadoop.io.*;
 /**************************************************
  * A Block is a Hadoop FS primitive, identified by a 
  * long.
- *
+ * 数据块抽象
  **************************************************/
 public class Block implements Writable, Comparable<Block> {
 
@@ -57,8 +57,11 @@ public class Block implements Writable, Comparable<Block> {
     return Long.parseLong(name.substring("blk_".length()));
   }
 
+  // 数据块唯一标识
   private long blockId;
+  // 数据块包含的文件数据大小
   private long numBytes;
+  // 数据块版本号，或数据块时间戳
   private long generationStamp;
 
   public Block() {this(0, 0, 0);}
@@ -94,6 +97,7 @@ public class Block implements Writable, Comparable<Block> {
   }
 
   /**
+   * 关联的数据块名：blk_数据块ID
    */
   public String getBlockName() {
     return "blk_" + String.valueOf(blockId);
@@ -117,6 +121,7 @@ public class Block implements Writable, Comparable<Block> {
   }
 
   /**
+   * blk_数据块ID_数据块版本号
    */
   public String toString() {
     return getBlockName() + "_" + getGenerationStamp();
