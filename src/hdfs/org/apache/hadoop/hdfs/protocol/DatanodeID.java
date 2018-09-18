@@ -33,10 +33,16 @@ import org.apache.hadoop.io.WritableComparable;
  */
 public class DatanodeID implements WritableComparable<DatanodeID> {
   public static final DatanodeID[] EMPTY_ARRAY = {}; 
-
+  // 主机号:端口，或，IP:端口
   public String name;      /// hostname:portNumber
+  // 数据结点的存储标识
   public String storageID; /// unique per cluster storageID
+  // 数据结点Web服务器的监听端口
   protected int infoPort;     /// the port where the infoserver is running
+  /**
+   * 数据结点IPC服务器监听端口，
+   * 参考{@link ClientDatanodeProtocol}
+   */
   public int ipcPort;     /// the port where the ipc server is running
 
   /** Equivalent to DatanodeID(""). */

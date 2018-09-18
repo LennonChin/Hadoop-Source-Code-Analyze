@@ -38,11 +38,17 @@ import org.apache.hadoop.util.StringUtils;
  * Datanode Protocol and the Client Protocol.
  */
 public class DatanodeInfo extends DatanodeID implements Node {
+  // 容量
   protected long capacity;
+  // 已使用容量
   protected long dfsUsed;
+  // 剩余容量
   protected long remaining;
+  // 状态最后更新时间
   protected long lastUpdate;
+  // 流接口服务线程数
   protected int xceiverCount;
+  // 数据节点在集群中的位置（机架信息，默认是/default-rack）
   protected String location = NetworkTopology.DEFAULT_RACK;
 
   /** HostName as suplied by the datanode during registration as its 
@@ -50,8 +56,9 @@ public class DatanodeInfo extends DatanodeID implements Node {
    */
   protected String hostName = null;
   
-  // administrative states of a datanode
+  // 节点管理信息枚举
   public enum AdminStates {NORMAL, DECOMMISSION_INPROGRESS, DECOMMISSIONED; }
+  // 节点管理信息
   protected AdminStates adminState;
 
 
