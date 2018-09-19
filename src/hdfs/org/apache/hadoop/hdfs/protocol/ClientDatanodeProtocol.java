@@ -43,10 +43,11 @@ public interface ClientDatanodeProtocol extends VersionedProtocol {
    */
   public static final long versionID = 4L;
 
-  /** Start generation-stamp recovery for specified block
-   * @param block the specified block
-   * @param keepLength keep the block length
-   * @param targets the list of possible locations of specified block
+  /**
+   * 数据结点出错时用于尝试数据块恢复
+   * @param block 指定数据块
+   * @param keepLength 是否保留数据块长度
+   * @param targets 指定数据块可能存在的位置信息列表
    * @return either a new generation stamp, or the original generation stamp. 
    * Regardless of whether a new generation stamp is returned, a newly 
    * generated access token is returned as part of the return value.
@@ -57,6 +58,7 @@ public interface ClientDatanodeProtocol extends VersionedProtocol {
 
   /** Returns a block object that contains the specified block object
    * from the specified Datanode.
+   * 返回指定数据结点上指定数据块的信息
    * @param block the specified block
    * @return the Block object from the specified Datanode
    * @throws IOException if the block does not exist
@@ -66,6 +68,7 @@ public interface ClientDatanodeProtocol extends VersionedProtocol {
   /**
    * Retrieves the path names of the block file and metadata file stored on the
    * local file system.
+   * 获取存储在本地文件系统中数据块文件和元数据文件的路径信息
    * 
    * In order for this method to work, one of the following should be satisfied:
    * <ul>

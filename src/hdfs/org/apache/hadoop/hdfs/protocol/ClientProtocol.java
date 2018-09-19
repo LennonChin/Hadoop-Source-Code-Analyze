@@ -75,11 +75,13 @@ public interface ClientProtocol extends VersionedProtocol {
    * The client will then have to contact 
    * one of the indicated DataNodes to obtain the actual data.
    * 
-   * @param src file name
-   * @param offset range start offset
-   * @param length range length
+   * @param src 指定文件
+   * @param offset 数据开始的偏移量
+   * @param length 数据长度
    * @return file length and array of blocks with their locations
    * @throws IOException
+   * 获取指定文件指定数据区间所在的数据块的信息
+   * 由于可能指定的数据区间跨越了多个数据块，所以返回值是一个LocatedBlocks实例
    */
   public LocatedBlocks  getBlockLocations(String src,
                                           long offset,
@@ -100,14 +102,13 @@ public interface ClientProtocol extends VersionedProtocol {
    * Blocks have a maximum size.  Clients that intend to
    * create multi-block files must also use {@link #addBlock(String, String)}.
    *
-   * @param src path of the file being created.
-   * @param masked masked permission.
-   * @param clientName name of the current client.
-   * @param overwrite indicates whether the file should be 
-   * overwritten if it already exists.
-   * @param createParent create missing parent directory if true
-   * @param replication block replication factor.
-   * @param blockSize maximum block size.
+   * @param src 创建文件的路径，需要注意的是，必须使用绝对路径
+   * @param masked 文件权限
+   * @param clientName 当前客户端名称
+   * @param overwrite 是否覆盖已有文件
+   * @param createParent 是否递归创建目录
+   * @param replication 副本数
+   * @param blockSize 数据块最大大小
    * 
    * @throws AccessControlException if permission to create file is 
    * denied by the system. As usually on the client side the exception will 
@@ -115,6 +116,7 @@ public interface ClientProtocol extends VersionedProtocol {
    * @throws QuotaExceededException if the file creation violates 
    *                                any quota restriction
    * @throws IOException if other errors occur.
+   * 创建文件
    */
   public void create(String src, 
                      FsPermission masked,
@@ -138,8 +140,8 @@ public interface ClientProtocol extends VersionedProtocol {
                              ) throws IOException;
   /**
    * Append to the end of the file. 
-   * @param src path of the file being created.
-   * @param clientName name of the current client.
+   * @param src 需要操作的文件的路径
+   * @param clientName 当前客户端名称
    * @return information about the last partial block if any.
    * @throws AccessControlException if permission to append file is 
    * denied by the system. As usually on the client side the exception will 
@@ -152,17 +154,17 @@ public interface ClientProtocol extends VersionedProtocol {
   public LocatedBlock append(String src, String clientName) throws IOException;
   
   /**
-   * Start lease recovery
+   * 恢复租约
    * 
-   * @param src path of the file to start lease recovery
-   * @param clientName name of the current client
+   * @param src 需要恢复租约的文件
+   * @param clientName 当前客户端名称
    * @return true if the file is already closed
    * @throws IOException
    */
   public boolean recoverLease(String src, String clientName) throws IOException;
 
   /**
-   * Set replication for an existing file.
+   * 设置指定文件的副本数
    * <p>
    * The NameNode sets replication to the new value and returns.
    * The actual block replication is not expected to be performed during  
@@ -180,14 +182,13 @@ public interface ClientProtocol extends VersionedProtocol {
                                 ) throws IOException;
 
   /**
-   * Set permissions for an existing file/directory.
+   * 设置指定的已存在文件或目录的权限信息
    */
   public void setPermission(String src, FsPermission permission
       ) throws IOException;
 
   /**
-   * Set owner of a path (i.e. a file or a directory).
-   * The parameters username and groupname cannot both be null.
+   * 设置指定文件或目录的所有者信息，username和groupname不能全为空
    * @param src
    * @param username If it is null, the original username remains unchanged.
    * @param groupname If it is null, the original groupname remains unchanged.
@@ -196,6 +197,10 @@ public interface ClientProtocol extends VersionedProtocol {
       ) throws IOException;
 
   /**
+   * 丢弃数据块
+   * 当客户端无法连接名字节点返回的数据节点时，需要调用该方法明确放弃该数据块
+   * 然后获取新的数据块
+   * 所有在该数据块上的部分写操作都会被丢弃
    * The client can give up on a blcok by calling abandonBlock().
    * The client can then
    * either obtain a new block, or complete or abandon the file.
@@ -205,6 +210,9 @@ public interface ClientProtocol extends VersionedProtocol {
       ) throws IOException;
 
   /**
+   * 添加数据块
+   * 当创建文件，或写满一个数据块之后，客户端会调用该方法申请添加新的数据块
+   * 该方法已被废弃官方推荐使用三个参数的重载方法
    * A client that wants to write an additional block to the 
    * indicated filename (which must currently be open for writing)
    * should call addBlock().  
@@ -218,6 +226,9 @@ public interface ClientProtocol extends VersionedProtocol {
   public LocatedBlock addBlock(String src, String clientName) throws IOException;
 
   /**
+   * 添加数据块
+   * 官方推荐使用的方法
+   * 添加了excludedNodes参数，用于指定排除某些数据节点，以避免再次被分配到无法连接的节点
    * A client that wants to write an additional block to the 
    * indicated filename (which must currently be open for writing)
    * should call addBlock().  
@@ -247,6 +258,7 @@ public interface ClientProtocol extends VersionedProtocol {
   public boolean complete(String src, String clientName) throws IOException;
 
   /**
+   * 客户端用于向名字节点报告坏的数据块
    * The client wants to report corrupted blocks (blocks with specified
    * locations on datanodes).
    * @param blocks Array of located blocks to report
@@ -258,7 +270,7 @@ public interface ClientProtocol extends VersionedProtocol {
   ///////////////////////////////////////
   /**
    * Rename an item in the file system namespace.
-   * 
+   * 重命名文件或目录
    * @param src existing file or directory name.
    * @param dst new name.
    * @return true if successful, or false if the old name does not exist
@@ -271,6 +283,7 @@ public interface ClientProtocol extends VersionedProtocol {
 
   /**
    * Delete the given file or directory from the file system.
+   * 删除文件或目录
    * <p>
    * Any blocks belonging to the deleted files will be garbage-collected.
    * 
@@ -282,6 +295,7 @@ public interface ClientProtocol extends VersionedProtocol {
 
   /**
    * Delete the given file or directory from the file system.
+   * 删除文件或目录，指定是否递归
    * <p>
    * same as delete but provides a way to avoid accidentally 
    * deleting non empty directories programmatically. 
@@ -296,6 +310,7 @@ public interface ClientProtocol extends VersionedProtocol {
   /**
    * Create a directory (or hierarchy of directories) with the given
    * name and permission.
+   * 创建目录
    *
    * @param src The path of the directory being created
    * @param masked The masked permission of the directory being created
@@ -310,6 +325,7 @@ public interface ClientProtocol extends VersionedProtocol {
 
   /**
    * Get a partial listing of the indicated directory
+   * 获取指定目录的部分子项列表
    * 
    * @param src the directory name
    * @param startAfter the name of the last entry received by the client
@@ -337,6 +353,9 @@ public interface ClientProtocol extends VersionedProtocol {
    * renewLease().  If a certain amount of time passes since
    * the last call to renewLease(), the NameNode assumes the
    * client has died.
+   * 更新租约信息
+   * 客户端通过这个方法来告知名字节点自己是否还依然存活
+   * 相当于心跳方法
    */
   public void renewLease(String clientName) throws IOException;
 
@@ -350,6 +369,13 @@ public interface ClientProtocol extends VersionedProtocol {
   /**
    * Get a set of statistics about the filesystem.
    * Right now, only three values are returned.
+   * 获取文件系统的统计信息，包含以下内容：
+   *    - 文件系统总存储空间大小
+   *    - 文件系统总的已使用空间大小
+   *    - 文件系统可用空间大小
+   *    - 副本数不足的数据块数量
+   *    - 包含损坏副本的数据块数量
+   *    - 所有副本全都损坏的数据块数量
    * <ul>
    * <li> [0] contains the total storage capacity of the system, in bytes.</li>
    * <li> [1] contains the total used space of the system, in bytes.</li>
@@ -368,12 +394,14 @@ public interface ClientProtocol extends VersionedProtocol {
    * One DatanodeInfo object is returned for each DataNode.
    * Return live datanodes if type is LIVE; dead datanodes if type is DEAD;
    * otherwise all datanodes if type is ALL.
+   * 获取数据结点的报告信息
    */
   public DatanodeInfo[] getDatanodeReport(FSConstants.DatanodeReportType type)
   throws IOException;
 
   /**
    * Get the block size for the given file.
+   * 获取指定文件的数据块大小
    * @param filename The name of the file
    * @return The number of bytes in each block
    * @throws IOException
@@ -382,6 +410,8 @@ public interface ClientProtocol extends VersionedProtocol {
 
   /**
    * Enter, leave or get safe mode.
+   * 进入或退出安全模式
+   * 也可以使用更该方法获取安全模式当前的状态
    * <p>
    * Safe mode is a name node state when it
    * <ol><li>does not accept changes to name space (read-only), and</li>
@@ -436,6 +466,7 @@ public interface ClientProtocol extends VersionedProtocol {
 
   /**
    * Save namespace image.
+   * 手动进行镜像融合操作，需要在安全模式下进行
    * <p>
    * Saves current namespace into storage directories and reset edits log.
    * Requires superuser privilege and safe mode.
@@ -446,22 +477,20 @@ public interface ClientProtocol extends VersionedProtocol {
   public void saveNamespace() throws IOException;
 
   /**
-   * Tells the namenode to reread the hosts and exclude files. 
+   * 告诉名字节点重新读取数据结点的信息
+   * 无参数，需要的信息保存在include文件（一般在配置目录下）和exclude文件中
    * @throws IOException
    */
   public void refreshNodes() throws IOException;
 
   /**
-   * Finalize previous upgrade.
-   * Remove file system state saved during the upgrade.
-   * The upgrade will become irreversible.
-   * 
+   * 提交升级
    * @throws IOException
    */
   public void finalizeUpgrade() throws IOException;
 
   /**
-   * Report distributed upgrade progress or force current upgrade to proceed.
+   * 获取升级进度信息，或者进行强制升级操作
    * 
    * @param action {@link FSConstants.UpgradeAction} to perform
    * @return upgrade status information or null if no upgrades are in progress
@@ -471,8 +500,9 @@ public interface ClientProtocol extends VersionedProtocol {
   throws IOException;
 
   /**
-   * Dumps namenode data structures into specified file. If file
-   * already exists, then append.
+   * 将名字节点中的主要数据结构保存到Hadoop日志目录的指定文件中
+   * 该文件包含名字节点收到的数据结点的心跳信息、等待被复制的数据块、正在被复制的数据块、等待被删除的数据块等信息
+   * 调用该方法不用处于安全模式
    * @throws IOException
    */
   public void metaSave(String filename) throws IOException;
@@ -503,6 +533,9 @@ public interface ClientProtocol extends VersionedProtocol {
 
   /**
    * Set the quota for a directory.
+   * 设置配额，第二个参数为目录配额，第三个参数为空间配置信息
+   *    - 目录配额：目录树中文件或者目录的数量限制，用于防止用户创建大量的小文件
+   *    - 空间配额：可在目录树中存储的文件大小的限制。
    * @param path  The string representation of the path to the directory
    * @param namespaceQuota Limit on the number of names in the tree rooted 
    *                       at the directory
@@ -526,6 +559,7 @@ public interface ClientProtocol extends VersionedProtocol {
   /**
    * Write all metadata for this file into persistent storage.
    * The file must be currently open for writing.
+   * 持久化文件的元数据信息
    * @param src The string representation of the path
    * @param client The string representation of the client
    */
@@ -545,6 +579,7 @@ public interface ClientProtocol extends VersionedProtocol {
 
   /**
    * Get a valid Delegation Token.
+   * 获取一个合法的代理令牌
    *
    * @param renewer the designated renewer for the token
    * @return Token<DelegationTokenIdentifier>
@@ -554,6 +589,7 @@ public interface ClientProtocol extends VersionedProtocol {
 
   /**
    * Renew an existing delegation token.
+   * 更新已有的代理令牌
    *
    * @param token delegation token obtained earlier
    * @return the new expiration time
@@ -564,6 +600,7 @@ public interface ClientProtocol extends VersionedProtocol {
 
   /**
    * Cancel an existing delegation token.
+   * 取消一个合法的代理令牌
    *
    * @param token delegation token
    * @throws IOException
