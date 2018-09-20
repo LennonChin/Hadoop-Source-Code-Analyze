@@ -44,6 +44,8 @@ public interface NamenodeProtocol extends VersionedProtocol {
 
   /** Get a list of blocks belonged to <code>datanode</code>
     * whose total size is equal to <code>size</code>
+   *
+   * 用于获得某一个数据节点上的一系列数据块及位置
    * @param datanode  a data node
    * @param size      requested size
    * @return          a list of blocks & their locations
@@ -55,7 +57,8 @@ public interface NamenodeProtocol extends VersionedProtocol {
 
   /**
    * Get the current block keys
-   * 
+   *
+   * 用于支持这个过程中需要的安全特性
    * @return ExportedBlockKeys containing current block keys
    * @throws IOException 
    */
@@ -63,6 +66,9 @@ public interface NamenodeProtocol extends VersionedProtocol {
 
   /**
    * Get the size of the current edit log (in bytes).
+   *
+   * 获取编辑日志的大小；用于完成第二名字节点的功能
+   *
    * @return The number of bytes in the current edit log.
    * @throws IOException
    */
@@ -71,6 +77,9 @@ public interface NamenodeProtocol extends VersionedProtocol {
   /**
    * Closes the current edit log and opens a new one. The 
    * call fails if the file system is in SafeMode.
+   *
+   * 滚动编辑日志；用于完成第二名字节点的功能
+   *
    * @throws IOException
    * @return a unique token to identify this transaction.
    */
@@ -80,6 +89,9 @@ public interface NamenodeProtocol extends VersionedProtocol {
    * Rolls the fsImage log. It removes the old fsImage, copies the
    * new image to fsImage, removes the old edits and renames edits.new 
    * to edits. The call fails if any of the four files are missing.
+   *
+   * 滚动镜像；用于完成第二名字节点的功能
+   *
    * @throws IOException
    */
   public void rollFsImage() throws IOException;

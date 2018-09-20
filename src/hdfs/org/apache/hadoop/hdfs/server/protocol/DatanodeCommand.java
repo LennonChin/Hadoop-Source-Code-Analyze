@@ -22,12 +22,14 @@ import java.io.*;
 import org.apache.hadoop.io.*;
 
 public abstract class DatanodeCommand implements Writable {
+  // 用于再次发送注册信息的内部类
   static class Register extends DatanodeCommand {
     private Register() {super(DatanodeProtocol.DNA_REGISTER);}
     public void readFields(DataInput in) {}
     public void write(DataOutput out) {}
   }
 
+  // 用于升级提交的内部类
   static class Finalize extends DatanodeCommand {
     private Finalize() {super(DatanodeProtocol.DNA_FINALIZE);}
     public void readFields(DataInput in) {}

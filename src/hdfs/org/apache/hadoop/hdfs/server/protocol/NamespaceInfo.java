@@ -33,10 +33,13 @@ import org.apache.hadoop.io.WritableFactory;
 /**
  * NamespaceInfo is returned by the name-node in reply 
  * to a data-node handshake.
- * 
+ * 继承自StorageInfo，扩展了一些属性
+ * 包含的是HDFS整个集群的信息，与具体的数据节点没有关系
  */
 public class NamespaceInfo extends StorageInfo implements Writable {
+  // 系统构建的版本号
   String  buildVersion;
+  // 用于数据结点升级前进行的版本检查
   int distributedUpgradeVersion;
 
   public NamespaceInfo() {

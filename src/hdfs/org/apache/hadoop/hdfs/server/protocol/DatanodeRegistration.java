@@ -35,7 +35,7 @@ import org.apache.hadoop.io.WritableFactory;
  * DatanodeRegistration class conatins all information the Namenode needs
  * to identify and verify a Datanode when it contacts the Namenode.
  * This information is sent by Datanode with each communication request.
- * 
+ * 继承自DatanodeID，扩展了一些属性信息
  */
 public class DatanodeRegistration extends DatanodeID implements Writable {
   static {                                      // register a ctor
@@ -45,8 +45,9 @@ public class DatanodeRegistration extends DatanodeID implements Writable {
          public Writable newInstance() { return new DatanodeRegistration(); }
        });
   }
-
+  // 保存了数据结点的存储系统信息
   public StorageInfo storageInfo;
+  // 用于HDFS的安全特性
   public ExportedBlockKeys exportedKeys;
 
   /**

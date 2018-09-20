@@ -3,8 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="0e19b82a-85fd-4a20-a9e1-4808272c9caa" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientDatanodeProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientDatanodeProtocol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientProtocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/common/StorageInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/common/StorageInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BlockCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BlockCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BlockRecoveryInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BlockRecoveryInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeProtocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeRegistration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeRegistration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/InterDatanodeProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/InterDatanodeProtocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamenodeProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamenodeProtocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamespaceInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamespaceInfo.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,87 +25,196 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="FileSystem.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileSystem.java">
+      <file leaf-file-name="DatanodeProtocol.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeProtocol.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1002">
-              <caret line="1167" column="25" selection-start-line="1167" selection-start-column="25" selection-end-line="1167" selection-end-column="25" />
+            <state relative-caret-position="237">
+              <caret line="119" column="2" selection-start-line="119" selection-start-column="2" selection-end-line="123" selection-end-column="76" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatanodeInfo.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/DatanodeInfo.java">
+      <file leaf-file-name="InterDatanodeProtocol.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/InterDatanodeProtocol.java">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="50" column="33" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NamenodeProtocol.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamenodeProtocol.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="239">
+              <caret line="71" column="57" lean-forward="true" selection-start-line="71" selection-start-column="57" selection-end-line="71" selection-end-column="57" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BlockRecoveryInfo.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BlockRecoveryInfo.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="160">
+              <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DatanodeCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="237">
+              <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JAVA/java.io.DataOutput" pinned="false" current-in-tab="false">
+        <entry file="uml://JAVA/java.io.DataOutput">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
             <state>
-              <caret line="59" column="32" selection-start-line="59" selection-start-column="32" selection-end-line="59" selection-end-column="32" />
+              <ID>JAVA</ID>
+              <OriginalElement>java.io.DataOutput</OriginalElement>
+              <nodes>
+                <node x="478.5837121212121" y="109.0">org.apache.hadoop.hdfs.server.protocol.DatanodeCommand</node>
+                <node x="168.3337121212121" y="238.0">org.apache.hadoop.hdfs.server.protocol.BlockCommand</node>
+                <node x="139.0" y="0.0">org.apache.hadoop.hdfs.protocol.DatanodeInfo.AdminStates</node>
+                <node x="102.39999999999998" y="109.0">org.apache.hadoop.hdfs.protocol.DatanodeInfo</node>
+                <node x="0.0" y="0.0">org.apache.hadoop.hdfs.protocol.DatanodeID</node>
+                <node x="253.39999999999998" y="109.0">org.apache.hadoop.hdfs.protocol.Block</node>
+                <node x="764.3337121212121" y="238.0">org.apache.hadoop.hdfs.server.protocol.KeyUpdateCommand</node>
+                <node x="571.8337121212121" y="0.0">org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Register</node>
+                <node x="458.8337121212121" y="0.0">org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Finalize</node>
+                <node x="581.3337121212121" y="238.0">org.apache.hadoop.hdfs.server.protocol.UpgradeCommand</node>
+                <node x="332.3337121212121" y="238.0">org.apache.hadoop.hdfs.server.protocol.BalancerBandwidthCommand</node>
+              </nodes>
+              <notes />
+              <edges>
+                <edge source="org.apache.hadoop.hdfs.server.protocol.UpgradeCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+                  <point x="40.75" y="-14.5" />
+                  <point x="703.5837121212121" y="208.0" />
+                  <point x="594.7712121212121" y="208.0" />
+                  <point x="31.6875" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Register" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+                  <point x="19.600000000000023" y="14.5" />
+                  <point x="640.4337121212121" y="79.0" />
+                  <point x="622.2337121212121" y="79.0" />
+                  <point x="59.14999999999998" y="-14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.server.protocol.BlockCommand" target="org.apache.hadoop.hdfs.protocol.DatanodeInfo">
+                  <point x="-16.0" y="-14.5" />
+                  <point x="224.3337121212121" y="218.0" />
+                  <point x="217.02499999999998" y="218.0" />
+                  <point x="49.125" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.server.protocol.BlockCommand" target="org.apache.hadoop.hdfs.protocol.Block">
+                  <point x="32.0" y="-14.5" />
+                  <point x="272.3337121212121" y="178.0" />
+                  <point x="321.7333333333333" y="178.0" />
+                  <point x="27.33333333333333" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.server.protocol.BalancerBandwidthCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+                  <point x="57.25" y="-14.5" />
+                  <point x="504.0837121212121" y="218.0" />
+                  <point x="552.5212121212121" y="218.0" />
+                  <point x="-10.5625" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.protocol.DatanodeInfo" target="org.apache.hadoop.hdfs.protocol.DatanodeInfo.AdminStates">
+                  <point x="26.19999999999999" y="-14.5" />
+                  <point x="194.09999999999997" y="89.0" />
+                  <point x="202.0" y="89.0" />
+                  <point x="0.0" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Register">
+                  <point x="25.350000000000023" y="-14.5" />
+                  <point x="588.4337121212121" y="59.0" />
+                  <point x="601.2337121212121" y="59.0" />
+                  <point x="-19.600000000000023" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.protocol.DatanodeInfo" target="org.apache.hadoop.hdfs.protocol.DatanodeID">
+                  <point x="-26.200000000000017" y="-14.5" />
+                  <point x="141.69999999999993" y="79.0" />
+                  <point x="89.25" y="79.0" />
+                  <point x="29.75" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.server.protocol.KeyUpdateCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+                  <point x="44.5" y="-14.5" />
+                  <point x="897.8337121212121" y="188.0" />
+                  <point x="637.0212121212121" y="188.0" />
+                  <point x="73.9375" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.protocol.DatanodeInfo.AdminStates" target="org.apache.hadoop.hdfs.protocol.DatanodeInfo">
+                  <point x="42.0" y="14.5" />
+                  <point x="244.0" y="89.0" />
+                  <point x="220.29999999999998" y="89.0" />
+                  <point x="52.400000000000006" y="-14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.server.protocol.BlockCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+                  <point x="64.0" y="-14.5" />
+                  <point x="304.3337121212121" y="198.0" />
+                  <point x="510.2712121212121" y="198.0" />
+                  <point x="-52.8125" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Finalize">
+                  <point x="-76.05000000000007" y="-14.5" />
+                  <point x="487.03371212121203" y="89.0" />
+                  <point x="468.1337121212121" y="89.0" />
+                  <point x="-37.19999999999999" y="14.5" />
+                </edge>
+                <edge source="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Finalize" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+                  <point x="0.0" y="14.5" />
+                  <point x="505.3337121212121" y="69.0" />
+                  <point x="520.8337121212121" y="69.0" />
+                  <point x="-42.25" y="-14.5" />
+                </edge>
+              </edges>
+              <settings layout="Hierarchic Group" zoom="1.0" x="78.49999999999994" y="220.0" />
+              <SelectedNodes>
+                <node>org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Register</node>
+              </SelectedNodes>
+              <Categories>
+                <Category>Inner Classes</Category>
+              </Categories>
+              <SCOPE>All</SCOPE>
+              <VISIBILITY>private</VISIBILITY>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NetworkTopology.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/net/NetworkTopology.java">
+      <file leaf-file-name="KeyUpdateCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/KeyUpdateCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="39" column="2" selection-start-line="39" selection-start-column="2" selection-end-line="39" selection-end-column="2" />
+            <state relative-caret-position="100">
+              <caret line="28" column="29" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="29" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClientProtocol.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientProtocol.java">
+      <file leaf-file-name="BalancerBandwidthCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BalancerBandwidthCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="498" column="64" lean-forward="true" selection-start-line="498" selection-start-column="64" selection-end-line="498" selection-end-column="64" />
+            <state relative-caret-position="245">
+              <caret line="43" column="37" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="37" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NameNode.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/namenode/NameNode.java">
+      <file leaf-file-name="Block.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="760" column="32" lean-forward="true" selection-start-line="760" selection-start-column="32" selection-end-line="760" selection-end-column="32" />
+            <state relative-caret-position="680">
+              <caret line="55" selection-start-line="55" selection-end-line="57" selection-end-column="3" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FSNamesystem.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/namenode/FSNamesystem.java">
+      <file leaf-file-name="NamespaceInfo.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamespaceInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="1127" column="7" selection-start-line="1127" selection-start-column="7" selection-end-line="1127" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FSDirectory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/namenode/FSDirectory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="520" column="7" selection-start-line="520" selection-start-column="7" selection-end-line="520" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="INodeFile.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/namenode/INodeFile.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="95" column="31" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="31" />
-              <folding>
-                <element signature="e#3198#3199#0" expanded="true" />
-                <element signature="e#3239#3240#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClientDatanodeProtocol.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientDatanodeProtocol.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="940">
-              <caret line="73" column="9" lean-forward="true" selection-start-line="73" selection-start-column="9" selection-end-line="73" selection-end-column="9" />
+            <state relative-caret-position="460">
+              <caret line="49" column="51" selection-start-line="49" selection-start-column="51" selection-end-line="49" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -107,25 +223,43 @@
         <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/datanode/DataNode.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="259">
-              <caret line="2024" column="15" selection-start-line="2024" selection-start-column="15" selection-end-line="2024" selection-end-column="15" />
+              <caret line="949" column="41" selection-start-line="949" selection-start-column="41" selection-end-line="949" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FSConstants.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/FSConstants.java">
+      <file leaf-file-name="DatanodeRegistration.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeRegistration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="70" selection-start-line="70" selection-end-line="74" selection-end-column="3" />
+            <state relative-caret-position="191">
+              <caret line="48" column="15" selection-start-line="48" selection-start-column="15" selection-end-line="48" selection-end-column="15" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatanodeID.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/DatanodeID.java">
+      <file leaf-file-name="StorageInfo.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/common/StorageInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="33" selection-start-line="33" selection-end-line="45" selection-end-column="70" />
+            <state relative-caret-position="180">
+              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NameNode.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/namenode/NameNode.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="319">
+              <caret line="996" column="42" selection-start-line="996" selection-start-column="42" selection-end-line="996" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BlockListAsLongs.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/BlockListAsLongs.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="267">
+              <caret line="67" column="9" selection-start-line="67" selection-start-column="9" selection-end-line="67" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -141,8 +275,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>listener</find>
-      <find>readThreads</find>
       <find>callQueue.p</find>
       <find>callQueue.put</find>
       <find>maxRespSize</find>
@@ -171,6 +303,8 @@
       <find>running</find>
       <find>Interrupt</find>
       <find>InterruptedException</find>
+      <find>UpgradeCommand</find>
+      <find>blockReport</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -182,12 +316,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/serializer/Deserializer.java" />
-        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/serializer/WritableSerialization.java" />
-        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/compress/Compressor.java" />
-        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/compress/CompressionCodec.java" />
-        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/compress/CompressionCodecFactory.java" />
-        <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/compress/CompressionInputStream.java" />
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/compress/CompressionOutputStream.java" />
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/io/compress/CompressorStream.java" />
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/fs/ContentSummary.java" />
@@ -220,9 +348,6 @@
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Client.java" />
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/Server.java" />
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/RPC.java" />
-        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/InterDatanodeProtocol.java" />
-        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeProtocol.java" />
-        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamenodeProtocol.java" />
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/security/authorize/RefreshAuthorizationPolicyProtocol.java" />
         <option value="$PROJECT_DIR$/src/core/org/apache/hadoop/security/RefreshUserMappingsProtocol.java" />
         <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java" />
@@ -233,6 +358,15 @@
         <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/DatanodeInfo.java" />
         <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientDatanodeProtocol.java" />
         <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientProtocol.java" />
+        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeRegistration.java" />
+        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/common/StorageInfo.java" />
+        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamespaceInfo.java" />
+        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeCommand.java" />
+        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BlockCommand.java" />
+        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeProtocol.java" />
+        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BlockRecoveryInfo.java" />
+        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/InterDatanodeProtocol.java" />
+        <option value="$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamenodeProtocol.java" />
       </list>
     </option>
   </component>
@@ -252,8 +386,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="507" />
-    <option name="y" value="33" />
+    <option name="x" value="15" />
+    <option name="y" value="23" />
     <option name="width" value="1861" />
     <option name="height" value="985" />
   </component>
@@ -265,8 +399,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -385,11 +517,13 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="getWorkingDirectory&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FileSystem#getWorkingDirectory&#10;FSConstant&#9;PSI&#9;JAVA://org.apache.hadoop.hdfs.protocol.FSConstants&#10;FileSyste&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/FileSystem.java&#10;RefreshU&#9;PSI&#9;JAVA://org.apache.hadoop.security.RefreshUserMappingsProtocol&#10;Refresh&#9;PSI&#9;JAVA://org.apache.hadoop.security.authorize.RefreshAuthorizationPolicyProtocol&#10;Versi&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/ipc/VersionedProtocol.java&#10;RemoteEx&#9;PSI&#9;JAVA://org.apache.hadoop.ipc.RemoteException&#10;NameNode&#9;PSI&#9;JAVA://org.apache.hadoop.hdfs.server.namenode.NameNode&#10;ByteBu&#9;PSI&#9;JAVA://java.nio.ByteBuffer&#10;InMem&#9;PSI&#9;JAVA://org.apache.hadoop.fs.InMemoryFileSystem.RawInMemoryFileSystem.InMemoryInputStream&#10;RawInMemory&#9;PSI&#9;JAVA://org.apache.hadoop.fs.InMemoryFileSystem.RawInMemoryFileSystem&#10;Checksum&#9;FILE&#9;jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/util/zip/Checksum.java&#10;LocalFileInpu&#9;PSI&#9;JAVA://org.apache.hadoop.fs.RawLocalFileSystem.LocalFSFileInputStream&#10;FileSystem&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/FileSystem.java&#10;FsUrlCon&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/FsUrlConnection.java&#10;FSUrlS&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FsUrlStreamHandlerFactory&#10;FsUrlS&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FsUrlStreamHandler&#10;FsUrlConnec&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FsUrlConnection&#10;URLStreamHandlerFa&#9;PSI&#9;JAVA://java.net.URLStreamHandlerFactory&#10;URLStreamHandler&#9;PSI&#9;JAVA://java.net.URLStreamHandler&#10;FileStatus&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/FileStatus.java&#10;FSDataOu&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FSDataOutputStream&#10;FSInpu&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FSInputStream&#10;Seekable&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/Seekable.java&#10;Configu&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/conf/Configuration.java&#10;C&#9;FILE&#9;uml://JAVA/org.apache.hadoop.io.compress.CompressionInputStream&#10;CompressorOu&#9;PSI&#9;JAVA://org.vafer.jdeb.shaded.compress.compress.compressors.CompressorOutputStream&#10;OutputStream&#9;PSI&#9;JAVA://java.io.OutputStream&#10;CompressionIn&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionInputStream&#10;CompressionCodecFa&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/CompressionCodecFactory.java&#10;Bzip&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/BZip2Codec.java&#10;DefaultCo&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.DefaultCodec&#10;CompressCode&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/CompressionCodec.java&#10;Compressor&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.Compressor&#10;CompressionF&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionCodecFactory&#10;CompressionCode&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionCodec&#10;Serialization&#9;PSI&#9;JAVA://org.apache.hadoop.io.serializer.Serialization&#10;Block&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java&#10;GenericW&#9;PSI&#9;JAVA://org.apache.hadoop.io.GenericWritable&#10;Conf&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/conf/Configuration.java&#10;ObjectW&#9;PSI&#9;JAVA://org.apache.hadoop.io.ObjectWritable&#10;VInt&#9;PSI&#9;JAVA://org.apache.hadoop.io.VIntWritable&#10;Vint&#9;PSI&#9;JAVA://org.apache.hadoop.io.VIntWritable&#10;BooleanWritable&#9;PSI&#9;JAVA://org.apache.hadoop.io.BooleanWritable&#10;RawCo&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/RawComparator.java&#10;IntW&#9;PSI&#9;JAVA://org.apache.hadoop.io.IntWritable&#10;RawComparator&#9;PSI&#9;JAVA://org.apache.hadoop.io.RawComparator&#10;Raw&#9;PSI&#9;JAVA://org.apache.hadoop.io.file.tfile.RawComparable&#10;Writa&#9;PSI&#9;JAVA://org.apache.hadoop.io.Writable&#10;Reflecti&#9;PSI&#9;JAVA://org.apache.hadoop.util.ReflectionUtils" />
+    <property name="SearchEverywhereHistoryKey" value="DataNodeRegistration&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeRegistration.java&#10;Namenodepr&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamenodeProtocol.java&#10;InterDatanode&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/hdfs/org/apache/hadoop/hdfs/server/protocol/InterDatanodeProtocol.java&#10;BlockCom&#9;PSI&#9;JAVA://org.apache.hadoop.hdfs.server.protocol.BlockCommand&#10;Block&#9;PSI&#9;JAVA://org.apache.hadoop.hdfs.protocol.Block&#10;DatanodeP&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeProtocol.java&#10;getWorkingDirectory&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FileSystem#getWorkingDirectory&#10;FSConstant&#9;PSI&#9;JAVA://org.apache.hadoop.hdfs.protocol.FSConstants&#10;FileSyste&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/FileSystem.java&#10;RefreshU&#9;PSI&#9;JAVA://org.apache.hadoop.security.RefreshUserMappingsProtocol&#10;Refresh&#9;PSI&#9;JAVA://org.apache.hadoop.security.authorize.RefreshAuthorizationPolicyProtocol&#10;Versi&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/ipc/VersionedProtocol.java&#10;RemoteEx&#9;PSI&#9;JAVA://org.apache.hadoop.ipc.RemoteException&#10;NameNode&#9;PSI&#9;JAVA://org.apache.hadoop.hdfs.server.namenode.NameNode&#10;ByteBu&#9;PSI&#9;JAVA://java.nio.ByteBuffer&#10;InMem&#9;PSI&#9;JAVA://org.apache.hadoop.fs.InMemoryFileSystem.RawInMemoryFileSystem.InMemoryInputStream&#10;RawInMemory&#9;PSI&#9;JAVA://org.apache.hadoop.fs.InMemoryFileSystem.RawInMemoryFileSystem&#10;Checksum&#9;FILE&#9;jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/util/zip/Checksum.java&#10;LocalFileInpu&#9;PSI&#9;JAVA://org.apache.hadoop.fs.RawLocalFileSystem.LocalFSFileInputStream&#10;FileSystem&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/FileSystem.java&#10;FsUrlCon&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/FsUrlConnection.java&#10;FSUrlS&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FsUrlStreamHandlerFactory&#10;FsUrlS&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FsUrlStreamHandler&#10;FsUrlConnec&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FsUrlConnection&#10;URLStreamHandlerFa&#9;PSI&#9;JAVA://java.net.URLStreamHandlerFactory&#10;URLStreamHandler&#9;PSI&#9;JAVA://java.net.URLStreamHandler&#10;FileStatus&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/FileStatus.java&#10;FSDataOu&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FSDataOutputStream&#10;FSInpu&#9;PSI&#9;JAVA://org.apache.hadoop.fs.FSInputStream&#10;Seekable&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/fs/Seekable.java&#10;Configu&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/conf/Configuration.java&#10;C&#9;FILE&#9;uml://JAVA/org.apache.hadoop.io.compress.CompressionInputStream&#10;CompressorOu&#9;PSI&#9;JAVA://org.vafer.jdeb.shaded.compress.compress.compressors.CompressorOutputStream&#10;OutputStream&#9;PSI&#9;JAVA://java.io.OutputStream&#10;CompressionIn&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionInputStream&#10;CompressionCodecFa&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/CompressionCodecFactory.java&#10;Bzip&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/BZip2Codec.java&#10;DefaultCo&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.DefaultCodec&#10;CompressCode&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/compress/CompressionCodec.java&#10;Compressor&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.Compressor&#10;CompressionF&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionCodecFactory&#10;CompressionCode&#9;PSI&#9;JAVA://org.apache.hadoop.io.compress.CompressionCodec&#10;Serialization&#9;PSI&#9;JAVA://org.apache.hadoop.io.serializer.Serialization&#10;GenericW&#9;PSI&#9;JAVA://org.apache.hadoop.io.GenericWritable&#10;Conf&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/conf/Configuration.java&#10;ObjectW&#9;PSI&#9;JAVA://org.apache.hadoop.io.ObjectWritable&#10;VInt&#9;PSI&#9;JAVA://org.apache.hadoop.io.VIntWritable&#10;Vint&#9;PSI&#9;JAVA://org.apache.hadoop.io.VIntWritable&#10;BooleanWritable&#9;PSI&#9;JAVA://org.apache.hadoop.io.BooleanWritable&#10;RawCo&#9;FILE&#9;file:///Users/qinly/Desktop/Exercises/Hadoop-Source-Code-Analyze/src/core/org/apache/hadoop/io/RawComparator.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="ignore_missing_gitignore" value="true" />
@@ -399,7 +533,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -457,7 +591,8 @@
     </configuration>
   </component>
   <component name="StructureViewFactory">
-    <option name="ACTIVE_ACTIONS" value=",SHOW_PROPERTIES,SHOW_INTERFACES" />
+    <option name="AUTOSCROLL_MODE" value="false" />
+    <option name="ACTIVE_ACTIONS" value=",SHOW_PROPERTIES,SHOW_ANONYMOUS,SHOW_INTERFACES" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -493,66 +628,74 @@
       <workItem from="1536711977396" duration="1155000" />
       <workItem from="1536883998855" duration="3523000" />
       <workItem from="1537228634977" duration="3673000" />
-      <workItem from="1537313980404" duration="5348000" />
+      <workItem from="1537313980404" duration="5744000" />
+      <workItem from="1537401330799" duration="8405000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="128969000" />
+    <option name="totallyTimeSpent" value="137770000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="666" y="143" width="1861" height="985" extended-state="0" />
-    <editor active="true" />
+    <frame x="15" y="23" width="1861" height="985" extended-state="0" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="15" side_tool="true" />
+      <window_info anchor="bottom" id="FindBugs-IDEA" order="7" weight="0.32938388" />
+      <window_info anchor="bottom" id="Event Log" order="15" sideWeight="0.5002752" side_tool="true" weight="0.32938388" />
       <window_info anchor="bottom" id="JRebel Console" order="13" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="8" weight="0.32960597" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="JRebel Executor" order="11" />
       <window_info id="Capture Tool" order="7" />
       <window_info id="Designer" order="2" />
+      <window_info anchor="right" content_ui="combo" x="985" y="220" width="740" height="700" id="Hierarchy" order="2" type="WINDOWED" weight="0.24973376" />
       <window_info anchor="bottom" id="Tail" order="14" />
       <window_info anchor="right" id="Database" order="5" />
       <window_info x="932" y="83" width="895" height="815" id="Structure" order="1" sideWeight="0.7931442" side_tool="true" type="FLOATING" weight="0.15921193" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="4" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49972484" weight="0.32938388" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info id="Image Layers" order="3" />
-      <window_info anchor="bottom" id="Java Enterprise" order="9" />
+      <window_info anchor="bottom" id="Java Enterprise" order="9" weight="0.32938388" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32978722" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="right" id="Mybatis datasource" order="4" side_tool="true" weight="0.3296643" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.20685579" visible="true" weight="0.20033021" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49972484" weight="0.32938388" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.20685579" weight="0.20253165" />
       <window_info anchor="bottom" id="Run with VisualVM" order="7" />
       <window_info id="JRebel" order="5" side_tool="true" />
-      <window_info anchor="bottom" id="Hybris Console [Experimental]" order="12" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.75829387" />
+      <window_info anchor="bottom" id="Hybris Console [Experimental]" order="12" weight="0.32938388" />
       <window_info anchor="right" id="Theme Preview" order="7" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Debug with VisualVM" order="7" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" x="985" y="220" width="740" height="700" id="Hierarchy" order="2" type="WINDOWED" weight="0.24973376" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.75829387" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
     </layout>
     <layout-to-restore>
       <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
       <window_info id="Designer" order="2" />
-      <window_info anchor="bottom" id="Tail" order="17" />
       <window_info anchor="right" id="Palette" order="3" />
       <window_info id="JRebel" order="5" side_tool="true" />
+      <window_info id="Image Layers" order="3" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="4" />
-      <window_info anchor="bottom" id="Hybris Console [Experimental]" order="15" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info id="Capture Tool" order="7" />
@@ -560,25 +703,26 @@
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Event Log" order="18" side_tool="true" />
       <window_info anchor="right" id="Mybatis datasource" order="5" side_tool="true" weight="0.3296643" />
-      <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="right" content_ui="combo" x="985" y="220" width="740" height="700" id="Hierarchy" order="2" type="WINDOWED" weight="0.24973376" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Run with VisualVM" order="9" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="13" weight="0.32978722" />
       <window_info anchor="right" id="Maven Projects" order="9" weight="0.32960597" />
+      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.75829387" />
       <window_info anchor="bottom" id="JRebel Executor" order="14" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.20685579" visible="true" weight="0.20033021" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.20685579" visible="true" weight="0.20253165" />
       <window_info anchor="bottom" id="JRebel Console" order="16" side_tool="true" />
       <window_info anchor="right" id="Database" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Debug with VisualVM" order="10" />
-      <window_info id="Image Layers" order="3" />
+      <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Theme Preview" order="8" />
-      <window_info x="877" y="174" width="895" height="815" id="Structure" order="1" sideWeight="0.7931442" side_tool="true" type="FLOATING" weight="0.15921193" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.75829387" />
+      <window_info x="932" y="83" width="895" height="815" id="Structure" order="1" sideWeight="0.7931442" side_tool="true" type="FLOATING" weight="0.15921193" />
+      <window_info anchor="bottom" id="Hybris Console [Experimental]" order="15" />
+      <window_info anchor="bottom" id="Tail" order="17" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
     </layout-to-restore>
   </component>
@@ -594,76 +738,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/ipc/ConnectionHeader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1700">
-          <caret line="110" selection-start-line="110" selection-end-line="110" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/CommonConfigurationKeys.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="33" column="49" selection-start-line="33" selection-start-column="49" selection-end-line="33" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/conf/Configuration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8800">
-          <caret line="522" column="13" selection-start-line="522" selection-start-column="13" selection-end-line="522" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/net/ServerSocket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="348" column="53" lean-forward="true" selection-start-line="347" selection-start-column="32" selection-end-line="348" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/ByteArrayInputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="102" column="11" selection-start-line="102" selection-start-column="11" selection-end-line="102" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/DataOutputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="184" column="5" lean-forward="true" selection-start-line="184" selection-start-column="5" selection-end-line="184" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/DataOutput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/security/SaslRpcServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="153" column="47" lean-forward="true" selection-start-line="153" selection-start-column="47" selection-end-line="153" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/src.zip!/java/io/FilterInputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="81" column="15" selection-start-line="81" selection-start-column="15" selection-end-line="81" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/security/SaslRpcClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="201" column="21" selection-start-line="201" selection-start-column="21" selection-end-line="201" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/io/Writable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="619">
@@ -777,27 +851,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/InterDatanodeProtocol.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeProtocol.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="37" column="17" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamenodeProtocol.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="35" column="14" selection-start-line="35" selection-start-column="14" selection-end-line="35" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/security/authorize/RefreshAuthorizationPolicyProtocol.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -816,13 +869,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="460">
           <caret line="48" column="34" selection-start-line="48" selection-start-column="34" selection-end-line="48" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="55" selection-start-line="55" selection-end-line="57" selection-end-column="3" />
         </state>
       </provider>
     </entry>
@@ -847,13 +893,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/DatanodeID.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="33" selection-start-line="33" selection-end-line="45" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/DFSClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -868,28 +907,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/DatanodeInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="59" column="32" selection-start-line="59" selection-start-column="32" selection-end-line="59" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/overview.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2948" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/datanode/DataNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="2024" column="15" selection-start-line="2024" selection-start-column="15" selection-end-line="2024" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/namenode/INodeFile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
+        <state>
           <caret line="95" column="31" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="31" />
           <folding>
             <element signature="e#3198#3199#0" expanded="true" />
@@ -900,50 +925,273 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/namenode/FSDirectory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
+        <state>
           <caret line="520" column="7" selection-start-line="520" selection-start-column="7" selection-end-line="520" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/namenode/FSNamesystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
+        <state>
           <caret line="1127" column="7" selection-start-line="1127" selection-start-column="7" selection-end-line="1127" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/namenode/NameNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="760" column="32" lean-forward="true" selection-start-line="760" selection-start-column="32" selection-end-line="760" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/org/apache/hadoop/fs/FileSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1002">
+        <state>
           <caret line="1167" column="25" selection-start-line="1167" selection-start-column="25" selection-end-line="1167" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientDatanodeProtocol.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="940">
-          <caret line="73" column="9" lean-forward="true" selection-start-line="73" selection-start-column="9" selection-end-line="73" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientProtocol.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="498" column="64" lean-forward="true" selection-start-line="498" selection-start-column="64" selection-end-line="498" selection-end-column="64" />
+        <state>
+          <caret line="498" column="64" selection-start-line="498" selection-start-column="64" selection-end-line="498" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/ClientDatanodeProtocol.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7">
+          <caret line="78" column="40" selection-start-line="78" selection-start-column="40" selection-end-line="78" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/DatanodeInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="59" column="32" selection-start-line="59" selection-start-column="32" selection-end-line="59" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/FSConstants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="70" selection-start-line="70" selection-end-line="74" selection-end-column="3" />
+        <state relative-caret-position="279">
+          <caret line="66" column="27" selection-start-line="66" selection-start-column="27" selection-end-line="66" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/DatanodeID.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="26" selection-start-line="26" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamespaceInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="49" column="51" selection-start-line="49" selection-start-column="51" selection-end-line="49" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/Block.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="55" selection-start-line="55" selection-end-line="57" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/protocol/BlockListAsLongs.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="67" column="9" selection-start-line="67" selection-start-column="9" selection-end-line="67" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/namenode/NameNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="996" column="42" selection-start-line="996" selection-start-column="42" selection-end-line="996" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BlockRecoveryInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/InterDatanodeProtocol.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="50" column="33" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/datanode/DataNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="949" column="41" selection-start-line="949" selection-start-column="41" selection-end-line="949" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeRegistration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="48" column="15" selection-start-line="48" selection-start-column="15" selection-end-line="48" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/common/StorageInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/NamenodeProtocol.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="71" column="57" lean-forward="true" selection-start-line="71" selection-start-column="57" selection-end-line="71" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BlockCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="32" column="51" lean-forward="true" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/BalancerBandwidthCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="43" column="37" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/KeyUpdateCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="28" column="29" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/java.io.DataOutput">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>java.io.DataOutput</OriginalElement>
+          <nodes>
+            <node x="478.5837121212121" y="109.0">org.apache.hadoop.hdfs.server.protocol.DatanodeCommand</node>
+            <node x="168.3337121212121" y="238.0">org.apache.hadoop.hdfs.server.protocol.BlockCommand</node>
+            <node x="139.0" y="0.0">org.apache.hadoop.hdfs.protocol.DatanodeInfo.AdminStates</node>
+            <node x="102.39999999999998" y="109.0">org.apache.hadoop.hdfs.protocol.DatanodeInfo</node>
+            <node x="0.0" y="0.0">org.apache.hadoop.hdfs.protocol.DatanodeID</node>
+            <node x="253.39999999999998" y="109.0">org.apache.hadoop.hdfs.protocol.Block</node>
+            <node x="764.3337121212121" y="238.0">org.apache.hadoop.hdfs.server.protocol.KeyUpdateCommand</node>
+            <node x="571.8337121212121" y="0.0">org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Register</node>
+            <node x="458.8337121212121" y="0.0">org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Finalize</node>
+            <node x="581.3337121212121" y="238.0">org.apache.hadoop.hdfs.server.protocol.UpgradeCommand</node>
+            <node x="332.3337121212121" y="238.0">org.apache.hadoop.hdfs.server.protocol.BalancerBandwidthCommand</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="org.apache.hadoop.hdfs.server.protocol.UpgradeCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+              <point x="40.75" y="-14.5" />
+              <point x="703.5837121212121" y="208.0" />
+              <point x="594.7712121212121" y="208.0" />
+              <point x="31.6875" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Register" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+              <point x="19.600000000000023" y="14.5" />
+              <point x="640.4337121212121" y="79.0" />
+              <point x="622.2337121212121" y="79.0" />
+              <point x="59.14999999999998" y="-14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.server.protocol.BlockCommand" target="org.apache.hadoop.hdfs.protocol.DatanodeInfo">
+              <point x="-16.0" y="-14.5" />
+              <point x="224.3337121212121" y="218.0" />
+              <point x="217.02499999999998" y="218.0" />
+              <point x="49.125" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.server.protocol.BlockCommand" target="org.apache.hadoop.hdfs.protocol.Block">
+              <point x="32.0" y="-14.5" />
+              <point x="272.3337121212121" y="178.0" />
+              <point x="321.7333333333333" y="178.0" />
+              <point x="27.33333333333333" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.server.protocol.BalancerBandwidthCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+              <point x="57.25" y="-14.5" />
+              <point x="504.0837121212121" y="218.0" />
+              <point x="552.5212121212121" y="218.0" />
+              <point x="-10.5625" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.protocol.DatanodeInfo" target="org.apache.hadoop.hdfs.protocol.DatanodeInfo.AdminStates">
+              <point x="26.19999999999999" y="-14.5" />
+              <point x="194.09999999999997" y="89.0" />
+              <point x="202.0" y="89.0" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Register">
+              <point x="25.350000000000023" y="-14.5" />
+              <point x="588.4337121212121" y="59.0" />
+              <point x="601.2337121212121" y="59.0" />
+              <point x="-19.600000000000023" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.protocol.DatanodeInfo" target="org.apache.hadoop.hdfs.protocol.DatanodeID">
+              <point x="-26.200000000000017" y="-14.5" />
+              <point x="141.69999999999993" y="79.0" />
+              <point x="89.25" y="79.0" />
+              <point x="29.75" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.server.protocol.KeyUpdateCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+              <point x="44.5" y="-14.5" />
+              <point x="897.8337121212121" y="188.0" />
+              <point x="637.0212121212121" y="188.0" />
+              <point x="73.9375" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.protocol.DatanodeInfo.AdminStates" target="org.apache.hadoop.hdfs.protocol.DatanodeInfo">
+              <point x="42.0" y="14.5" />
+              <point x="244.0" y="89.0" />
+              <point x="220.29999999999998" y="89.0" />
+              <point x="52.400000000000006" y="-14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.server.protocol.BlockCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+              <point x="64.0" y="-14.5" />
+              <point x="304.3337121212121" y="198.0" />
+              <point x="510.2712121212121" y="198.0" />
+              <point x="-52.8125" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Finalize">
+              <point x="-76.05000000000007" y="-14.5" />
+              <point x="487.03371212121203" y="89.0" />
+              <point x="468.1337121212121" y="89.0" />
+              <point x="-37.19999999999999" y="14.5" />
+            </edge>
+            <edge source="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Finalize" target="org.apache.hadoop.hdfs.server.protocol.DatanodeCommand">
+              <point x="0.0" y="14.5" />
+              <point x="505.3337121212121" y="69.0" />
+              <point x="520.8337121212121" y="69.0" />
+              <point x="-42.25" y="-14.5" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="1.0" x="78.49999999999994" y="220.0" />
+          <SelectedNodes>
+            <node>org.apache.hadoop.hdfs.server.protocol.DatanodeCommand.Register</node>
+          </SelectedNodes>
+          <Categories>
+            <Category>Inner Classes</Category>
+          </Categories>
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hdfs/org/apache/hadoop/hdfs/server/protocol/DatanodeProtocol.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="119" column="2" selection-start-line="119" selection-start-column="2" selection-end-line="123" selection-end-column="76" />
         </state>
       </provider>
     </entry>

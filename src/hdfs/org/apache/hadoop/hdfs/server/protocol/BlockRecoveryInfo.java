@@ -25,7 +25,9 @@ import org.apache.hadoop.hdfs.protocol.Block;
 import org.apache.hadoop.io.Writable;
 
 public class BlockRecoveryInfo implements Writable {
+  // 数据块
   private Block block;
+  // 标志位
   private boolean wasRecoveredOnStartup;
   
   public BlockRecoveryInfo() {

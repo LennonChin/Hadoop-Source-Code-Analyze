@@ -35,7 +35,9 @@ import org.apache.hadoop.io.*;
  * 
  ****************************************************/
 public class BlockCommand extends DatanodeCommand {
+  // 包含BlockCommand命令具体涉及的数据块
   Block blocks[];
+  // 提供复制或恢复涉及的数据节点的信息
   DatanodeInfo targets[][];
 
   public BlockCommand() {}

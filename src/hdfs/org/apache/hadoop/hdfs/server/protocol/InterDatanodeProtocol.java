@@ -50,13 +50,17 @@ public interface InterDatanodeProtocol extends VersionedProtocol {
   /**
    * Begin recovery on a block - this interrupts writers and returns the
    * necessary metadata for recovery to begin.
+   * 用于获取参与到数据块恢复过程的各个数据节点上的数据块信息
    * @return the BlockRecoveryInfo for a block
    * @return null if the block is not found
    */
   BlockRecoveryInfo startBlockRecovery(Block block) throws IOException;
   
   /**
-   * Update the block to the new generation stamp and length.  
+   * Update the block to the new generation stamp and length.
+   * 更新数据块generation stamp和长度信息
+   *
+   * @param finalize 完成更新后是否提交数据块
    */
   void updateBlock(Block oldblock, Block newblock, boolean finalize) throws IOException;
 }
