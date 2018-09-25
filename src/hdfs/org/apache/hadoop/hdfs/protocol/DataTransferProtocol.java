@@ -35,22 +35,29 @@ public interface DataTransferProtocol {
    * This should change when serialization of DatanodeInfo, not just
    * when protocol changes. It is not very obvious. 
    */
-  /*
+  /**
+   * 版本标识
    * Version 18:
    *    Change the block packet ack protocol to include seqno,
    *    numberOfReplies, reply0, reply1, ...
    */
   public static final int DATA_TRANSFER_VERSION = 17;
 
-  // Processed at datanode stream-handler
+  // 操作码
+  // 写数据块
   public static final byte OP_WRITE_BLOCK = (byte) 80;
+  // 读数据块
   public static final byte OP_READ_BLOCK = (byte) 81;
   /**
-   * @deprecated As of version 15, OP_READ_METADATA is no longer supported
+   * 读元数据
+   * @deprecated 从version 15开始，该操作码已不支持
    */
   @Deprecated public static final byte OP_READ_METADATA = (byte) 82;
+  // 数据块替换
   public static final byte OP_REPLACE_BLOCK = (byte) 83;
+  // 数据块复制
   public static final byte OP_COPY_BLOCK = (byte) 84;
+  // 块校验
   public static final byte OP_BLOCK_CHECKSUM = (byte) 85;
   
   public static final int OP_STATUS_SUCCESS = 0;  
@@ -61,9 +68,17 @@ public interface DataTransferProtocol {
   public static final int OP_STATUS_ERROR_ACCESS_TOKEN = 5;
   public static final int OP_STATUS_CHECKSUM_OK = 6;
 
-  /** reply **/
+  /**
+   * 管道流确认包，每次写请求会产生多个确认包，每个确认包从最后一个节点依次向前传递
+   */
   public static class PipelineAck implements Writable {
+    // 该确认对应的写请求数据包，也就是数据包中的顺序号
     private long seqno;
+    /**
+     * 包含了管道上的各个节点对写请求数据包的处理结果。
+     * 如果数据节点顺利地将数据写入磁盘，则结果为DataTransferProtocol.OP_STATUS_SUCCESS，否则为DataTransferProtocol.OP_STATUS_ERROR。
+     * 随着确认包逆流而上，该字段的大小会不断增长。
+     */
     private short replies[];
     final public static long UNKOWN_SEQNO = -2; 
 
