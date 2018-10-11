@@ -49,11 +49,14 @@ import org.apache.hadoop.util.Daemon;
  * @see Storage
  */
 public class DataStorage extends Storage {
-  // Constants
+  // 子目录名前缀
   final static String BLOCK_SUBDIR_PREFIX = "subdir";
+  // 数据块文件名前缀
   final static String BLOCK_FILE_PREFIX = "blk_";
+  // 数据块扫描使用的文件的前缀
   final static String COPY_FILE_PREFIX = "dncp_";
   
+  // 数据节点ID
   private String storageID;
 
   DataStorage() {
@@ -156,11 +159,13 @@ public class DataStorage extends Storage {
   }
 
   void format(StorageDirectory sd, NamespaceInfo nsInfo) throws IOException {
+    // 删除原有目录及数据并重新创建目录
     sd.clearDirectory(); // create directory
+    // 为VERSION文件中的属性赋值
     this.layoutVersion = FSConstants.LAYOUT_VERSION;
     this.namespaceID = nsInfo.getNamespaceID();
     this.cTime = 0;
-    // store storageID as it currently is
+    // 持久化到磁盘
     sd.write();
   }
 

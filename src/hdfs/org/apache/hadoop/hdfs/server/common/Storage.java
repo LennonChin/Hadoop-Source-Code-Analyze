@@ -611,11 +611,14 @@ public abstract class Storage extends StorageInfo {
      * @throws IOException if locking fails.
      */
     FileLock tryLock() throws IOException {
+      // 在root目录下创建in_use.lock文件
       File lockF = new File(root, STORAGE_FILE_LOCK);
+      // 在节点退出时删除in_use.lock文件
       lockF.deleteOnExit();
       RandomAccessFile file = new RandomAccessFile(lockF, "rws");
       FileLock res = null;
       try {
+        // 尝试获取文件独占锁
         res = file.getChannel().tryLock();
       } catch(OverlappingFileLockException oe) {
         file.close();
