@@ -416,6 +416,8 @@ public abstract class Storage extends StorageInfo {
 
     /**
      * Check consistency of the storage directory
+     *
+     * 该方法可以用于获取当前存储空间状态
      * 
      * @param startOpt a startup option.
      *  
@@ -429,7 +431,7 @@ public abstract class Storage extends StorageInfo {
       String rootPath = root.getCanonicalPath();
       try { // check that storage exists
         if (!root.exists()) {
-          // storage directory does not exist
+          // 未格式化，即为NON_EXISTENT状态
           if (startOpt != StartupOption.FORMAT) {
             LOG.info("Storage directory " + rootPath + " does not exist.");
             return StorageState.NON_EXISTENT;
@@ -438,16 +440,18 @@ public abstract class Storage extends StorageInfo {
           if (!root.mkdirs())
             throw new IOException("Cannot create directory " + rootPath);
         }
-        // or is inaccessible
+        // root不是目录，为NON_EXISTENT状态
         if (!root.isDirectory()) {
           LOG.info(rootPath + "is not a directory.");
           return StorageState.NON_EXISTENT;
         }
+        // root不可写，为NON_EXISTENT状态
         if (!root.canWrite()) {
           LOG.info("Cannot access storage directory " + rootPath);
           return StorageState.NON_EXISTENT;
         }
       } catch(SecurityException ex) {
+        // 出错，为NON_EXISTENT状态
         LOG.info("Cannot access storage directory " + rootPath, ex);
         return StorageState.NON_EXISTENT;
       }
@@ -460,12 +464,12 @@ public abstract class Storage extends StorageInfo {
         //make sure no conversion is required
         checkConversionNeeded(this);
       }
-
-      // check whether current directory is valid
+  
+      // 检查当前版本号文件是否存在
       File versionFile = getVersionFile();
       boolean hasCurrent = versionFile.exists();
-
-      // check which directories exist
+  
+      // 检查各类关键文件是否存在
       boolean hasPrevious = getPreviousDir().exists();
       boolean hasPreviousTmp = getPreviousTmp().exists();
       boolean hasRemovedTmp = getRemovedTmp().exists();
@@ -527,6 +531,8 @@ public abstract class Storage extends StorageInfo {
 
     /**
      * Complete or recover storage state from previously failed transition.
+     *
+     * 用于转换状态
      * 
      * @param curState specifies what/how the state should be recovered
      * @throws IOException

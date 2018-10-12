@@ -260,7 +260,9 @@ public class DataStorage extends Storage {
   /**
    * Move current storage into a backup directory,
    * and hardlink all its blocks into the new current directory.
-   * 
+   *
+   * 升级操作
+   *
    * @param sd  storage directory
    * @throws IOException
    */
@@ -274,44 +276,54 @@ public class DataStorage extends Storage {
              + "; new CTime = " + nsInfo.getCTime());
     // enable hardlink stats via hardLink object instance
     HardLink hardLink = new HardLink();
-    
+    // 获取current和previous目录
     File curDir = sd.getCurrentDir();
     File prevDir = sd.getPreviousDir();
+    // 确保current目录存在
     assert curDir.exists() : "Current directory must exist.";
-    // delete previous dir before upgrading
+    // 删除可能存在的previous目录
     if (prevDir.exists())
       deleteDir(prevDir);
+    // 获取previous.tmp目录
     File tmpDir = sd.getPreviousTmp();
+    // 确保previous.tmp目录存在
     assert !tmpDir.exists() : "previous.tmp directory must not exist.";
     // rename current to tmp
+    // 将current更名为tmp目录
     rename(curDir, tmpDir);
     // hardlink blocks
+    /**
+     * 执行硬链接操作
+     * 会创建一个新的current目录
+     * 并且在该目录中建立到previous.tmp目录中数据文件和校验信息文件的硬链接
+     */
     linkBlocks(tmpDir, curDir, this.getLayoutVersion(), hardLink);
-    // write version file
+    // 写入新的版本文件
     this.layoutVersion = FSConstants.LAYOUT_VERSION;
     assert this.namespaceID == nsInfo.getNamespaceID() :
       "Data-node and name-node layout versions must be the same.";
     this.cTime = nsInfo.getCTime();
     sd.write();
-    // rename tmp to previous
+    // 将previous.tmp改名为previous
     rename(tmpDir, prevDir);
     LOG.info( hardLink.linkStats.report());
     LOG.info("Upgrade of " + sd.getRoot()+ " is complete.");
   }
 
+  // 回滚
   void doRollback( StorageDirectory sd,
                    NamespaceInfo nsInfo
                    ) throws IOException {
     File prevDir = sd.getPreviousDir();
-    // regular startup if previous dir does not exist
+    // 如果previous目录不存在则直接返回
     if (!prevDir.exists())
       return;
     DataStorage prevInfo = new DataStorage();
     StorageDirectory prevSD = prevInfo.new StorageDirectory(sd.getRoot());
+    // 获取previous中存储的版本信息
     prevSD.read(prevSD.getPreviousVersionFile());
-
-    // We allow rollback to a state, which is either consistent with
-    // the namespace state or can be further upgraded to it.
+  
+    // 进行版本判断
     if (!(prevInfo.getLayoutVersion() >= FSConstants.LAYOUT_VERSION
           && prevInfo.getCTime() <= nsInfo.getCTime()))  // cannot rollback
       throw new InconsistentFSStateException(prevSD.getRoot(),
@@ -327,16 +339,19 @@ public class DataStorage extends Storage {
     // rename current to tmp
     File curDir = sd.getCurrentDir();
     assert curDir.exists() : "Current directory must exist.";
+    // 将current改为removed.tmp
     rename(curDir, tmpDir);
-    // rename previous to current
+    // 将previous改为current
     rename(prevDir, curDir);
-    // delete tmp dir
+    // 删除removed.tmp
     deleteDir(tmpDir);
     LOG.info("Rollback of " + sd.getRoot() + " is complete.");
   }
-
+  
+  // 提交升级
   void doFinalize(StorageDirectory sd) throws IOException {
     File prevDir = sd.getPreviousDir();
+    // 确保previous目录存在
     if (!prevDir.exists())
       return; // already discarded
     final String dataDirPath = sd.getRoot().getCanonicalPath();
@@ -346,13 +361,14 @@ public class DataStorage extends Storage {
              + "; cur CTime = " + this.getCTime());
     assert sd.getCurrentDir().exists() : "Current directory must exist.";
     final File tmpDir = sd.getFinalizedTmp();
-    // rename previous to tmp
+    // 将previous目录改名为finalized.tmp
     rename(prevDir, tmpDir);
 
     // delete tmp dir in a separate thread
     new Daemon(new Runnable() {
         public void run() {
           try {
+            // 删除finalized.tmp
             deleteDir(tmpDir);
           } catch(IOException ex) {
             LOG.error("Finalize upgrade for " + dataDirPath + " failed.", ex);
