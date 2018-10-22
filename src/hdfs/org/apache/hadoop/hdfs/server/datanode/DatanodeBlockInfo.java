@@ -34,9 +34,9 @@ import org.apache.hadoop.io.IOUtils;
  */
 class DatanodeBlockInfo {
 
-  private FSVolume volume;       // volume where the block belongs
-  private File     file;         // block file
-  private boolean detached;      // copy-on-write done for block
+  private FSVolume volume;       // 数据块保存的数据目录
+  private File     file;         // 数据块对应的文件
+  private boolean detached;      // 是否写时复制
 
   DatanodeBlockInfo(FSVolume vol, File file) {
     this.volume = vol;

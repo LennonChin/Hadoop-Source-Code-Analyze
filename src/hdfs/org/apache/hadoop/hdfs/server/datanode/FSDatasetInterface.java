@@ -142,6 +142,7 @@ public interface FSDatasetInterface extends FSDatasetMBean {
   /**
    * Returns an input stream at specified offset of the specified block
    * The block is still in the tmp directory and is not finalized
+   *
    * @param b
    * @param blkoff
    * @param ckoff
@@ -156,11 +157,12 @@ public interface FSDatasetInterface extends FSDatasetMBean {
       * 
       * This class contains the output streams for the data and checksum
       * of a block
+      * 包装器，包含到数据块文件及其校验信息文件的两个输出流
       *
       */
      static class BlockWriteStreams {
-      OutputStream dataOut;
-      OutputStream checksumOut;
+      OutputStream dataOut; // 数据块文件输出流
+      OutputStream checksumOut; // 校验信息输出流
       BlockWriteStreams(OutputStream dOut, OutputStream cOut) {
         dataOut = dOut;
         checksumOut = cOut;

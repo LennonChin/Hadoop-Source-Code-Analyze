@@ -115,6 +115,7 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
   class FSDir {
     File dir;
     int numBlocks = 0;
+    // 目录下所有子目录
     FSDir children[];
     int lastChildIdx = 0;
     /**
@@ -157,12 +158,15 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
       return (file != null) ? file : addBlock(b, src, true, true);
     }
 
+    // 这个重载方法实现了目录的拓宽
     private File addBlock(Block b, File src, boolean createOk, 
                           boolean resetIdx) throws IOException {
       if (numBlocks < maxBlocksPerDir) {
+        // 目录中还能保存数据块文件
         File dest = new File(dir, b.getBlockName());
         File metaData = getMetaFile( src, b );
         File newmeta = getMetaFile(dest, b);
+        // 移动文件
         if ( ! metaData.renameTo( newmeta ) ||
             ! src.renameTo( dest ) ) {
           throw new IOException( "could not move files for " + b +
@@ -177,19 +181,21 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
         numBlocks += 1;
         return dest;
       }
-            
+      
       if (lastChildIdx < 0 && resetIdx) {
         //reset so that all children will be checked
         lastChildIdx = random.nextInt(children.length);              
       }
-            
+  
+      // 需要在子目录中保存数据块文件
       if (lastChildIdx >= 0 && children != null) {
-        //Check if any child-tree has room for a block.
+        // Check if any child-tree has room for a block.
+        // 检查子目录是否有空间保存数据块
         for (int i=0; i < children.length; i++) {
           int idx = (lastChildIdx + i)%children.length;
           File file = children[idx].addBlock(b, src, false, resetIdx);
           if (file != null) {
-            lastChildIdx = idx;
+            lastChildIdx = idx; // 子目录有空间
             return file; 
           }
         }
@@ -199,7 +205,8 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
       if (!createOk) {
         return null;
       }
-            
+      
+      // 需要创建子目录
       if (children == null || children.length == 0) {
         children = new FSDir[maxBlocksPerDir];
         for (int idx = 0; idx < maxBlocksPerDir; idx++) {
@@ -208,6 +215,7 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
       }
             
       //now pick a child randomly for creating a new set of subdirs.
+      // 在新创建的子目录中保存数据块文件
       lastChildIdx = random.nextInt(children.length);
       return children[ lastChildIdx ].addBlock(b, src, true, false); 
     }
@@ -354,6 +362,7 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
     }
   }
 
+  // 相当于配置项${dfs.data.dir}中的一项，因此系统中存在多个FSVolume实例，由FSVolumeSet管理
   class FSVolume {
     private File currentDir;
     private FSDir dataDir;
@@ -467,6 +476,9 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
      */
     File createTmpFile(Block b, boolean replicationRequest) throws IOException {
       File f= null;
+      // 将根据是否是数据块复制请求，在不同的目录位置存放创建的临时文件
+      // ${dfs.data.dir}/tmp：数据块复制
+      // ${dfs.data.dir}/blocksBeingWritten：非数据块复制
       if (!replicationRequest) {
         f = new File(blocksBeingWritten, b.getBlockName());
       } else {
@@ -774,11 +786,11 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
   public static final String METADATA_EXTENSION = ".meta";
   public static final short METADATA_VERSION = 1;
   
-
+  // 活跃文件，保存着处于写状态的数据块的附加信息
   static class ActiveFile {
-    final File file;
-    final List<Thread> threads = new ArrayList<Thread>(2);
-    private volatile long visibleLength;
+    final File file; // 数据块对应的文件
+    final List<Thread> threads = new ArrayList<Thread>(2); // 操作当前文件的线程
+    private volatile long visibleLength;  // 当前数据块可见长度
     /**
      * Set to true if this file was recovered during datanode startup.
      * This may indicate that the file has been truncated (eg during
@@ -802,7 +814,7 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
     public static ActiveFile createStartupRecoveryFile(File f) {
       return new ActiveFile(f, true);
     }
-
+    
     private ActiveFile(File f, boolean recovery) {
       file = f;
       visibleLength = f.length();
@@ -918,10 +930,12 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
                                                     checksumFile.length());
   }
 
-  FSVolumeSet volumes;
+  FSVolumeSet volumes; // 管理数据节点所有的存储空间
+  // 保存当前正在进行写操作的数据块和对应文件的映射
   private HashMap<Block,ActiveFile> ongoingCreates = new HashMap<Block,ActiveFile>();
   private int maxBlocksPerDir = 0;
-  HashMap<Block,DatanodeBlockInfo> volumeMap = new HashMap<Block, DatanodeBlockInfo>();;
+  // 保存已经提交的数据块和对应文件的映射
+  HashMap<Block,DatanodeBlockInfo> volumeMap = new HashMap<Block, DatanodeBlockInfo>();
   static  Random random = new Random();
   private int validVolsRequired;
   FSDatasetAsyncDiskService asyncDiskService;
@@ -1370,6 +1384,7 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
                            boolean replicationRequest) throws IOException {
     //
     // Make sure the block isn't a valid one - we're still creating it!
+    // 确保数据块有效
     //
     if (isValidBlock(b)) {
       if (!isRecovery) {
@@ -1380,9 +1395,14 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
       // some of the packets were not received by the client. The client 
       // re-opens the connection and retries sending those packets.
       // The other reason is that an "append" is occurring to this block.
+      /**
+       * 如果数据块已经提交，即数据节点已经成功接收到所有写数据的数据包并发送ack，
+       * 但客户端因为某种原因没有收到ack，重新打开连接并重发数据
+       * 或者有到该数据块的append追加操作
+       */
       detachBlock(b, 1);
     }
-    long blockSize = b.getNumBytes();
+    long blockSize = b.getNumBytes(); // 数据块当前大小
 
     //
     // Serialize access to /tmp, and check if file already there.
@@ -1392,6 +1412,8 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
     synchronized (this) {
       //
       // Is it already in the create process?
+      // 判断据块是否已经处于创建过程中
+      // 如果在写状态，只能进行数据块恢复，不同进行数据块创建
       //
       ActiveFile activeFile = ongoingCreates.get(b);
       if (activeFile != null) {
@@ -1399,27 +1421,34 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
         threads = activeFile.threads;
         
         if (!isRecovery) {
+          // 如果是写状态，且不是数据块恢复，将抛出异常
           throw new BlockAlreadyExistsException("Block " + b +
                                   " has already been started (though not completed), and thus cannot be created.");
         } else {
+          // 如果是恢复状态，中断所有的写文件线程
           for (Thread thread:threads) {
             thread.interrupt();
           }
         }
-        ongoingCreates.remove(b);
+        ongoingCreates.remove(b); // 移除数据块和ActiveFile对象的关系
       }
+      // 创建文件并做记录
       FSVolume v = null;
       if (!isRecovery) {
+        // 分配FSVolume，顺序分配
         v = volumes.getNextVolume(blockSize);
         // create temporary file to hold block in the designated volume
+        // 在指定的volume中创建临时文件，存放该数据块
         f = createTmpFile(v, b, replicationRequest);
       } else if (f != null) {
         DataNode.LOG.info("Reopen already-open Block for append " + b);
         // create or reuse temporary file to hold block in the designated volume
+        // 文件存在，复用临时文件，保存数据块
         v = volumeMap.get(b).getVolume();
         volumeMap.put(b, new DatanodeBlockInfo(v, f));
       } else {
         // reopening block for appending to it.
+        // 为追加操作重新打开数据块
         DataNode.LOG.info("Reopen Block for append " + b);
         v = volumeMap.get(b).getVolume();
         f = createTmpFile(v, b, replicationRequest);
@@ -1428,6 +1457,7 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
         File newmeta = getMetaFile(f, b);
 
         // rename meta file to tmp directory
+        // 校验信息文件改名
         DataNode.LOG.debug("Renaming " + oldmeta + " to " + newmeta);
         if (!oldmeta.renameTo(newmeta)) {
           throw new IOException("Block " + b + " reopen failed. " +
@@ -1436,6 +1466,7 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
         }
 
         // rename block file to tmp directory
+        // 数据块文件改名，相当于移动到tmp目录下
         DataNode.LOG.debug("Renaming " + blkfile + " to " + f);
         if (!blkfile.renameTo(f)) {
           if (!f.delete()) {
@@ -1458,6 +1489,8 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
       // If this is a replication request, then this is not a permanent
       // block yet, it could get removed if the datanode restarts. If this
       // is a write or append request, then it is a valid block.
+      // 如果是一个复制请求，该数据块不是一个永久数据块，可能在数据节点重启时被删除
+      // 如果是一个写或追加操作，则是一个有效数据块
       if (replicationRequest) {
         volumeMap.put(b, new DatanodeBlockInfo(v));
       } else {
@@ -1465,7 +1498,7 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
       }
       ongoingCreates.put(b, new ActiveFile(f, threads));
     }
-
+    // 等待操作文件线程结束
     try {
       if (threads != null) {
         for (Thread thread:threads) {
@@ -1550,6 +1583,7 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
 
   /**
    * Complete the block write!
+   * 用于提交一个被打开的数据块
    */
   private synchronized void finalizeBlockInternal(Block b, boolean reFinalizeOk) 
     throws IOException {
@@ -1572,8 +1606,11 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
     }
         
     File dest = null;
+    // 通过这个方法将数据文件和校验信息文件移动到current的某个子目录下
     dest = v.addBlock(b, f);
+    // 更新volumeMap中的信息
     volumeMap.put(b, new DatanodeBlockInfo(v, dest));
+    // 删除ongoingCreates中的记录
     ongoingCreates.remove(b);
   }
 
@@ -1829,6 +1866,7 @@ public class FSDataset implements FSConstants, FSDatasetInterface {
       long dfsBytes = f.length() + metaFile.length();
       
       // Delete the block asynchronously to make sure we can do it fast enough
+      // 异步方式删除文件，减少线程占用时间
       asyncDiskService.deleteAsync(v, f, metaFile, dfsBytes, invalidBlks[i].toString());
     }
     if (error) {
