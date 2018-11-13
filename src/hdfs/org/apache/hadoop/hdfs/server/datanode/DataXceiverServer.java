@@ -46,6 +46,7 @@ class DataXceiverServer implements Runnable, FSConstants {
   ServerSocket ss;
   DataNode datanode;
   // Record all sockets opend for data transfer
+  // 包含了所有打开的用于数据传输的Socket
   Map<Socket, Socket> childSockets = Collections.synchronizedMap(
                                        new HashMap<Socket, Socket>());
   
@@ -55,6 +56,7 @@ class DataXceiverServer implements Runnable, FSConstants {
    * running out of memory.
    */
   static final int MAX_XCEIVER_COUNT = 256;
+  // 数据节点流失接口能够支持的最大客户数，可由${dfs.datanode.max.xceivers}指定
   int maxXceiverCount = MAX_XCEIVER_COUNT;
 
   /** A manager to make sure that cluster balancing does not
@@ -126,22 +128,30 @@ class DataXceiverServer implements Runnable, FSConstants {
   /**
    */
   public void run() {
+    // 实现无线循环方式的accept()监听
+    // datanode.shouldRun这个标志位用于结束DataXceiverServer服务器
     while (datanode.shouldRun) {
       try {
+        // 会阻塞在这里直到有连接
         Socket s = ss.accept();
         s.setTcpNoDelay(true);
+        // 有连接时会创建新线程
         new Daemon(datanode.threadGroup, 
             new DataXceiver(s, datanode, this)).start();
       } catch (SocketTimeoutException ignored) {
+        // 超时异常，可忽略
         // wake up to see if should continue to run
       } catch (AsynchronousCloseException ace) {
+        // Socket被其他线程关闭
           LOG.warn(datanode.dnRegistration + ":DataXceiveServer:"
                   + StringUtils.stringifyException(ace));
           datanode.shouldRun = false;
       } catch (IOException ie) {
+        // IO异常
         LOG.warn(datanode.dnRegistration + ":DataXceiveServer: IOException due to:"
                                  + StringUtils.stringifyException(ie));
       } catch (Throwable te) {
+        // 其他情况
         LOG.error(datanode.dnRegistration + ":DataXceiveServer: Exiting due to:" 
                                  + StringUtils.stringifyException(te));
         datanode.shouldRun = false;
@@ -157,6 +167,7 @@ class DataXceiverServer implements Runnable, FSConstants {
   }
   
   void kill() {
+    // 调用kill之前必须将shouldRun设置为false
     assert datanode.shouldRun == false :
       "shoudRun should be set to false before killing";
     try {
@@ -167,6 +178,7 @@ class DataXceiverServer implements Runnable, FSConstants {
     }
 
     // close all the sockets that were accepted earlier
+    // 关闭所有打开的，用于数据传输的Socket
     synchronized (childSockets) {
       for (Iterator<Socket> it = childSockets.values().iterator();
            it.hasNext();) {

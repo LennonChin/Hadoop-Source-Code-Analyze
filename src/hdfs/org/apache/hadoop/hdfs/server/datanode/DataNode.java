@@ -329,9 +329,10 @@ public class DataNode extends Configured
                                      conf.get("dfs.datanode.dns.nameserver","default"));
     }
     InetSocketAddress nameNodeAddr = NameNode.getServiceAddress(conf, true);
-    
+    // 超时时间
     this.socketTimeout =  conf.getInt("dfs.socket.timeout",
                                       HdfsConstants.READ_TIMEOUT);
+    // 写超时
     this.socketWriteTimeout = conf.getInt("dfs.datanode.socket.write.timeout",
                                           HdfsConstants.WRITE_TIMEOUT);
     /* Based on results on different platforms, we might need set the default 
@@ -391,6 +392,7 @@ public class DataNode extends Configured
         "dfs.datanode.artificialBlockReceivedDelay", 0);
 
     // find free port or use privileged port provide
+    // 创建ServerSocket
     ServerSocket ss;
     if(secureResources == null) {
       ss = (socketWriteTimeout > 0) ? 
@@ -399,6 +401,7 @@ public class DataNode extends Configured
     } else {
       ss = resources.getStreamingSocket();
     }
+    // 设置Socket接收缓存区的大小为128KB，默认一般为8KB
     ss.setReceiveBufferSize(DEFAULT_DATA_SOCKET_SIZE); 
     // adjust machine name with the actual port
     tmpPort = ss.getLocalPort();
@@ -406,10 +409,11 @@ public class DataNode extends Configured
                                      tmpPort);
     this.dnRegistration.setName(machineName + ":" + tmpPort);
     LOG.info("Opened info server at " + tmpPort);
-      
+    // 建立线程组
     this.threadGroup = new ThreadGroup("dataXceiverServer");
     this.dataXceiverServer = new Daemon(threadGroup, 
         new DataXceiverServer(ss, conf, this));
+    // 设置为守护线程
     this.threadGroup.setDaemon(true); // auto destroy when empty
 
     this.blockReportInterval =

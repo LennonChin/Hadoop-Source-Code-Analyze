@@ -81,6 +81,7 @@ class DataXceiver implements Runnable, FSConstants {
           new BufferedInputStream(NetUtils.getInputStream(s), 
                                   SMALL_BUFFER_SIZE));
       short version = in.readShort();
+      // 检查版本号
       if ( version != DataTransferProtocol.DATA_TRANSFER_VERSION ) {
         throw new IOException( "Version Mismatch" );
       }
@@ -88,6 +89,7 @@ class DataXceiver implements Runnable, FSConstants {
       byte op = in.readByte();
       // Make sure the xciver count is not exceeded
       int curXceiverCount = datanode.getXceiverCount();
+      // 是否超过数据节点可支持的最大客户数
       if (curXceiverCount > dataXceiverServer.maxXceiverCount) {
         throw new IOException("xceiverCount " + curXceiverCount
                               + " exceeds the limit of concurrent xcievers "
