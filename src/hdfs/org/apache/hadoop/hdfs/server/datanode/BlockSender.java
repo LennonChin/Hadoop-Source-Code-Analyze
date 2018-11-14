@@ -101,6 +101,7 @@ class BlockSender implements java.io.Closeable, FSConstants {
                                         BUFFER_SIZE));
 
         // read and handle the common header here. For now just a version
+        // 读取并检查数据块元数据头信息
        BlockMetadataHeader header = BlockMetadataHeader.readHeader(checksumIn);
        short version = header.getVersion();
 
@@ -110,6 +111,7 @@ class BlockSender implements java.io.Closeable, FSConstants {
         }
         checksum = header.getChecksum();
       } else {
+        // 元数据不存在
         LOG.warn("Could not find metadata file for " + block);
         // This only decides the buffer size. Use BUFFER_SIZE?
         checksum = DataChecksum.newDataChecksum(DataChecksum.CHECKSUM_NULL,
@@ -141,12 +143,13 @@ class BlockSender implements java.io.Closeable, FSConstants {
         throw new IOException(msg);
       }
 
-      
+      // 计算应答数据在数据块中开始的位置
       offset = (startOffset - (startOffset % bytesPerChecksum));
       if (length >= 0) {
         // Make sure endOffset points to end of a checksumed chunk.
         long tmpLen = startOffset + length;
         if (tmpLen % bytesPerChecksum != 0) {
+          // 用户读取数据的结束位置
           tmpLen += (bytesPerChecksum - tmpLen % bytesPerChecksum);
         }
         if (tmpLen < endOffset) {
@@ -155,16 +158,18 @@ class BlockSender implements java.io.Closeable, FSConstants {
       }
 
       // seek to the right offsets
+      // 设置读校验信息文件的位置信息
       if (offset > 0) {
         long checksumSkip = (offset / bytesPerChecksum) * checksumSize;
         // note blockInStream is  seeked when created below
         if (checksumSkip > 0) {
           // Should we use seek() for checksum file as well?
+          // 跳过不需要的部分
           IOUtils.skipFully(checksumIn, checksumSkip);
         }
       }
       seqno = 0;
-
+      // 打开数据块文件的输入流
       blockIn = datanode.data.getBlockInputStream(block, offset); // seek to offset
       memoizedBlock = new MemoizedBlock(blockIn, blockLength, datanode.data, block);
     } catch (IOException ioe) {
@@ -252,18 +257,26 @@ class BlockSender implements java.io.Closeable, FSConstants {
 
     int numChunks = (len + bytesPerChecksum - 1)/bytesPerChecksum;
     int packetLen = len + numChunks*checksumSize + 4;
+    // 先clear清除旧数据
     pkt.clear();
     
     // write packet header
+    // 包长度
     pkt.putInt(packetLen);
+    // 偏移量
     pkt.putLong(offset);
+    // 应答的顺序号
     pkt.putLong(seqno);
+    // 请求的数据范围是否超过了本数据块
     pkt.put((byte)((offset + len >= endOffset) ? 1 : 0));
                //why no ByteBuf.putBoolean()?
+    // 长度
     pkt.putInt(len);
     
+    // 记录缓冲区当前的偏移量
     int checksumOff = pkt.position();
     int checksumLen = numChunks * checksumSize;
+    // 转为byte数组
     byte[] buf = pkt.array();
     
     if (checksumSize > 0 && checksumIn != null) {
@@ -326,11 +339,12 @@ class BlockSender implements java.io.Closeable, FSConstants {
       }
     } else {
       try {
-        //use transferTo(). Checks on out and blockIn are already done. 
+        //use transferTo(). Checks on out and blockIn are already done.
         SocketOutputStream sockOut = (SocketOutputStream) out;
         FileChannel fileChannel = ((FileInputStream) blockIn).getChannel();
 
         if (memoizedBlock.hasBlockChanged(len)) {
+          // 文件发生变化，假定出现读写竞争
           fileChannel.position(blockInPosition);
           IOUtils.readFileChannelFully(
             fileChannel,
@@ -345,8 +359,10 @@ class BlockSender implements java.io.Closeable, FSConstants {
           sockOut.write(buf, 0, dataOff + len);
         } else {
           //first write the packet
+          // 写数据包头和校验信息
           sockOut.write(buf, 0, dataOff);
           // no need to flush. since we know out is not a buffered stream.
+          // 使用transferTo()发送数据
           sockOut.transferToFully(fileChannel, blockInPosition, len);
         }
 
@@ -380,8 +396,7 @@ class BlockSender implements java.io.Closeable, FSConstants {
    * @param throttler for sending data.
    * @return total bytes reads, including crc.
    */
-  long sendBlock(DataOutputStream out, OutputStream baseStream, 
-                 BlockTransferThrottler throttler) throws IOException {
+  long sendBlock(DataOutputStream out, OutputStream baseStream, BlockTransferThrottler throttler) throws IOException {
     if( out == null ) {
       throw new IOException( "out stream is null" );
     }
@@ -394,16 +409,20 @@ class BlockSender implements java.io.Closeable, FSConstants {
     final long startTime = ClientTraceLog.isInfoEnabled() ? System.nanoTime() : 0; 
     try {
       try {
+        // 写出应答头，包括数据校验的类型和校验块大小
         checksum.writeHeader(out);
         if ( chunkOffsetOK ) {
+          // 写出偏移量，可选，在数据块复制操作中由于是复制整个数据块，不需要偏移量
           out.writeLong( offset );
         }
         out.flush();
       } catch (IOException e) { //socket error
         throw ioeToSocketException(e);
       }
-      
+      // 写出应答数据包包头
+      // 根据系统的缓冲区大小计算
       int maxChunksPerPacket;
+      // 缓冲区大小
       int pktSize = DataNode.PKT_HEADER_LEN + SIZE_OF_INTEGER;
       
       if (transferToAllowed && !verifyChecksum && 
@@ -423,6 +442,7 @@ class BlockSender implements java.io.Closeable, FSConstants {
         
         // packet buffer has to be able to do a normal transfer in the case
         // of recomputing checksum
+        // 缓冲区需要能够执行一次普通传输
         pktSize += (bytesPerChecksum + checksumSize) * maxChunksPerPacket;
       } else {
         maxChunksPerPacket = Math.max(1,
@@ -430,9 +450,11 @@ class BlockSender implements java.io.Closeable, FSConstants {
         pktSize += (bytesPerChecksum + checksumSize) * maxChunksPerPacket;
       }
 
+      // 分配缓冲区空间
       ByteBuffer pktBuf = ByteBuffer.allocate(pktSize);
 
       while (endOffset > offset) {
+        // 循环操作，由sendChunks发送应答数据包，这里将streamForSendChunks传入了
         long len = sendChunks(pktBuf, maxChunksPerPacket, 
                               streamForSendChunks);
         offset += len;
@@ -441,6 +463,7 @@ class BlockSender implements java.io.Closeable, FSConstants {
         seqno++;
       }
       try {
+        // 最后写出0表示结束
         out.writeInt(0); // mark the end of block        
         out.flush();
       } catch (IOException e) { //socket error

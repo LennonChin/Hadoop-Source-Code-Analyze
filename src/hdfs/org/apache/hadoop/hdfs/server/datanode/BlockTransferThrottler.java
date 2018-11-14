@@ -22,6 +22,7 @@ package org.apache.hadoop.hdfs.server.datanode;
  * This class is thread safe. It can be shared by multiple threads.
  * The parameter bandwidthPerSec specifies the total bandwidth shared by
  * threads.
+ * 传输节流器，用于控制发送数据的速度
  */
 class BlockTransferThrottler {
   private long period;          // period over which bw is imposed
@@ -75,6 +76,8 @@ class BlockTransferThrottler {
    * make the current thread sleep if I/O rate is too fast
    * compared to the given bandwidth.
    *
+   * 调用这个方法可以控制发送速度
+   *
    * @param numOfBytes
    *     number of bytes sent/received since last time throttle was called
    */
@@ -92,20 +95,24 @@ class BlockTransferThrottler {
 
       if ( now < curPeriodEnd ) {
         // Wait for next period so that curReserve can be increased.
+        // 等待检查周期结束，curReserve在结束时会增加
         try {
+          // 调用wait操作实现节流
           wait( curPeriodEnd - now );
         } catch (InterruptedException ignored) {}
       } else if ( now <  (curPeriodStart + periodExtension)) {
         curPeriodStart = curPeriodEnd;
+        // 增加剩余请求量
         curReserve += bytesPerPeriod;
       } else {
         // discard the prev period. Throttler might not have
         // been used for a long time.
+        // 丢弃前一个周期，重新启动节流器
         curPeriodStart = now;
         curReserve = bytesPerPeriod - bytesAlreadyUsed;
       }
     }
-
+    // 减去已使用的字节
     bytesAlreadyUsed -= numOfBytes;
   }
 }

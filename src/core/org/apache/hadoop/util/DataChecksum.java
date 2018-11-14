@@ -95,8 +95,10 @@ public class DataChecksum implements Checksum {
    * Writes the checksum header to the output stream <i>out</i>.
    */
   public void writeHeader( DataOutputStream out ) 
-                           throws IOException { 
+                           throws IOException {
+    // 写出数据校验的类型
     out.writeByte( type );
+    // 写出校验块大小
     out.writeInt( bytesPerChecksum );
   }
 

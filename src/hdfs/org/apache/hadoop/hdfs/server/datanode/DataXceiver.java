@@ -148,20 +148,26 @@ class DataXceiver implements Runnable, FSConstants {
   private void readBlock(DataInputStream in) throws IOException {
     //
     // Read in the header
-    //
-    long blockId = in.readLong();          
+    // 读取blockId
+    long blockId = in.readLong();
+    // 构造block块
     Block block = new Block( blockId, 0 , in.readLong());
 
+    // 偏移量
     long startOffset = in.readLong();
+    // 长度
     long length = in.readLong();
+    // 客户端名称
     String clientName = Text.readString(in);
+    // Token相关
     Token<BlockTokenIdentifier> accessToken = new Token<BlockTokenIdentifier>();
     accessToken.readFields(in);
-    OutputStream baseStream = NetUtils.getOutputStream(s, 
-        datanode.socketWriteTimeout);
-    DataOutputStream out = new DataOutputStream(
-                 new BufferedOutputStream(baseStream, SMALL_BUFFER_SIZE));
     
+    // 创建输出流
+    OutputStream baseStream = NetUtils.getOutputStream(s, datanode.socketWriteTimeout);
+    DataOutputStream out = new DataOutputStream(new BufferedOutputStream(baseStream, SMALL_BUFFER_SIZE));
+    
+    // 检查数据节点token是否可用
     if (datanode.isBlockTokenEnabled) {
       try {
         datanode.blockTokenSecretManager.checkAccess(accessToken, null, block,
@@ -178,6 +184,7 @@ class DataXceiver implements Runnable, FSConstants {
       }
     }
     // send the block
+    // 数据块发送器
     BlockSender blockSender = null;
     final String clientTraceFmt =
       clientName.length() > 0 && ClientTraceLog.isInfoEnabled()
@@ -191,19 +198,27 @@ class DataXceiver implements Runnable, FSConstants {
         blockSender = new BlockSender(block, startOffset, length,
             true, true, false, datanode, clientTraceFmt);
       } catch(IOException e) {
+        // 构造BlockSender时出现问题
         out.writeShort(DataTransferProtocol.OP_STATUS_ERROR);
         throw e;
       }
 
+      // 成功构造BlockSender
       out.writeShort(DataTransferProtocol.OP_STATUS_SUCCESS); // send op status
+      // 发送数据
       long read = blockSender.sendBlock(out, baseStream, null); // send data
 
       if (blockSender.isBlockReadFully()) {
         // See if client verification succeeded. 
         // This is an optional response from client.
+        // 判断客户端校验是否成功，这是一个可选的客户端应答
         try {
           if (in.readShort() == DataTransferProtocol.OP_STATUS_CHECKSUM_OK  && 
               datanode.blockScanner != null) {
+            /**
+             * 客户端已经进行了数据块校验工作，因此可以直接使用数据块扫描器将该数据块标记为客户端校验成功
+             * 这样可以减小数据节点校验数据的压力
+             */
             datanode.blockScanner.verifiedByClient(block);
           }
         } catch (IOException ignored) {}
