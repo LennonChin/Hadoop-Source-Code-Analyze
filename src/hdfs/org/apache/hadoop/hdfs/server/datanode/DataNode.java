@@ -1220,6 +1220,7 @@ public class DataNode extends Configured
    * Informing the name node could take a long long time! Should we wait
    * till namenode is informed before responding with success to the
    * client? For now we don't.
+   * 通知名字节点，写数据操作执行成功
    */
   protected void notifyNamenodeReceivedBlock(Block block, String delHint) {
     if(block==null || delHint==null) {

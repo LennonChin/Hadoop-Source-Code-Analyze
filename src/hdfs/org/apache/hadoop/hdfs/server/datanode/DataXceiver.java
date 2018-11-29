@@ -53,7 +53,7 @@ class DataXceiver implements Runnable, FSConstants {
   public static final Log LOG = DataNode.LOG;
   static final Log ClientTraceLog = DataNode.ClientTraceLog;
   
-  Socket s;
+  Socket s; // 用于与管道上游通信，对应的输入流是in，输出流是replyOut
   final String remoteAddress; // address of remote side
   final String localAddress;  // local address of this daemon
   DataNode datanode;
@@ -77,6 +77,7 @@ class DataXceiver implements Runnable, FSConstants {
   public void run() {
     DataInputStream in=null; 
     try {
+      // 用于与管道上游通信的输入流
       in = new DataInputStream(
           new BufferedInputStream(NetUtils.getInputStream(s), 
                                   SMALL_BUFFER_SIZE));
@@ -98,6 +99,7 @@ class DataXceiver implements Runnable, FSConstants {
       long startTime = DataNode.now();
       switch ( op ) {
       case DataTransferProtocol.OP_READ_BLOCK:
+        // 读操作
         readBlock( in );
         datanode.myMetrics.addReadBlockOp(DataNode.now() - startTime);
         if (local)
@@ -106,6 +108,7 @@ class DataXceiver implements Runnable, FSConstants {
           datanode.myMetrics.incrReadsFromRemoteClient();
         break;
       case DataTransferProtocol.OP_WRITE_BLOCK:
+        // 写操作
         writeBlock( in );
         datanode.myMetrics.addWriteBlockOp(DataNode.now() - startTime);
         if (local)
@@ -252,39 +255,45 @@ class DataXceiver implements Runnable, FSConstants {
    */
   private void writeBlock(DataInputStream in) throws IOException {
     DatanodeInfo srcDataNode = null;
-    LOG.debug("writeBlock receive buf size " + s.getReceiveBufferSize() +
-              " tcp no delay " + s.getTcpNoDelay());
+    LOG.debug("writeBlock receive buf size " + s.getReceiveBufferSize() + " tcp no delay " + s.getTcpNoDelay());
     //
     // Read in the header
-    //
-    Block block = new Block(in.readLong(), 
-        dataXceiverServer.estimateBlockSize, in.readLong());
-    LOG.info("Receiving block " + block + 
-             " src: " + remoteAddress +
-             " dest: " + localAddress);
+    // 读取头信息，blockId（数据块ID），generationStamp（版本号）
+    Block block = new Block(in.readLong(), dataXceiverServer.estimateBlockSize, in.readLong());
+    LOG.info("Receiving block " + block + " src: " + remoteAddress + " dest: " + localAddress);
+    // 数据流管道大小
     int pipelineSize = in.readInt(); // num of datanodes in entire pipeline
+    // 是否是数据恢复过程
     boolean isRecovery = in.readBoolean(); // is this part of recovery?
+    // 客户端名字
     String client = Text.readString(in); // working on behalf of this client
+    // 是否有源信息的标记
     boolean hasSrcDataNode = in.readBoolean(); // is src node info present
     if (hasSrcDataNode) {
+      // 如果标记hasSrcDataNode为true，则读取源信息数据到srcDataNode
       srcDataNode = new DatanodeInfo();
       srcDataNode.readFields(in);
     }
+    // 数据目标列表大小
     int numTargets = in.readInt();
     if (numTargets < 0) {
+      // 数据目标列表大小小于0，则抛出异常
       throw new IOException("Mislabelled incoming datastream.");
     }
+    // 根据numTargets构建数据目标列表
     DatanodeInfo targets[] = new DatanodeInfo[numTargets];
     for (int i = 0; i < targets.length; i++) {
       DatanodeInfo tmp = new DatanodeInfo();
       tmp.readFields(in);
       targets[i] = tmp;
     }
+    // 访问令牌
     Token<BlockTokenIdentifier> accessToken = new Token<BlockTokenIdentifier>();
     accessToken.readFields(in);
     DataOutputStream replyOut = null;   // stream to prev target
-    replyOut = new DataOutputStream(
-                   NetUtils.getOutputStream(s, datanode.socketWriteTimeout));
+    // 用于与管道上游通信的输出流
+    replyOut = new DataOutputStream(NetUtils.getOutputStream(s, datanode.socketWriteTimeout));
+    // 验证访问token
     if (datanode.isBlockTokenEnabled) {
       try {
         datanode.blockTokenSecretManager.checkAccess(accessToken, null, block, 
@@ -303,16 +312,23 @@ class DataXceiver implements Runnable, FSConstants {
         }
       }
     }
-
+  
+    // 用于与管道下游通信的输出流
     DataOutputStream mirrorOut = null;  // stream to next target
+    // 用于与管道下游通信的输入流
     DataInputStream mirrorIn = null;    // reply from next target
+    // 用于与管道下游通信的Socket
     Socket mirrorSock = null;           // socket to next target
     BlockReceiver blockReceiver = null; // responsible for data handling
+    // 下一个节点的主机名和端口
     String mirrorNode = null;           // the name:port of next target
+    // 第一个连接出错的数据节点
     String firstBadLink = "";           // first datanode that failed in connection setup
+    // 返回码
     short mirrorInStatus = (short)DataTransferProtocol.OP_STATUS_SUCCESS;
     try {
       // open a block receiver and check if the block does not exist
+      // 根据读取的请求字段信息构建BlockReceiver对象
       blockReceiver = new BlockReceiver(block, in, 
           s.getRemoteSocketAddress().toString(),
           s.getLocalSocketAddress().toString(),
@@ -321,21 +337,23 @@ class DataXceiver implements Runnable, FSConstants {
       //
       // Open network conn to backup machine, if 
       // appropriate
-      //
+      // 代表有有下游节点也需要写入数据
       if (targets.length > 0) {
         InetSocketAddress mirrorTarget = null;
         // Connect to backup machine
+        // 获取并连接第一个数据节点的地址信息
         mirrorNode = targets[0].getName();
         mirrorTarget = NetUtils.createSocketAddr(mirrorNode);
         mirrorSock = datanode.newSocket();
         try {
-          int timeoutValue = datanode.socketTimeout +
-                             (HdfsConstants.READ_TIMEOUT_EXTENSION * numTargets);
-          int writeTimeout = datanode.socketWriteTimeout + 
-                             (HdfsConstants.WRITE_TIMEOUT_EXTENSION * numTargets);
+          int timeoutValue = datanode.socketTimeout + (HdfsConstants.READ_TIMEOUT_EXTENSION * numTargets);
+          int writeTimeout = datanode.socketWriteTimeout + (HdfsConstants.WRITE_TIMEOUT_EXTENSION * numTargets);
+          // 连接到数据节点
           NetUtils.connect(mirrorSock, mirrorTarget, timeoutValue);
+          // 设置各类配置
           mirrorSock.setSoTimeout(timeoutValue);
           mirrorSock.setSendBufferSize(DEFAULT_DATA_SOCKET_SIZE);
+          // 初始化与管道下游通信的输出流和输入流
           mirrorOut = new DataOutputStream(
              new BufferedOutputStream(
                          NetUtils.getOutputStream(mirrorSock, writeTimeout),
@@ -343,6 +361,7 @@ class DataXceiver implements Runnable, FSConstants {
           mirrorIn = new DataInputStream(NetUtils.getInputStream(mirrorSock));
 
           // Write header: Copied from DFSClient.java!
+          // 往管道下游写出相应的数据
           mirrorOut.writeShort( DataTransferProtocol.DATA_TRANSFER_VERSION );
           mirrorOut.write( DataTransferProtocol.OP_WRITE_BLOCK );
           mirrorOut.writeLong( block.getBlockId() );
@@ -361,12 +380,17 @@ class DataXceiver implements Runnable, FSConstants {
           accessToken.write(mirrorOut);
 
           blockReceiver.writeChecksumHeader(mirrorOut);
+          // 刷出数据
           mirrorOut.flush();
 
           // read connect ack (only for clients, not for replication req)
+          // 根据client的长度可以判断是否是从客户端发起的写请求，即不是复制请求，则从下游读取应答
           if (client.length() != 0) {
+            // 读取下游应答状态
             mirrorInStatus = mirrorIn.readShort();
+            // 读取下游应答出错节点
             firstBadLink = Text.readString(mirrorIn);
+            // 打印日志信息
             if (LOG.isDebugEnabled() || mirrorInStatus != DataTransferProtocol.OP_STATUS_SUCCESS) {
               LOG.info("Datanode " + targets.length +
                        " got response for connect ack " +
@@ -375,12 +399,14 @@ class DataXceiver implements Runnable, FSConstants {
             }
           }
 
-        } catch (IOException e) {
+        } catch (IOException e) { // catch子句可以捕获往下游节点写数据过程中抛出的异常
           if (client.length() != 0) {
+            // 在往下一个数据节点写请求的过程中出错，向上游写应答
             replyOut.writeShort((short)DataTransferProtocol.OP_STATUS_ERROR);
             Text.writeString(replyOut, mirrorNode);
             replyOut.flush();
           }
+          // 关闭各类资源
           IOUtils.closeStream(mirrorOut);
           mirrorOut = null;
           IOUtils.closeStream(mirrorIn);
@@ -405,12 +431,14 @@ class DataXceiver implements Runnable, FSConstants {
                    " forwarding connect ack to upstream firstbadlink is " +
                    firstBadLink);
         }
+        // 顺利完成各类初始化任务，写应答
         replyOut.writeShort(mirrorInStatus);
         Text.writeString(replyOut, firstBadLink);
         replyOut.flush();
       }
 
       // receive the block and mirror to the next target
+      // 接收数据块数据，并发送到下一个目标数据节点
       String mirrorAddr = (mirrorSock == null) ? null : mirrorNode;
       blockReceiver.receiveBlock(mirrorOut, mirrorIn, replyOut,
                                  mirrorAddr, null, targets.length);
@@ -419,6 +447,7 @@ class DataXceiver implements Runnable, FSConstants {
       // from a client), then confirm block. For client-writes,
       // the block is finalized in the PacketResponder.
       if (client.length() == 0) {
+        // 调用datanode的notifyNamenodeReceivedBlock()方法告知名字节点数据写入成功
         datanode.notifyNamenodeReceivedBlock(block, DataNode.EMPTY_DEL_HINT);
         LOG.info("Received block " + block + 
                  " src: " + remoteAddress +
@@ -426,6 +455,7 @@ class DataXceiver implements Runnable, FSConstants {
                  " of size " + block.getNumBytes());
       }
 
+      // 如果存在数据块扫描器，将数据块添加到扫描器中，以更新数据块扫描器中记录的数据块信息
       if (datanode.blockScanner != null) {
         datanode.blockScanner.addBlock(block);
       }
@@ -435,6 +465,7 @@ class DataXceiver implements Runnable, FSConstants {
       throw ioe;
     } finally {
       // close all opened streams
+      // 关闭资源
       IOUtils.closeStream(mirrorOut);
       IOUtils.closeStream(mirrorIn);
       IOUtils.closeStream(replyOut);

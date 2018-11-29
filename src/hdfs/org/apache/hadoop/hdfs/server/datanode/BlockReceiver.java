@@ -81,6 +81,7 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
                 String myAddr, boolean isRecovery, String clientName, 
                 DatanodeInfo srcDataNode, DataNode datanode) throws IOException {
     try{
+      // 记录各类字段值
       this.block = block;
       this.in = in;
       this.inAddr = inAddr;
@@ -95,17 +96,16 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
       this.checksumSize = checksum.getChecksumSize();
       //
       // Open local disk out
-      //
+      // 打开输出数据流，streams类型为FSDataset.BlockWriteStreams，包含数据块文件输出流和校验信息输出流
       streams = datanode.data.writeToBlock(block, isRecovery,
                               clientName == null || clientName.length() == 0);
       this.finalized = false;
       if (streams != null) {
         this.out = streams.dataOut;
-        this.checksumOut = new DataOutputStream(new BufferedOutputStream(
-                                                  streams.checksumOut, 
-                                                  SMALL_BUFFER_SIZE));
+        this.checksumOut = new DataOutputStream(new BufferedOutputStream(streams.checksumOut, SMALL_BUFFER_SIZE));
         // If this block is for appends, then remove it from periodic
         // validation.
+        // 如果是恢复操作，将数据块从数据块扫描器中移除
         if (datanode.blockScanner != null && isRecovery) {
           datanode.blockScanner.deleteBlock(block);
         }
@@ -113,16 +113,19 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
     } catch (BlockAlreadyExistsException bae) {
       throw bae;
     } catch(IOException ioe) {
+      // 关闭流
       IOUtils.closeStream(this);
+      // 清理数据块
       cleanupBlock();
       
       // check if there is a disk error
+      // 检查是否是磁盘错误
       IOException cause = FSDataset.getCauseIfDiskError(ioe);
-      DataNode.LOG.warn("IOException in BlockReceiver constructor. Cause is ",
-          cause);
+      DataNode.LOG.warn("IOException in BlockReceiver constructor. Cause is ", cause);
       
       if (cause != null) { // possible disk error
         ioe = cause;
+        // 检查磁盘是否出错
         datanode.checkDiskError(ioe); // may throw an exception here
       }
       
@@ -501,7 +504,7 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
     checksum.writeHeader(mirrorOut);
   }
  
-
+  // 处理写数据的数据包
   void receiveBlock(
       DataOutputStream mirrOut, // output to next datanode
       DataInputStream mirrIn,   // input from next datanode
