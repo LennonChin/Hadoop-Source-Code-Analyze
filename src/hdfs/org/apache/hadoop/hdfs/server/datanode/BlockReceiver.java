@@ -705,6 +705,7 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
   class PacketResponder implements Runnable, FSConstants {   
 
     //packet waiting for ack
+    // BlockReceiver线程已经处理完的数据包信息
     private LinkedList<Packet> ackQueue = new LinkedList<Packet>(); 
     private volatile boolean running = true;
     private Block block;
@@ -731,6 +732,7 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
 
     /**
      * enqueue the seqno that is still be to acked by the downstream datanode.
+     * BlockReceiver.receivePacket()每处理完一个数据包，就通过enqueue()方法将对应的信息包装为一个Packet放入ackQueue队列
      * @param seqno
      * @param lastPacketInBlock
      */
@@ -738,7 +740,9 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
       if (running) {
         LOG.debug("PacketResponder " + numTargets + " adding seqno " + seqno +
                   " to ack queue.");
+        // 放入队列
         ackQueue.addLast(new Packet(seqno, lastPacketInBlock));
+        // 唤醒阻塞在该监视器上的所有线程
         notifyAll();
       }
     }
@@ -777,6 +781,8 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
            * it needs to tell the client that there's been an error downstream
            * but has no valid sequence number to use. Thus, -2 is used
            * as an UNKNOWN value.
+           *
+           * PipelineAck.UNKOWN_SEQNO为-2，用于标识从下游读取应答出现错误的情况
            */
           long expected = PipelineAck.UNKOWN_SEQNO;
           long seqno = PipelineAck.UNKOWN_SEQNO;;
@@ -787,6 +793,7 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
             Packet pkt = null;
             synchronized (this) {
               // wait for a packet to arrive
+              // 当ackQueue队列长度为0时进入阻塞状态，等待ackQueue被填充
               while (running && datanode.shouldRun && ackQueue.size() == 0) {
                 if (LOG.isDebugEnabled()) {
                   LOG.debug("PacketResponder " + numTargets + 
@@ -794,18 +801,23 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
                             " for block " + block +
                             " waiting for local datanode to finish write.");
                   }
+                  // 进入等待
                   wait();
                 }
                 if (!running || !datanode.shouldRun) {
                   break;
                 }
+                // 取出ackQueue中第一个元素
                 pkt = ackQueue.removeFirst();
+                // 取出序号并赋值
                 expected = pkt.seqno;
                 notifyAll();
               }
               // receive an ack if DN is not the last one in the pipeline
+              // 当DataNode不是最后一个节点时，将会接收下游节点的ack确认响应
               if (numTargets > 0 && !localMirrorError) {
                 // read an ack from downstream datanode
+                // 读入应答
                 ack.readFields(mirrorIn);
                 if (LOG.isDebugEnabled()) {
                   LOG.debug("PacketResponder " + numTargets + 
@@ -851,16 +863,18 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
             
             // If this is the last packet in block, then close block
             // file and finalize the block before responding success
+            // 收到最后一个数据包的确认
             if (lastPacketInBlock && !receiver.finalized) {
+              // 关闭PacketResponder数据包接收器
               receiver.close();
               final long endTime = ClientTraceLog.isInfoEnabled() ? System.nanoTime() : 0;
               block.setNumBytes(receiver.offsetInBlock);
+              // 提交数据块
               datanode.data.finalizeBlock(block);
               datanode.myMetrics.incrBlocksWritten();
-              datanode.notifyNamenodeReceivedBlock(block, 
-                  DataNode.EMPTY_DEL_HINT);
-              if (ClientTraceLog.isInfoEnabled() &&
-                  receiver.clientName.length() > 0) {
+              // 通知名字节点
+              datanode.notifyNamenodeReceivedBlock(block, DataNode.EMPTY_DEL_HINT);
+              if (ClientTraceLog.isInfoEnabled() && receiver.clientName.length() > 0) {
                 long offset = 0;
                 ClientTraceLog.info(String.format(DN_CLIENTTRACE_FORMAT,
                       receiver.inAddr, receiver.myAddr, block.getNumBytes(), 
@@ -874,15 +888,19 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
             }
 
             // construct my ack message
+            // 往上游发送Ack确认消息
             short[] replies = null;
+            // 有错误的情况
             if (mirrorError) { // no ack is read
             	replies = new short[2];
             	replies[0] = DataTransferProtocol.OP_STATUS_SUCCESS;
             	replies[1] = DataTransferProtocol.OP_STATUS_ERROR;
             } else {
+              // 成功应答
             	short ackLen = numTargets == 0 ? 0 : ack.getNumOfReplies();
             	replies = new short[1+ackLen];
             	replies[0] = DataTransferProtocol.OP_STATUS_SUCCESS;
+            	// 加入下游应答
             	for (int i=0; i<ackLen; i++) {
             		replies[i+1] = ack.getReply(i);
             	}
@@ -890,6 +908,7 @@ class BlockReceiver implements java.io.Closeable, FSConstants {
             PipelineAck replyAck = new PipelineAck(expected, replies);
  
             // send my ack back to upstream datanode
+            // 往上游发送
             replyAck.write(replyOut);
             replyOut.flush();
             if (LOG.isDebugEnabled()) {
